@@ -500,6 +500,14 @@ Private Sub cmdRemove_Click()
     End Select
 End Sub
 
+Private Sub cmdRemoveAll_Click()
+    lastrow = Worksheets("Audit").Range("E" & Rows.Count).End(xlUp).Row
+    cboSystem.Text = ""
+    strCurrentSystemName = ""
+    Worksheets("Audit").Range("A2:AZ" & lastrow).Clear
+    lstSelectedSystems.Clear
+End Sub
+
 Private Sub cmdRename_Click()
     Dim strSystem As String
     If lstSelectedSystems.ListIndex = -1 Then
