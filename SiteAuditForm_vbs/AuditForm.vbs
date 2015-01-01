@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} AuditForm 
    Caption         =   "Add Systems"
-   ClientHeight    =   7095
+   ClientHeight    =   5835
    ClientLeft      =   45
    ClientTop       =   375
    ClientWidth     =   12615
@@ -58,6 +58,35 @@ Private Quantity As Object
 Private strCurrentSystemName As String
 
 Private cboHeight As Integer
+Private cboWidth As Integer
+Private txtHeight As Integer
+Private txtWidth As Integer
+'Private lblHeight As Integer
+'Private lblWidth As Integer
+
+Private toTop As Integer
+Private toTop1 As Integer
+Private toTop2 As Integer
+Private toTop3 As Integer
+Private toTop4 As Integer
+Private toTop5 As Integer
+Private toTop6 As Integer
+Private toTop7 As Integer
+Private toTop8 As Integer
+Private toTop9 As Integer
+
+Private toLeft As Integer
+Private toLeft1 As Integer
+Private toLeft2 As Integer
+Private toLeft3 As Integer
+'Private toLeft4 As Integer
+'Private toLeft5 As Integer
+'Private toLeft6 As Integer
+'Private toLeft7 As Integer
+'Private toLeft8 As Integer
+'Private toLeft9 As Integer
+
+Private vertInterval As Integer
 
 Private Sub cboSystem_Change()
     'remove all dynamic controls on selection change
@@ -142,11 +171,12 @@ Private Sub addlabel(ByVal label As Object, ByVal labelname As String, ByVal cap
         .caption = caption
         .top = top
         .left = left
+        .height = height
     End With
 End Sub
 
 
-Private Sub addtextbox(ByVal textbox As Object, ByVal textboxname As String, ByVal top As Integer, ByVal left As Integer, ByVal width As Integer)
+Private Sub addtextbox(ByVal textbox As Object, ByVal textboxname As String, ByVal top As Integer, ByVal left As Integer, ByVal width As Integer, ByVal height As Integer)
 
     For Each ctrl In AuditForm.Controls
         If ctrl.Name = textboxname Then
@@ -158,73 +188,75 @@ Private Sub addtextbox(ByVal textbox As Object, ByVal textboxname As String, ByV
         .top = top
         .left = left
         .width = width
+        .height = height
     End With
 End Sub
 
 Private Sub showcoolingoptions()
     ' COOLING TYPE
-    Call addlabel(lblSystemType, "dc_lblSystemType1", "Cooling Type*", 62, 15)
-    Call addcomboBox(SystemType, "dc_SystemType1", 62, 80, 150, cboHeight)
+    Call addlabel(lblSystemType, "dc_lblSystemType1", "Cooling Type*", toTop, toLeft)
+    Call addcomboBox(SystemType, "dc_SystemType1", toTop, toLeft1, cboWidth * 2, cboHeight)
     AuditForm.Controls("dc_SystemType1").AddItem ("CENTRAL AC")
     AuditForm.Controls("dc_SystemType1").AddItem ("HEAT PUMP-AIR SOURCE")
     AuditForm.Controls("dc_SystemType1").AddItem ("HEAT PUMP-WATER SOURCE")
     AuditForm.Controls("dc_SystemType1").AddItem ("SPLIT SYSTEM")
     AuditForm.Controls("dc_SystemType1").AddItem ("WINDOW AC")
     
+'    loctextboxlen = 50
+'    cboWidth = 70
+    
     ' FUEL SOURCE
-    Call addlabel(lblFuelSource, "dc_lblFuelSource1", "Fuel Source*", 92, 15)
-    Call addcomboBox(FuelSource, "dc_FuelSource1", 92, 80, 150, cboHeight)
+    Call addlabel(lblFuelSource, "dc_lblFuelSource1", "Fuel Source*", toTop1, toLeft)
+    Call addcomboBox(FuelSource, "dc_FuelSource1", toTop1, toLeft1, cboWidth * 2, cboHeight)
     AuditForm.Controls("dc_FuelSource1").AddItem ("ELECTRIC")
     
     'SYSTEM SIZE
-    Call addlabel(lblSystemSize, "dc_lblSystemSize1", "System Size*", 122, 15)
-    Call addtextbox(SystemSize, "dc_SystemSize1", 122, 80, 50)
+    Call addlabel(lblSystemSize, "dc_lblSystemSize1", "System Size*", toTop2, toLeft)
+    Call addtextbox(SystemSize, "dc_SystemSize1", toTop2, toLeft1, txtWidth, txtHeight)
     
     'SYSTEM SIZE UNIT
-    Call addlabel(lblSizeUnit, "dc_lblSizeUnit1", "System Size Unit*", 122, 150)
-    Call addcomboBox(SizeUnit, "dc_SizeUnit1", 122, 220, 70, cboHeight)
+    Call addlabel(lblSizeUnit, "dc_lblSizeUnit1", "System Size Unit*", toTop2, toLeft2)
+    Call addcomboBox(SizeUnit, "dc_SizeUnit1", toTop2, toLeft3, cboWidth, cboHeight)
     AuditForm.Controls("dc_SizeUnit1").AddItem ("BTU")
     AuditForm.Controls("dc_SizeUnit1").AddItem ("MBTU")
     AuditForm.Controls("dc_SizeUnit1").AddItem ("MMBTU")
     AuditForm.Controls("dc_SizeUnit1").AddItem ("TON")
 
     'SYSTEM Age
-    Call addlabel(lblSystemAge, "dc_lblSystemAge1", "System Age*", 152, 15)
-    Call addtextbox(SystemAge, "dc_SystemAge1", 152, 80, 50)
+    Call addlabel(lblSystemAge, "dc_lblSystemAge1", "System Age*", toTop3, toLeft)
+    Call addtextbox(SystemAge, "dc_SystemAge1", toTop3, toLeft1, txtWidth, txtHeight)
     
     'SYSTEM Efficiency Rating
-    Call addlabel(lblEffRating, "dc_lblEffRating1", "Efficiency Rating*", 182, 5)
-    Call addtextbox(EffRating, "dc_EffRating1", 182, 80, 50)
+    Call addlabel(lblEffRating, "dc_lblEffRating1", "Efficiency Rating*", toTop4, toLeft - 10)
+    Call addtextbox(EffRating, "dc_EffRating1", toTop4, toLeft1, txtWidth, txtHeight)
     
     'SYSTEM Efficiency Rating Type
-    Call addlabel(lblEffRatingType, "dc_lblEffRatingType1", "Rating Type*", 182, 150)
-    Call addcomboBox(EffRatingType, "dc_EffRatingType1", 182, 220, 80, cboHeight)
+    Call addlabel(lblEffRatingType, "dc_lblEffRatingType1", "Rating Type*", toTop4, toLeft2)
+    Call addcomboBox(EffRatingType, "dc_EffRatingType1", toTop4, toLeft3, cboWidth, cboHeight)
     AuditForm.Controls("dc_EffRatingType1").AddItem ("EER")
     AuditForm.Controls("dc_EffRatingType1").AddItem ("SEER")
     AuditForm.Controls("dc_EffRatingType1").AddItem ("COP")
     
-
-
     'TOTAL PERCENTAGE OF SPACE COOLED
-    Call addlabel(lblPercentageCooled, "dc_lblPercentageCooled1", "% of space cooled*", 210, 5)
-    Call addtextbox(PercentageCooled, "dc_PercentageCooled1", 210, 80, 50)
+    Call addlabel(lblPercentageCooled, "dc_lblPercentageCooled1", "% of space cooled*", toTop5, toLeft - 13)
+    Call addtextbox(PercentageCooled, "dc_PercentageCooled1", toTop5, toLeft1, txtWidth, txtHeight)
     
     'FREQUENCY OF SYSTEM USE
 
-    Call addlabel(lblFrequencyUse, "dc_lblFrequencyUse1", "Frequency of use*", 210, 150)
-    Call addcomboBox(FrequencyUse, "dc_FrequencyUse1", 210, 220, 70, cboHeight)
+    Call addlabel(lblFrequencyUse, "dc_lblFrequencyUse1", "Frequency of use*", toTop5, toLeft2)
+    Call addcomboBox(FrequencyUse, "dc_FrequencyUse1", toTop5, toLeft3, cboWidth, cboHeight)
     AuditForm.Controls("dc_FrequencyUse1").AddItem ("0%")
     AuditForm.Controls("dc_FrequencyUse1").AddItem ("10-30%")
     AuditForm.Controls("dc_FrequencyUse1").AddItem ("31-70%")
     AuditForm.Controls("dc_FrequencyUse1").AddItem ("71-100%")
     
     'TOTAL UNITS USED
-    Call addlabel(lblTotalUnits, "dc_lblTotalUnits1", "Total units used", 240, 5)
-    Call addtextbox(TotalUnits, "dc_TotalUnits1", 240, 80, 50)
+    Call addlabel(lblTotalUnits, "dc_lblTotalUnits1", "Total units used", toTop6, toLeft)
+    Call addtextbox(TotalUnits, "dc_TotalUnits1", toTop6, toLeft1, txtWidth, txtHeight)
         
     'QUANTITY
-    Call addlabel(lblQuantity, "dc_lblQuantity1", "Quantity", 270, 5)
-    Call addtextbox(Quantity, "dc_Quantity1", 270, 80, 50)
+    Call addlabel(lblQuantity, "dc_lblQuantity1", "Quantity", toTop6, toLeft2)
+    Call addtextbox(Quantity, "dc_Quantity1", toTop6, toLeft3, txtWidth, txtHeight)
         
 End Sub
 '        Case "HVAC DISTRIBUTION"
@@ -257,8 +289,8 @@ End Sub
 Private Sub showheatingoptions()
     
     ' HEATING TYPE
-    Call addlabel(lblSystemType, "dc_lblSystemType1", "Heating Type*", 62, 15)
-    Call addcomboBox(SystemType, "dc_SystemType1", 62, 80, 150, cboHeight)
+    Call addlabel(lblSystemType, "dc_lblSystemType1", "Heating Type*", toTop, toLeft)
+    Call addcomboBox(SystemType, "dc_SystemType1", toTop, toLeft1, cboWidth * 2, cboHeight)
     AuditForm.Controls("dc_SystemType1").AddItem ("GAS FURNACE")
     AuditForm.Controls("dc_SystemType1").AddItem ("HEAT PUMP-AIR SOURCE")
     AuditForm.Controls("dc_SystemType1").AddItem ("HEAT PUMP-GROUND SOURCE")
@@ -270,8 +302,8 @@ Private Sub showheatingoptions()
     AuditForm.Controls("dc_SystemType1").AddItem ("WOOD/COAL STOVE")
     
     ' FUEL SOURCE
-    Call addlabel(lblFuelSource, "dc_lblFuelSource1", "Fuel Source*", 92, 15)
-    Call addcomboBox(FuelSource, "dc_FuelSource1", 92, 80, 150, cboHeight)
+    Call addlabel(lblFuelSource, "dc_lblFuelSource1", "Fuel Source*", toTop1, toLeft)
+    Call addcomboBox(FuelSource, "dc_FuelSource1", toTop1, toLeft1, cboWidth * 2, cboHeight)
     AuditForm.Controls("dc_FuelSource1").AddItem ("ELECTRIC")
     AuditForm.Controls("dc_FuelSource1").AddItem ("GAS")
     AuditForm.Controls("dc_FuelSource1").AddItem ("PROPANE")
@@ -283,27 +315,27 @@ Private Sub showheatingoptions()
     AuditForm.Controls("dc_FuelSource1").AddItem ("OTHER")
     
     'SYSTEM SIZE
-    Call addlabel(lblSystemSize, "dc_lblSystemSize1", "System Size*", 122, 15)
-    Call addtextbox(SystemSize, "dc_SystemSize1", 122, 80, 50)
+    Call addlabel(lblSystemSize, "dc_lblSystemSize1", "System Size*", toTop2, toLeft)
+    Call addtextbox(SystemSize, "dc_SystemSize1", toTop2, toLeft1, txtWidth, txtHeight)
     
     'SYSTEM SIZE UNIT
-    Call addlabel(lblSizeUnit, "dc_lblSizeUnit1", "System Size Unit*", 122, 150)
-    Call addcomboBox(SizeUnit, "dc_SizeUnit1", 122, 220, 70, cboHeight)
+    Call addlabel(lblSizeUnit, "dc_lblSizeUnit1", "System Size Unit*", toTop2, toLeft2)
+    Call addcomboBox(SizeUnit, "dc_SizeUnit1", toTop2, toLeft3, cboWidth, cboHeight)
     AuditForm.Controls("dc_SizeUnit1").AddItem ("MBTU")
     AuditForm.Controls("dc_SizeUnit1").AddItem ("MMBTU")
     AuditForm.Controls("dc_SizeUnit1").AddItem ("TON")
 
     'SYSTEM Age
-    Call addlabel(lblSystemAge, "dc_lblSystemAge1", "System Age", 152, 15)
-    Call addtextbox(SystemAge, "dc_SystemAge1", 152, 80, 50)
+    Call addlabel(lblSystemAge, "dc_lblSystemAge1", "System Age", toTop3, toLeft)
+    Call addtextbox(SystemAge, "dc_SystemAge1", toTop3, toLeft1, txtWidth, txtHeight)
     
     'SYSTEM Efficiency Rating
-    Call addlabel(lblEffRating, "dc_lblEffRating1", "Efficiency Rating", 182, 5)
-    Call addtextbox(EffRating, "dc_EffRating1", 182, 80, 50)
+    Call addlabel(lblEffRating, "dc_lblEffRating1", "Efficiency Rating", toTop4, toLeft - 10)
+    Call addtextbox(EffRating, "dc_EffRating1", toTop4, toLeft1, txtWidth, txtHeight)
     
     'SYSTEM Efficiency Rating Type
-    Call addlabel(lblEffRatingType, "dc_lblEffRatingType1", "Rating Type*", 182, 150)
-    Call addcomboBox(EffRatingType, "dc_EffRatingType1", 182, 220, 80, cboHeight)
+    Call addlabel(lblEffRatingType, "dc_lblEffRatingType1", "Rating Type*", toTop4, toLeft2)
+    Call addcomboBox(EffRatingType, "dc_EffRatingType1", toTop4, toLeft3, cboWidth, cboHeight)
     AuditForm.Controls("dc_EffRatingType1").AddItem ("AFUE")
     AuditForm.Controls("dc_EffRatingType1").AddItem ("HSPF")
     AuditForm.Controls("dc_EffRatingType1").AddItem ("COP")
@@ -554,7 +586,31 @@ Private Sub UserForm_Initialize()
     
     Set thisWB = ActiveWorkbook
     
+    vertInterval = 25
+    
+    toTop = 40
+    toTop1 = toTop + vertInterval
+    toTop2 = toTop + 2 * vertInterval
+    toTop3 = toTop + 3 * vertInterval
+    toTop4 = toTop + 4 * vertInterval
+    toTop5 = toTop + 5 * vertInterval
+    toTop6 = toTop + 6 * vertInterval
+    toTop7 = toTop + 7 * vertInterval
+    toTop8 = toTop + 8 * vertInterval
+    toTop9 = toTop + 9 * vertInterval
+    
+    toLeft = 20
+    toLeft1 = 80
+    toLeft2 = 150
+    toLeft3 = 220
+    
     cboHeight = 15
+    cboWidth = 70
+    txtHeight = 15
+    txtWidth = 50
+'    lblHeight = 15
+'    lblWidth = 60
+
     cboSystem.AddItem ("HEATING")
     cboSystem.AddItem ("COOLING")
     cboSystem.AddItem ("HVAC DISTRIBUTION")
