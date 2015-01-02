@@ -65,6 +65,45 @@ Private lblSystemLength1 As Object
 Private SystemLength As Object
 Private lblFlexCondition As Object
 Private FlexCondition As Object
+Private lblTankRValue As Object
+Private TankRValue As Object
+Private lblPercentageLoad As Object
+Private PercentageLoad As Object
+Private lblTemperatureSetting As Object
+Private lblTemperatureSetting1 As Object
+Private TemperatureSetting As Object
+Private lblEnergyFactor As Object
+Private EnergyFactor As Object
+Private lblAverageCoolingTemperature As Object
+Private AverageCoolingTemperature As Object
+Private lblAverageCoolingTemperature1 As Object
+Private lblAverageHeatingTemperature As Object
+Private AverageHeatingTemperature As Object
+Private lblAverageHeatingTemperature2 As Object
+Private lblDaytimeSetback As Object
+Private DaytimeSetback As Object
+Private lblNightSetback As Object
+Private NightSetback As Object
+Private lblHeatingDayTemperature As Object
+Private HeatingDayTemperature As Object
+Private lblHeatingDayTemperature1 As Object
+Private lblHeatingEveningTemperature As Object
+Private HeatingEveningTemperature As Object
+Private lblHeatingEveningTemperature1 As Object
+Private lblHeatingNightTemperature As Object
+Private HeatingNightTemperature As Object
+Private lblHeatingNightTemperature1 As Object
+Private lblCoolingDayTemperature As Object
+Private CoolingDayTemperature As Object
+Private lblCoolingDayTemperature1 As Object
+Private lblCoolingEveningTemperature As Object
+Private CoolingEveningTemperature As Object
+Private lblCoolingEveningTemperature1 As Object
+Private lblCoolingNightTemperature As Object
+Private CoolingNightTemperature As Object
+Private lblCoolingNightTemperature1 As Object
+Private lblACCtrlPresent As Object
+Private ACCtrlPresent As Object
 
 Private strCurrentSystemName As String
 
@@ -148,7 +187,6 @@ Private Sub cmdCancel_Click()
     ThisWorkbook.Saved = True
     ThisWorkbook.Close SaveChanges:=True
     Application.Quit
-    
 End Sub
 
 Private Sub addcomboBox(ByVal cboBox As Object, ByVal cboname As String, ByVal top As Integer, ByVal left As Integer, ByVal width As Integer, ByVal height As Integer)
@@ -214,6 +252,62 @@ Private Sub showwhoptions()
     AuditForm.Controls("dc_SystemType1").AddItem ("SOLAR/TANK")
     AuditForm.Controls("dc_SystemType1").AddItem ("GEOTHERMAL DESUPERHEATER/TANK")
     
+    ' FUEL SOURCE
+    Call addlabel(lblFuelSource, "dc_lblFuelSource1", "Fuel Source*", toTop1, toLeft, lblWidth, lblHeight)
+    Call addcomboBox(FuelSource, "dc_FuelSource1", toTop1, toLeft1, cboWidth * 2, cboHeight)
+    AuditForm.Controls("dc_FuelSource1").AddItem ("ELECTRIC")
+    AuditForm.Controls("dc_FuelSource1").AddItem ("GAS")
+    AuditForm.Controls("dc_FuelSource1").AddItem ("PROPANE")
+    AuditForm.Controls("dc_FuelSource1").AddItem ("SOLAR")
+    AuditForm.Controls("dc_FuelSource1").AddItem ("WOOD")
+    AuditForm.Controls("dc_FuelSource1").AddItem ("OIL")
+    AuditForm.Controls("dc_FuelSource1").AddItem ("OTHER")
+    
+    'SYSTEM SIZE
+    Call addlabel(lblSystemSize, "dc_lblSystemSize1", "System Size*", toTop2, toLeft, lblWidth, lblHeight)
+    Call addtextbox(SystemSize, "dc_SystemSize1", toTop2, toLeft1, txtWidth, txtHeight)
+    
+    'SYSTEM SIZE UNIT
+    Call addlabel(lblSizeUnit, "dc_lblSizeUnit1", "System Size Unit*", toTop2, toLeft2, lblWidth, lblHeight)
+    Call addcomboBox(SizeUnit, "dc_SizeUnit1", toTop2, toLeft3, cboWidth, cboHeight)
+    AuditForm.Controls("dc_SizeUnit1").AddItem ("GALLONS")
+    
+    'SYSTEM Age
+    Call addlabel(lblSystemAge, "dc_lblSystemAge1", "System Age*", toTop3, toLeft, lblWidth, lblHeight)
+    Call addtextbox(SystemAge, "dc_SystemAge1", toTop3, toLeft1, txtWidth, txtHeight)
+    
+    'INSULATION EXIST INDICATOR
+    Call addlabel(lblInsIndicator, "dc_lblInsIndicator1", "Insulation exist indicator*", toTop3, toLeft2, lblWidth, lblHeight)
+    Call addcomboBox(InsIndicator, "dc_InsIndicator1", toTop3, toLeft3, cboWidth, cboHeight)
+    AuditForm.Controls("dc_InsIndicator1").AddItem ("Y")
+    AuditForm.Controls("dc_InsIndicator1").AddItem ("N")
+    AuditForm.Controls("dc_InsIndicator1").AddItem ("NOT NEEDED")
+    
+    'INSULATION TYPE
+    Call addlabel(lblInsType, "dc_lblInsType1", "Insulation Type*", toTop4, toLeft, lblWidth, lblHeight)
+    Call addcomboBox(InsType, "dc_InsType1", toTop4, toLeft1, cboWidth * 2, cboHeight)
+    AuditForm.Controls("dc_InsType1").AddItem ("FIBERGLASS BATTS")
+    AuditForm.Controls("dc_InsType1").AddItem ("MINERAL/ROCK WOOL")
+    AuditForm.Controls("dc_InsType1").AddItem ("NONE")
+    AuditForm.Controls("dc_InsType1").AddItem ("OTHER")
+    
+
+    'TANK R-VALUE
+    Call addlabel(lblTankRValue, "dc_lblTankRValue1", "Tank R-Value", toTop5, toLeft, lblWidth, lblHeight)
+    Call addtextbox(TankRValue, "dc_TankRValue1", toTop5, toLeft1, txtWidth, txtHeight)
+    
+    'PERCENTAGE OF LOAD
+    Call addlabel(lblPercentageLoad, "dc_lblPercentageLoad1", "% of Load*", toTop5, toLeft2 + 20, lblWidth, lblHeight)
+    Call addtextbox(PercentageLoad, "dc_PercentageLoad1", toTop5, toLeft3, txtWidth, txtHeight)
+    
+    'CURRENT TEMPERATURE SETTING
+    Call addlabel(lblTemperatureSetting, "dc_lblTemperatureSetting1", "Current Temperature Setting*", toTop6, toLeft - 13, lblWidth, lblHeight)
+    Call addtextbox(TemperatureSetting, "dc_TemperatureSetting1", toTop6, toLeft1, txtWidth, txtHeight)
+    Call addlabel(lblTemperatureSetting1, "dc_lblTemperatureSetting2", "F", toTop6, toLeft1 + txtWidth + 5, lblWidth, lblHeight)
+    
+    'ENERGY FACTOR
+    Call addlabel(lblEnergyFactor, "dc_lblEnergyFactor1", "Energy Factor", toTop7, toLeft, lblWidth, lblHeight)
+    Call addtextbox(EnergyFactor, "dc_EnergyFactor1", toTop7, toLeft1, txtWidth, txtHeight)
 End Sub
 
 Private Sub showhvacoptions()
@@ -287,6 +381,70 @@ Private Sub showthermostatoptions()
     AuditForm.Controls("dc_SystemType1").AddItem ("DIGITAL")
     AuditForm.Controls("dc_SystemType1").AddItem ("DIGITAL PROGRAMMABLE")
     AuditForm.Controls("dc_SystemType1").AddItem ("STANDARD")
+    
+    'PERCENTAGE OF LOAD
+    Call addlabel(lblPercentageLoad, "dc_lblPercentageLoad1", "% of Load", toTop, toLeft2 + 100, lblWidth, lblHeight)
+    Call addtextbox(PercentageLoad, "dc_PercentageLoad1", toTop, toLeft3 + 80, txtWidth, txtHeight)
+    
+
+    'AVERAGE COOLING TEMPERATURE SETTING
+    Call addlabel(lblAverageCoolingTemperature, "dc_lblAverageCoolingTemperature1", "Avg. Cooling Temp*", toTop1, toLeft - 13, lblWidth, lblHeight)
+    Call addtextbox(AverageCoolingTemperature, "dc_AverageCoolingTemperature1", toTop1, toLeft1, txtWidth, txtHeight)
+    Call addlabel(lblAverageCoolingTemperature1, "dc_lblAverageCoolingTemperature2", "F", toTop1, toLeft1 + txtWidth + 5, lblWidth - 45, lblHeight)
+    
+    'AVERAGE HEATING TEMPERATURE SETTING
+    Call addlabel(lblAverageHeatingTemperature, "dc_lblAverageHeatingTemperature1", "Avg. Heating Temp*", toTop1, toLeft2 + 20, lblWidth, lblHeight + 10)
+    Call addtextbox(AverageHeatingTemperature, "dc_AverageHeatingTemperature1", toTop1, toLeft3 + 25, txtWidth, txtHeight)
+    Call addlabel(lblAverageHeatingTemperature2, "dc_lblAverageHeatingTemperature3", "F", toTop1, toLeft3 + txtWidth + 30, lblWidth, lblHeight)
+
+    'DAYTIME SETBACK
+    Call addlabel(lblDaytimeSetback, "dc_lblDaytimeSetback1", "Daytime set back?", toTop2, toLeft - 10, lblWidth, lblHeight)
+    Call addcomboBox(DaytimeSetback, "dc_DaytimeSetback1", toTop2, toLeft1, cboWidth, cboHeight)
+    AuditForm.Controls("dc_DaytimeSetback1").AddItem ("Y")
+    AuditForm.Controls("dc_DaytimeSetback1").AddItem ("N")
+    
+    'NIGHTTIME SETBACK
+    Call addlabel(lblNightSetback, "dc_lblNightSetback1", "Night set back?", toTop2, toLeft2 + 10, lblWidth, lblHeight)
+    Call addcomboBox(NightSetback, "dc_NightSetback1", toTop2, toLeft3, cboWidth, cboHeight)
+    AuditForm.Controls("dc_NightSetback1").AddItem ("Y")
+    AuditForm.Controls("dc_NightSetback1").AddItem ("N")
+    
+    'HEATING DAY TEMP SETTING
+    Call addlabel(lblHeatingDayTemperature, "dc_lblHeatingDayTemperature1", "Heating Day Temp.", toTop3, toLeft - 13, lblWidth, lblHeight)
+    Call addtextbox(HeatingDayTemperature, "dc_HeatingDayTemperature1", toTop3, toLeft1, txtWidth, txtHeight)
+    Call addlabel(lblHeatingDayTemperature1, "dc_lblHeatingDayTemperature2", "F", toTop3, toLeft1 + txtWidth + 5, lblWidth, lblHeight)
+    
+    'HEATING EVENING TEMP SETTING
+    Call addlabel(lblHeatingEveningTemperature, "dc_lblHeatingEveningTemperature1", "Heating Evening Temp.", toTop3, toLeft2 + 10, lblWidth, lblHeight)
+    Call addtextbox(HeatingEveningTemperature, "dc_HeatingEveningTemperature1", toTop3, toLeft3, txtWidth, txtHeight)
+    Call addlabel(lblHeatingEveningTemperature1, "dc_lblHeatingEveningTemperature2", "F", toTop3, toLeft3 + txtWidth + 5, lblWidth, lblHeight)
+    
+    'HEATING NIGHT TEMP SETTING
+    Call addlabel(lblHeatingNightTemperature, "dc_lblHeatingNightTemperature1", "Heating Night Temp.", toTop4, toLeft - 15, lblWidth, lblHeight)
+    Call addtextbox(HeatingNightTemperature, "dc_HeatingNightTemperature1", toTop4, toLeft1, txtWidth, txtHeight)
+    Call addlabel(lblHeatingNightTemperature1, "dc_lblHeatingNightTemperature2", "F", toTop4, toLeft1 + txtWidth + 5, lblWidth, lblHeight)
+    
+    'COOLING DAY TEMP SETTING
+    Call addlabel(lblCoolingDayTemperature, "dc_lblCoolingDayTemperature1", "Cooling Day Temp.", toTop5, toLeft - 13, lblWidth, lblHeight)
+    Call addtextbox(CoolingDayTemperature, "dc_CoolingDayTemperature1", toTop5, toLeft1, txtWidth, txtHeight)
+    Call addlabel(lblCoolingDayTemperature1, "dc_lblCoolingDayTemperature2", "F", toTop5, toLeft1 + txtWidth + 5, lblWidth, lblHeight)
+    
+    'COOLING EVENING TEMP SETTING
+    Call addlabel(lblCoolingEveningTemperature, "dc_lblCoolingEveningTemperature1", "Cooling Evening Temp.", toTop5, toLeft2 + 10, lblWidth, lblHeight)
+    Call addtextbox(CoolingEveningTemperature, "dc_CoolingEveningTemperature1", toTop5, toLeft3, txtWidth, txtHeight)
+    Call addlabel(lblCoolingEveningTemperature1, "dc_lblCoolingEveningTemperature2", "F", toTop5, toLeft3 + txtWidth + 5, lblWidth, lblHeight)
+    
+    'COOLING NIGHT TEMP SETTING
+    Call addlabel(lblCoolingNightTemperature, "dc_lblCoolingNightTemperature1", "Cooling Night Temp.", toTop6, toLeft - 15, lblWidth, lblHeight)
+    Call addtextbox(CoolingNightTemperature, "dc_CoolingNightTemperature1", toTop6, toLeft1, txtWidth, txtHeight)
+    Call addlabel(lblCoolingNightTemperature1, "dc_lblCoolingNightTemperature2", "F", toTop6, toLeft1 + txtWidth + 5, lblWidth, lblHeight)
+    
+
+    'AC LOAD CONTROL PRESENT
+    Call addlabel(lblACCtrlPresent, "dc_lblACCtrlPresent1", "AC Load Control Present?", toTop7, toLeft - 15, lblWidth, lblHeight)
+    Call addcomboBox(ACCtrlPresent, "dc_ACCtrlPresent1", toTop7, toLeft1, cboWidth, cboHeight)
+    AuditForm.Controls("dc_ACCtrlPresent1").AddItem ("Y")
+    AuditForm.Controls("dc_ACCtrlPresent1").AddItem ("N")
 End Sub
 
 Private Sub showwindowoptions()
