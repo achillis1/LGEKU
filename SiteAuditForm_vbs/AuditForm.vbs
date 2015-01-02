@@ -520,16 +520,18 @@ End Sub
 
 Private Sub cmdRemove_Click()
     ir = lstSelectedSystems.ListIndex
-    lstSelectedSystems.RemoveItem (ir)
-    Rows(ir + 2).Delete
-    Select Case lstSelectedSystems.Text
+    Select Case Worksheets("Audit").Cells(ir + 2, 5).Value
         Case "HEATING"
             iHeating = iHeating - 1
         Case "COOLING"
             iCooling = iCooling - 1
+        'Case "HVAC"
+        '...
         Case Else
-        
     End Select
+    lstSelectedSystems.RemoveItem (ir)
+    Worksheets("Audit").Rows(ir + 2).Delete
+
 End Sub
 
 Private Sub cmdRemoveAll_Click()
