@@ -204,6 +204,18 @@ Private Sub addtextbox(ByVal textbox As Object, ByVal textboxname As String, ByV
     End With
 End Sub
 
+Private Sub showwhoptions()
+    'WATER HEATER TYPE
+    Call addlabel(lblSystemType, "dc_lblSystemType1", "Water Heater Type*", toTop, toLeft - 15, lblWidth, lblHeight)
+    Call addcomboBox(SystemType, "dc_SystemType1", toTop, toLeft1, cboWidth * 3, cboHeight)
+    AuditForm.Controls("dc_SystemType1").AddItem ("CONVENTIONAL STORAGE")
+    AuditForm.Controls("dc_SystemType1").AddItem ("DEMAND")
+    AuditForm.Controls("dc_SystemType1").AddItem ("TANKLESS\INSTANTANEOUS")
+    AuditForm.Controls("dc_SystemType1").AddItem ("SOLAR/TANK")
+    AuditForm.Controls("dc_SystemType1").AddItem ("GEOTHERMAL DESUPERHEATER/TANK")
+    
+End Sub
+
 Private Sub showhvacoptions()
     ' HVAC DISTRIBUTION TYPE
     Call addlabel(lblSystemType, "dc_lblSystemType1", "HVAC Distribution Type*", toTop, toLeft - 10, lblWidth, lblHeight)
@@ -267,48 +279,141 @@ Private Sub showhvacoptions()
     
 End Sub
 
-Private Sub showwhoptions()
-
-End Sub
 
 Private Sub showthermostatoptions()
-
+    'THERMOSTAT TYPE
+    Call addlabel(lblSystemType, "dc_lblSystemType1", "Thermostat Type*", toTop, toLeft - 10, lblWidth, lblHeight)
+    Call addcomboBox(SystemType, "dc_SystemType1", toTop, toLeft1, cboWidth * 2, cboHeight)
+    AuditForm.Controls("dc_SystemType1").AddItem ("DIGITAL")
+    AuditForm.Controls("dc_SystemType1").AddItem ("DIGITAL PROGRAMMABLE")
+    AuditForm.Controls("dc_SystemType1").AddItem ("STANDARD")
 End Sub
 
 Private Sub showwindowoptions()
-
+    'WINDOW TYPE
+    Call addlabel(lblSystemType, "dc_lblSystemType1", "Window Type*", toTop, toLeft, lblWidth, lblHeight)
+    Call addcomboBox(SystemType, "dc_SystemType1", toTop, toLeft1, cboWidth * 2, cboHeight)
+    AuditForm.Controls("dc_SystemType1").AddItem ("SINGLE PANE")
+    AuditForm.Controls("dc_SystemType1").AddItem ("SINGLE PANE W/STORM")
+    AuditForm.Controls("dc_SystemType1").AddItem ("WINDOW")
+    AuditForm.Controls("dc_SystemType1").AddItem ("DOUBLE PANE")
+    AuditForm.Controls("dc_SystemType1").AddItem ("TRIPLE PANE")
+    AuditForm.Controls("dc_SystemType1").AddItem ("DH")
+    AuditForm.Controls("dc_SystemType1").AddItem ("CASEMENT")
+    AuditForm.Controls("dc_SystemType1").AddItem ("FIXED")
 End Sub
 
 Private Sub showdooroptions()
-
+    'DOOR TYPE
+    Call addlabel(lblSystemType, "dc_lblSystemType1", "Door Type*", toTop, toLeft, lblWidth, lblHeight)
+    Call addcomboBox(SystemType, "dc_SystemType1", toTop, toLeft1, cboWidth * 2, cboHeight)
+    AuditForm.Controls("dc_SystemType1").AddItem ("METAL/INSULATED")
+    AuditForm.Controls("dc_SystemType1").AddItem ("FIBERGLASS/INSULATED")
+    AuditForm.Controls("dc_SystemType1").AddItem ("WOOD")
+    AuditForm.Controls("dc_SystemType1").AddItem ("SLIDER")
+    AuditForm.Controls("dc_SystemType1").AddItem ("ATRIUM")
 End Sub
 
 Private Sub showlightingoptions()
-
+    'WINDOW TYPE
+    'NOT WINDOW TYPE
 End Sub
 
 Private Sub showwalloptions()
-
+    'WALL TYPE
+    Call addlabel(lblSystemType, "dc_lblSystemType1", "Wall Type*", toTop, toLeft, lblWidth, lblHeight)
+    Call addcomboBox(SystemType, "dc_SystemType1", toTop, toLeft1, cboWidth * 2, cboHeight)
+    AuditForm.Controls("dc_SystemType1").AddItem ("ALUMINUM")
+    AuditForm.Controls("dc_SystemType1").AddItem ("BRICK")
+    AuditForm.Controls("dc_SystemType1").AddItem ("MASONITE")
+    AuditForm.Controls("dc_SystemType1").AddItem ("OTHER")
+    AuditForm.Controls("dc_SystemType1").AddItem ("STUCCO")
+    AuditForm.Controls("dc_SystemType1").AddItem ("VINYL")
+    AuditForm.Controls("dc_SystemType1").AddItem ("WOOD")
 End Sub
 
 Private Sub showatticoptions()
-
+    'ATTIC TYPE
+    Call addlabel(lblSystemType, "dc_lblSystemType1", "Attic Type*", toTop, toLeft, lblWidth, lblHeight)
+    Call addcomboBox(SystemType, "dc_SystemType1", toTop, toLeft1, cboWidth * 2, cboHeight)
+    AuditForm.Controls("dc_SystemType1").AddItem ("FLOORED")
+    AuditForm.Controls("dc_SystemType1").AddItem ("UNFLOORED")
+    AuditForm.Controls("dc_SystemType1").AddItem ("KNEE WALL")
+    AuditForm.Controls("dc_SystemType1").AddItem ("KW FLAT FLOORED")
+    AuditForm.Controls("dc_SystemType1").AddItem ("KW FLAT UNFLOORED")
+    AuditForm.Controls("dc_SystemType1").AddItem ("FLAT ROOF")
+    AuditForm.Controls("dc_SystemType1").AddItem ("SLOPED")
 End Sub
 
 Private Sub showbasementoptions()
+    'BASEMENT TYPE
+    Call addlabel(lblSystemType, "dc_lblSystemType1", "Basement Type*", toTop, toLeft, lblWidth, lblHeight)
+    Call addcomboBox(SystemType, "dc_SystemType1", toTop, toLeft1, cboWidth * 2, cboHeight)
+    AuditForm.Controls("dc_SystemType1").AddItem ("CRAWL-OPEN")
+    AuditForm.Controls("dc_SystemType1").AddItem ("CRAWL-CLOSED")
+    AuditForm.Controls("dc_SystemType1").AddItem ("FULL")
+    AuditForm.Controls("dc_SystemType1").AddItem ("GARAGE")
+    AuditForm.Controls("dc_SystemType1").AddItem ("SLAB")
 
 End Sub
 Private Sub showbwoptions()
-
+    'BASEMENT WALL TYPE
+    Call addlabel(lblSystemType, "dc_lblSystemType1", "Basement Wall Type*", toTop, toLeft - 15, lblWidth, lblHeight)
+    Call addcomboBox(SystemType, "dc_SystemType1", toTop, toLeft1, cboWidth * 2, cboHeight)
+    AuditForm.Controls("dc_SystemType1").AddItem ("CINDER BLOCK")
+    AuditForm.Controls("dc_SystemType1").AddItem ("CONCRETE POUR/FORMED")
+    AuditForm.Controls("dc_SystemType1").AddItem ("FRAMED 2x4")
+    AuditForm.Controls("dc_SystemType1").AddItem ("FRAMED 2x6")
 End Sub
 Private Sub showrefrigeratoroptions()
+    'REFRIGERATOR TYPE
+    Call addlabel(lblSystemType, "dc_lblSystemType1", "Refrigerator Type*", toTop, toLeft - 10, lblWidth, lblHeight)
+    Call addcomboBox(SystemType, "dc_SystemType1", toTop, toLeft1, cboWidth * 2, cboHeight)
+    AuditForm.Controls("dc_SystemType1").AddItem ("SIDE BY SIDE")
+    AuditForm.Controls("dc_SystemType1").AddItem ("FREEZER TOP")
+    AuditForm.Controls("dc_SystemType1").AddItem ("FREEZER BOTTOM")
+    AuditForm.Controls("dc_SystemType1").AddItem ("SINGLE DOOR")
 
 End Sub
 Private Sub showfreezeroptions()
+    'FREEZER TYPE
+    Call addlabel(lblSystemType, "dc_lblSystemType1", "Freezer Type*", toTop, toLeft, lblWidth, lblHeight)
+    Call addcomboBox(SystemType, "dc_SystemType1", toTop, toLeft1, cboWidth * 2, cboHeight)
+    AuditForm.Controls("dc_SystemType1").AddItem ("UPRIGHT")
+    AuditForm.Controls("dc_SystemType1").AddItem ("CHEST")
 
 End Sub
 Private Sub showapplianceoptions()
-
+    'APPLIANCE TYPE
+    Call addlabel(lblSystemType, "dc_lblSystemType1", "Appliance Type*", toTop, toLeft, lblWidth, lblHeight)
+    Call addcomboBox(SystemType, "dc_SystemType1", toTop, toLeft1, cboWidth * 2, cboHeight)
+    AuditForm.Controls("dc_SystemType1").AddItem ("AQUARIUM")
+    AuditForm.Controls("dc_SystemType1").AddItem ("ATTIC FAN")
+    AuditForm.Controls("dc_SystemType1").AddItem ("BLACK & WHITE TV")
+    AuditForm.Controls("dc_SystemType1").AddItem ("CEILING FAN")
+    AuditForm.Controls("dc_SystemType1").AddItem ("CLOTHES WASHER")
+    AuditForm.Controls("dc_SystemType1").AddItem ("COLOR TV")
+    AuditForm.Controls("dc_SystemType1").AddItem ("COMPUTER")
+    AuditForm.Controls("dc_SystemType1").AddItem ("DEHUMIDIFIER")
+    AuditForm.Controls("dc_SystemType1").AddItem ("DISHWASHER")
+    AuditForm.Controls("dc_SystemType1").AddItem ("ELECTRIC SPACE HEATER")
+    AuditForm.Controls("dc_SystemType1").AddItem ("ELEC CLOTHES DRYER")
+    AuditForm.Controls("dc_SystemType1").AddItem ("ELECTRIC BLANKET")
+    AuditForm.Controls("dc_SystemType1").AddItem ("ELECTRIC COOKING")
+    AuditForm.Controls("dc_SystemType1").AddItem ("FAX MACHINE")
+    AuditForm.Controls("dc_SystemType1").AddItem ("GAS CLOTHES DRYER")
+    AuditForm.Controls("dc_SystemType1").AddItem ("GAS COOKING")
+    AuditForm.Controls("dc_SystemType1").AddItem ("HOT TUB")
+    AuditForm.Controls("dc_SystemType1").AddItem ("HUMIDIFIER")
+    AuditForm.Controls("dc_SystemType1").AddItem ("LASER PRINTER")
+    AuditForm.Controls("dc_SystemType1").AddItem ("MICROWAVE")
+    AuditForm.Controls("dc_SystemType1").AddItem ("MISCELLANEOUS")
+    AuditForm.Controls("dc_SystemType1").AddItem ("POOL PUMP")
+    AuditForm.Controls("dc_SystemType1").AddItem ("PRINTER")
+    AuditForm.Controls("dc_SystemType1").AddItem ("STEREO")
+    AuditForm.Controls("dc_SystemType1").AddItem ("SUMP PUMP")
+    AuditForm.Controls("dc_SystemType1").AddItem ("WATERBED")
+    AuditForm.Controls("dc_SystemType1").AddItem ("WELL PUMP")
 End Sub
             
 Private Sub showcoolingoptions()
