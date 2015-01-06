@@ -1,6 +1,14 @@
 Attribute VB_Name = "util"
-Sub test1()
-    AuditForm.Show
+Public EnrollmentFirstDataLine As Integer
+Public ImportSheetName As String
+Public PMSheetName As String
+Public InboundLastReadCol As Integer
+Public currentEnrollment As String
+Public premiseid As String
+Public accountnumber As String
+
+Sub Main()
+    frmMain.Show
 End Sub
 
 'todo list
