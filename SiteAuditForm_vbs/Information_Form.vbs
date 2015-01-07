@@ -323,7 +323,7 @@ Enrollment_ID_ROSA = currentEnrollment
 
 If Enrollment_ID_ROSA <> "" Then
 lastrow = Cells(Rows.Count, 2).End(xlUp).Row
-Result = Application.Match(Enrollment_ID_ROSA, Sheets("Enrollments").Range(Cells(ir, NexantEnrollments.Enrollment_ID_ROSA), Cells(lastrow, NexantEnrollments.Enrollment_ID_ROSA))) + HeadingOffset
+Result = Application.Match(Enrollment_ID_ROSA, Sheets("Enrollments").Range(Cells(currentrow, NexantEnrollments.Enrollment_ID_ROSA), Cells(lastrow, NexantEnrollments.Enrollment_ID_ROSA))) + HeadingOffset
 
 'Result = Application.Match(Enrollment_ID_ROSA, Sheets("Enrollments").Range("B1", "B" & Range("B" & Rows.Count).End(xlUp).Row), 0)
 Else

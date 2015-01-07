@@ -32,6 +32,8 @@ Private iApplicance As Integer
 Private thisWB As Workbook
 Private prompt As String
 
+Private lblSystemApplicable As Object
+Private SystemApplicable As Object
 Private SystemType As Object
 Private lblSystemType As Object
 Private FuelSource As Object
@@ -149,6 +151,7 @@ Private lblHeight As Integer
 Private lblWidth As Integer
 
 Private toTop As Integer
+Private toTop0 As Integer
 Private toTop1 As Integer
 Private toTop2 As Integer
 Private toTop3 As Integer
@@ -272,7 +275,15 @@ Private Sub addtextbox(ByVal textbox As Object, ByVal textboxname As String, ByV
     End With
 End Sub
 
+
 Private Sub showwhoptions()
+    'SYSTEM NOT APPLICABLE VALUE
+    Call addlabel(lblSystemApplicable, "dc_lblSystemApplicable1", "System Applicable", toTop0, toLeft - 15, lblWidth * 2, lblHeight)
+    Call addcomboBox(SystemApplicable, "dc_SystemApplicable1", toTop0, toLeft1, cboWidth, cboHeight)
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("N/A")
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("X")
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("BLANK")
+    
     'WATER HEATER TYPE
     Call addlabel(lblSystemType, "dc_lblSystemType1", "Water Heater Type*", toTop, toLeft - 15, lblWidth, lblHeight)
     Call addcomboBox(SystemType, "dc_SystemType1", toTop, toLeft1, cboWidth * 3, cboHeight)
@@ -341,6 +352,13 @@ Private Sub showwhoptions()
 End Sub
 
 Private Sub showhvacoptions()
+    'SYSTEM NOT APPLICABLE VALUE
+    Call addlabel(lblSystemApplicable, "dc_lblSystemApplicable1", "System Applicable", toTop0, toLeft - 15, lblWidth * 2, lblHeight)
+    Call addcomboBox(SystemApplicable, "dc_SystemApplicable1", toTop0, toLeft1, cboWidth, cboHeight)
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("N/A")
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("X")
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("BLANK")
+    
     ' HVAC DISTRIBUTION TYPE
     Call addlabel(lblSystemType, "dc_lblSystemType1", "HVAC Distribution Type*", toTop, toLeft - 10, lblWidth, lblHeight)
     Call addcomboBox(SystemType, "dc_SystemType1", toTop, toLeft1, cboWidth * 2, cboHeight)
@@ -405,6 +423,13 @@ End Sub
 
 
 Private Sub showthermostatoptions()
+    'SYSTEM NOT APPLICABLE VALUE
+    Call addlabel(lblSystemApplicable, "dc_lblSystemApplicable1", "System Applicable", toTop0, toLeft - 15, lblWidth * 2, lblHeight)
+    Call addcomboBox(SystemApplicable, "dc_SystemApplicable1", toTop0, toLeft1, cboWidth, cboHeight)
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("N/A")
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("X")
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("BLANK")
+    
     'THERMOSTAT TYPE
     Call addlabel(lblSystemType, "dc_lblSystemType1", "Thermostat Type*", toTop, toLeft - 10, lblWidth, lblHeight)
     Call addcomboBox(SystemType, "dc_SystemType1", toTop, toLeft1, cboWidth * 2, cboHeight)
@@ -478,6 +503,13 @@ Private Sub showthermostatoptions()
 End Sub
 
 Private Sub showwindowoptions()
+    'SYSTEM NOT APPLICABLE VALUE
+    Call addlabel(lblSystemApplicable, "dc_lblSystemApplicable1", "System Applicable", toTop0, toLeft - 15, lblWidth * 2, lblHeight)
+    Call addcomboBox(SystemApplicable, "dc_SystemApplicable1", toTop0, toLeft1, cboWidth, cboHeight)
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("N/A")
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("X")
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("BLANK")
+    
     'WINDOW TYPE
     Call addlabel(lblSystemType, "dc_lblSystemType1", "Window Type*", toTop, toLeft, lblWidth, lblHeight)
     Call addcomboBox(SystemType, "dc_SystemType1", toTop, toLeft1, cboWidth * 2, cboHeight)
@@ -521,6 +553,13 @@ Private Sub showwindowoptions()
 End Sub
 
 Private Sub showdooroptions()
+    'SYSTEM NOT APPLICABLE VALUE
+    Call addlabel(lblSystemApplicable, "dc_lblSystemApplicable1", "System Applicable", toTop0, toLeft - 15, lblWidth * 2, lblHeight)
+    Call addcomboBox(SystemApplicable, "dc_SystemApplicable1", toTop0, toLeft1, cboWidth, cboHeight)
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("N/A")
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("X")
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("BLANK")
+    
     'DOOR TYPE
     Call addlabel(lblSystemType, "dc_lblSystemType1", "Door Type*", toTop, toLeft, lblWidth, lblHeight)
     Call addcomboBox(SystemType, "dc_SystemType1", toTop, toLeft1, cboWidth * 2, cboHeight)
@@ -543,6 +582,13 @@ Private Sub showdooroptions()
 End Sub
 
 Private Sub showlightingoptions()
+    'SYSTEM NOT APPLICABLE VALUE
+    Call addlabel(lblSystemApplicable, "dc_lblSystemApplicable1", "System Applicable", toTop0, toLeft - 15, lblWidth * 2, lblHeight)
+    Call addcomboBox(SystemApplicable, "dc_SystemApplicable1", toTop0, toLeft1, cboWidth, cboHeight)
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("N/A")
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("X")
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("BLANK")
+    
     'WINDOW TYPE
     'NOT WINDOW TYPE
     
@@ -574,6 +620,13 @@ Private Sub showlightingoptions()
 End Sub
 
 Private Sub showwalloptions()
+    'SYSTEM NOT APPLICABLE VALUE
+    Call addlabel(lblSystemApplicable, "dc_lblSystemApplicable1", "System Applicable", toTop0, toLeft - 15, lblWidth * 2, lblHeight)
+    Call addcomboBox(SystemApplicable, "dc_SystemApplicable1", toTop0, toLeft1, cboWidth, cboHeight)
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("N/A")
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("X")
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("BLANK")
+    
     'WALL TYPE
     Call addlabel(lblSystemType, "dc_lblSystemType1", "Wall Type*", toTop, toLeft, lblWidth, lblHeight)
     Call addcomboBox(SystemType, "dc_SystemType1", toTop, toLeft1, cboWidth * 2, cboHeight)
@@ -622,6 +675,13 @@ Private Sub showwalloptions()
 End Sub
 
 Private Sub showatticoptions()
+    'SYSTEM NOT APPLICABLE VALUE
+    Call addlabel(lblSystemApplicable, "dc_lblSystemApplicable1", "System Applicable", toTop0, toLeft - 15, lblWidth * 2, lblHeight)
+    Call addcomboBox(SystemApplicable, "dc_SystemApplicable1", toTop0, toLeft1, cboWidth, cboHeight)
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("N/A")
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("X")
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("BLANK")
+    
     'ATTIC TYPE
     Call addlabel(lblSystemType, "dc_lblSystemType1", "Attic Type*", toTop, toLeft, lblWidth, lblHeight)
     Call addcomboBox(SystemType, "dc_SystemType1", toTop, toLeft1, cboWidth * 2, cboHeight)
@@ -683,6 +743,13 @@ Private Sub showatticoptions()
 End Sub
 
 Private Sub showbasementoptions()
+    'SYSTEM NOT APPLICABLE VALUE
+    Call addlabel(lblSystemApplicable, "dc_lblSystemApplicable1", "System Applicable", toTop0, toLeft - 15, lblWidth * 2, lblHeight)
+    Call addcomboBox(SystemApplicable, "dc_SystemApplicable1", toTop0, toLeft1, cboWidth, cboHeight)
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("N/A")
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("X")
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("BLANK")
+    
     'BASEMENT TYPE
     Call addlabel(lblSystemType, "dc_lblSystemType1", "Basement Type*", toTop, toLeft, lblWidth, lblHeight)
     Call addcomboBox(SystemType, "dc_SystemType1", toTop, toLeft1, cboWidth * 2, cboHeight)
@@ -741,6 +808,13 @@ Private Sub showbasementoptions()
     
 End Sub
 Private Sub showbwoptions()
+    'SYSTEM NOT APPLICABLE VALUE
+    Call addlabel(lblSystemApplicable, "dc_lblSystemApplicable1", "System Applicable", toTop0, toLeft - 15, lblWidth * 2, lblHeight)
+    Call addcomboBox(SystemApplicable, "dc_SystemApplicable1", toTop0, toLeft1, cboWidth, cboHeight)
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("N/A")
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("X")
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("BLANK")
+    
     'BASEMENT WALL TYPE
     Call addlabel(lblSystemType, "dc_lblSystemType1", "Basement Wall Type*", toTop, toLeft - 15, lblWidth, lblHeight)
     Call addcomboBox(SystemType, "dc_SystemType1", toTop, toLeft1, cboWidth * 2, cboHeight)
@@ -775,6 +849,13 @@ Private Sub showbwoptions()
     frmSystem.Controls("dc_InsType1").AddItem ("OTHER")
 End Sub
 Private Sub showrefrigeratoroptions()
+    'SYSTEM NOT APPLICABLE VALUE
+    Call addlabel(lblSystemApplicable, "dc_lblSystemApplicable1", "System Applicable", toTop0, toLeft - 15, lblWidth * 2, lblHeight)
+    Call addcomboBox(SystemApplicable, "dc_SystemApplicable1", toTop0, toLeft1, cboWidth, cboHeight)
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("N/A")
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("X")
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("BLANK")
+    
     'REFRIGERATOR TYPE
     Call addlabel(lblSystemType, "dc_lblSystemType1", "Refrigerator Type*", toTop, toLeft - 10, lblWidth, lblHeight)
     Call addcomboBox(SystemType, "dc_SystemType1", toTop, toLeft1, cboWidth * 2, cboHeight)
@@ -814,6 +895,13 @@ Private Sub showrefrigeratoroptions()
 
 End Sub
 Private Sub showfreezeroptions()
+    'SYSTEM NOT APPLICABLE VALUE
+    Call addlabel(lblSystemApplicable, "dc_lblSystemApplicable1", "System Applicable", toTop0, toLeft - 15, lblWidth * 2, lblHeight)
+    Call addcomboBox(SystemApplicable, "dc_SystemApplicable1", toTop0, toLeft1, cboWidth, cboHeight)
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("N/A")
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("X")
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("BLANK")
+    
     'FREEZER TYPE
     Call addlabel(lblSystemType, "dc_lblSystemType1", "Freezer Type*", toTop, toLeft, lblWidth, lblHeight)
     Call addcomboBox(SystemType, "dc_SystemType1", toTop, toLeft1, cboWidth * 2, cboHeight)
@@ -841,6 +929,13 @@ Private Sub showfreezeroptions()
     frmSystem.Controls("dc_DefrostType1").AddItem ("MANUAL")
 End Sub
 Private Sub showapplianceoptions()
+    'SYSTEM NOT APPLICABLE VALUE
+    Call addlabel(lblSystemApplicable, "dc_lblSystemApplicable1", "System Applicable", toTop0, toLeft - 15, lblWidth * 2, lblHeight)
+    Call addcomboBox(SystemApplicable, "dc_SystemApplicable1", toTop0, toLeft1, cboWidth, cboHeight)
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("N/A")
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("X")
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("BLANK")
+    
     'APPLIANCE TYPE
     Call addlabel(lblSystemType, "dc_lblSystemType1", "Appliance Type*", toTop, toLeft, lblWidth, lblHeight)
     Call addcomboBox(SystemType, "dc_SystemType1", toTop, toLeft1, cboWidth * 2, cboHeight)
@@ -878,6 +973,13 @@ Private Sub showapplianceoptions()
 End Sub
             
 Private Sub showcoolingoptions()
+    'SYSTEM NOT APPLICABLE VALUE
+    Call addlabel(lblSystemApplicable, "dc_lblSystemApplicable1", "System Applicable", toTop0, toLeft - 15, lblWidth * 2, lblHeight)
+    Call addcomboBox(SystemApplicable, "dc_SystemApplicable1", toTop0, toLeft1, cboWidth, cboHeight)
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("N/A")
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("X")
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("BLANK")
+    
     ' COOLING TYPE
     Call addlabel(lblSystemType, "dc_lblSystemType1", "Cooling Type*", toTop, toLeft, lblWidth, lblHeight)
     Call addcomboBox(SystemType, "dc_SystemType1", toTop, toLeft1, cboWidth * 2, cboHeight)
@@ -946,6 +1048,13 @@ Private Sub showcoolingoptions()
 End Sub
 
 Private Sub showheatingoptions()
+    'SYSTEM NOT APPLICABLE VALUE
+    Call addlabel(lblSystemApplicable, "dc_lblSystemApplicable1", "System Applicable", toTop0, toLeft - 15, lblWidth * 2, lblHeight)
+    Call addcomboBox(SystemApplicable, "dc_SystemApplicable1", toTop0, toLeft1, cboWidth, cboHeight)
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("N/A")
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("X")
+    frmSystem.Controls("dc_SystemApplicable1").AddItem ("BLANK")
+    
     
     ' HEATING TYPE
     Call addlabel(lblSystemType, "dc_lblSystemType1", "Heating Type*", toTop, toLeft, lblWidth, lblHeight)
@@ -1072,39 +1181,39 @@ Private Sub cmdLoad_Click()
         Exit Sub
     End If
         
-    ir = lstSelectedSystems.ListIndex
-    strSystem = Worksheets(SheetName).Cells(ir + 2, 5).Value
+    currentrow = lstSelectedSystems.ListIndex
+    strSystem = Worksheets(SheetName).Cells(currentrow + 2, 5).Value
     cboSystem.Text = strSystem
-    strCurrentSystemName = Worksheets(SheetName).Cells(ir + 2, 1).Value
+    strCurrentSystemName = Worksheets(SheetName).Cells(currentrow + 2, 1).Value
     Select Case strSystem
         Case "HEATING"
-            frmSystem.Controls("dc_SystemType1").Value = Worksheets(SheetName).Cells(ir + 2, 7)
-            frmSystem.Controls("dc_FuelSource1").Value = Worksheets(SheetName).Cells(ir + 2, 8)
-            frmSystem.Controls("dc_SystemSize1").Value = Worksheets(SheetName).Cells(ir + 2, 11)
-            frmSystem.Controls("dc_SizeUnit1").Value = Worksheets(SheetName).Cells(ir + 2, 12)
-            frmSystem.Controls("dc_SystemAge1").Value = Worksheets(SheetName).Cells(ir + 2, 13)
-            frmSystem.Controls("dc_EffRating1").Value = Worksheets(SheetName).Cells(ir + 2, 15)
-            frmSystem.Controls("dc_EffRatingType1").Value = Worksheets(SheetName).Cells(ir + 2, 16)
+            frmSystem.Controls("dc_SystemType1").Value = Worksheets(SheetName).Cells(currentrow + 2, 7)
+            frmSystem.Controls("dc_FuelSource1").Value = Worksheets(SheetName).Cells(currentrow + 2, 8)
+            frmSystem.Controls("dc_SystemSize1").Value = Worksheets(SheetName).Cells(currentrow + 2, 11)
+            frmSystem.Controls("dc_SizeUnit1").Value = Worksheets(SheetName).Cells(currentrow + 2, 12)
+            frmSystem.Controls("dc_SystemAge1").Value = Worksheets(SheetName).Cells(currentrow + 2, 13)
+            frmSystem.Controls("dc_EffRating1").Value = Worksheets(SheetName).Cells(currentrow + 2, 15)
+            frmSystem.Controls("dc_EffRatingType1").Value = Worksheets(SheetName).Cells(currentrow + 2, 16)
         Case "COOLING"
-            frmSystem.Controls("dc_SystemType1").Value = Worksheets(SheetName).Cells(ir + 2, 7)
-            frmSystem.Controls("dc_FuelSource1").Value = Worksheets(SheetName).Cells(ir + 2, 8)
-            frmSystem.Controls("dc_SystemSize1").Value = Worksheets(SheetName).Cells(ir + 2, 11)
-            frmSystem.Controls("dc_SizeUnit1").Value = Worksheets(SheetName).Cells(ir + 2, 12)
-            frmSystem.Controls("dc_SystemAge1").Value = Worksheets(SheetName).Cells(ir + 2, 13)
-            frmSystem.Controls("dc_EffRating1").Value = Worksheets(SheetName).Cells(ir + 2, 15)
-            frmSystem.Controls("dc_EffRatingType1").Value = Worksheets(SheetName).Cells(ir + 2, 16)
-            frmSystem.Controls("dc_PercentageCooled1").Value = Worksheets(SheetName).Cells(ir + 2, 17)
-            frmSystem.Controls("dc_FrequencyUse1").Value = Worksheets(SheetName).Cells(ir + 2, 18)
-            frmSystem.Controls("dc_TotalUnits1").Value = Worksheets(SheetName).Cells(ir + 2, 19)
-            frmSystem.Controls("dc_Quantity1").Value = Worksheets(SheetName).Cells(ir + 2, 14)
+            frmSystem.Controls("dc_SystemType1").Value = Worksheets(SheetName).Cells(currentrow + 2, 7)
+            frmSystem.Controls("dc_FuelSource1").Value = Worksheets(SheetName).Cells(currentrow + 2, 8)
+            frmSystem.Controls("dc_SystemSize1").Value = Worksheets(SheetName).Cells(currentrow + 2, 11)
+            frmSystem.Controls("dc_SizeUnit1").Value = Worksheets(SheetName).Cells(currentrow + 2, 12)
+            frmSystem.Controls("dc_SystemAge1").Value = Worksheets(SheetName).Cells(currentrow + 2, 13)
+            frmSystem.Controls("dc_EffRating1").Value = Worksheets(SheetName).Cells(currentrow + 2, 15)
+            frmSystem.Controls("dc_EffRatingType1").Value = Worksheets(SheetName).Cells(currentrow + 2, 16)
+            frmSystem.Controls("dc_PercentageCooled1").Value = Worksheets(SheetName).Cells(currentrow + 2, 17)
+            frmSystem.Controls("dc_FrequencyUse1").Value = Worksheets(SheetName).Cells(currentrow + 2, 18)
+            frmSystem.Controls("dc_TotalUnits1").Value = Worksheets(SheetName).Cells(currentrow + 2, 19)
+            frmSystem.Controls("dc_Quantity1").Value = Worksheets(SheetName).Cells(currentrow + 2, 14)
         Case "HVAC DISTRIBUTION"
-            frmSystem.Controls("dc_SystemType1").Value = Worksheets(SheetName).Cells(ir + 1, 7)
-            frmSystem.Controls("dc_SystemSize1").Value = Worksheets(SheetName).Cells(ir + 1, 11)
-            frmSystem.Controls("dc_InsIndicator1").Value = Worksheets(SheetName).Cells(ir + 1, 20)
-            frmSystem.Controls("dc_InsType1").Value = Worksheets(SheetName).Cells(ir + 1, 21)
-            frmSystem.Controls("dc_SystemLocation1").Value = Worksheets(SheetName).Cells(ir + 1, 23)
-            frmSystem.Controls("dc_SystemLength1").Value = Worksheets(SheetName).Cells(ir + 1, 24)
-            frmSystem.Controls("dc_FlexCondition1").Value = Worksheets(SheetName).Cells(ir + 1, 30)
+            frmSystem.Controls("dc_SystemType1").Value = Worksheets(SheetName).Cells(currentrow + 1, 7)
+            frmSystem.Controls("dc_SystemSize1").Value = Worksheets(SheetName).Cells(currentrow + 1, 11)
+            frmSystem.Controls("dc_InsIndicator1").Value = Worksheets(SheetName).Cells(currentrow + 1, 20)
+            frmSystem.Controls("dc_InsType1").Value = Worksheets(SheetName).Cells(currentrow + 1, 21)
+            frmSystem.Controls("dc_SystemLocation1").Value = Worksheets(SheetName).Cells(currentrow + 1, 23)
+            frmSystem.Controls("dc_SystemLength1").Value = Worksheets(SheetName).Cells(currentrow + 1, 24)
+            frmSystem.Controls("dc_FlexCondition1").Value = Worksheets(SheetName).Cells(currentrow + 1, 30)
         Case "WATER HEATER"
 
         Case "THERMOSTAT"
@@ -1231,8 +1340,8 @@ Private Sub savecoolingsystem()
 End Sub
 
 Private Sub cmdRemove_Click()
-    ir = lstSelectedSystems.ListIndex
-    Select Case Worksheets(SheetName).Cells(ir + 2, 5).Value
+    currentrow = lstSelectedSystems.ListIndex
+    Select Case Worksheets(SheetName).Cells(currentrow + 2, 5).Value
         Case "HEATING"
             iHeating = iHeating - 1
         Case "COOLING"
@@ -1265,8 +1374,8 @@ Private Sub cmdRemove_Click()
             iAppliance = iAppliance - 1
         Case Else
     End Select
-    lstSelectedSystems.RemoveItem (ir)
-    Worksheets(SheetName).Rows(ir + 2).Delete
+    lstSelectedSystems.RemoveItem (currentrow)
+    Worksheets(SheetName).Rows(currentrow + 2).Delete
 
 End Sub
 
@@ -1285,8 +1394,8 @@ Private Sub cmdRename_Click()
         Exit Sub
     End If
         
-    ir = lstSelectedSystems.ListIndex
-    strSystem = Worksheets(SheetName).Cells(ir + 2, 5).Value
+    currentrow = lstSelectedSystems.ListIndex
+    strSystem = Worksheets(SheetName).Cells(currentrow + 2, 5).Value
     
     Dim message, title, defaultValue As String
     Dim myValue As String
@@ -1298,7 +1407,7 @@ Private Sub cmdRename_Click()
     If myValue = "" Then myValue = defaultValue
 
     strCurrentSystemName = strSystem + "-" + myValue
-    Worksheets(SheetName).Cells(ir + 2, 1).Value = strCurrentSystemName
+    Worksheets(SheetName).Cells(currentrow + 2, 1).Value = strCurrentSystemName
     
     lastrow = thisWB.Worksheets(SheetName).Range("E" & Rows.Count).End(xlUp).Row
     lstSelectedSystems.Clear
@@ -1326,7 +1435,8 @@ Private Sub UserForm_Initialize()
     
     vertInterval = 25
     
-    toTop = 60
+    toTop0 = 60 ' not applicable
+    toTop = 85
     toTop1 = toTop + vertInterval
     toTop2 = toTop + 2 * vertInterval
     toTop3 = toTop + 3 * vertInterval

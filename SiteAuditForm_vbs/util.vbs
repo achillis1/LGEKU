@@ -7,7 +7,7 @@ Public currentEnrollment As String
 Public premiseid As String
 Public accountnumber As String
 Public lastrow As Integer
-Public ir As Integer
+Public currentrow As Integer
 
 Sub Main()
     frmMain.Show vbModeless

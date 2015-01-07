@@ -52,8 +52,7 @@ Private Sub lstpopulate()
 
 End Sub
 Private Sub cmdSearch_Click()
-    Dim ir As Integer
-    ir = 9
+    currentrow = 9
     
     If txtEnrollmentID.Text = "" Then
         MsgBox "Please enter an enrollment ID."
@@ -104,15 +103,15 @@ Private Sub lstEnrollments_Click()
             ROSAID = Worksheets(SheetName).Cells(i, NexantEnrollments.Enrollment_ID_ROSA).Value
             HEAPID = Worksheets(SheetName).Cells(i, NexantEnrollments.Enrollment_ID_HEAP).Value
             If (ROSAID = "" And HEAPID = lstEnrollments.Text) Or (ROSAID = lstEnrollments.Text And HEAPID = "") Then
-                ir = i
+                currentrow = i
                 flg = True
             End If
            
         Next i
         
         If flg Then
-            premiseid = Worksheets(SheetName).Cells(ir, Premise_ID).Value
-            accountnumber = Worksheets(SheetName).Cells(ir, Account_Number).Value
+            premiseid = Worksheets(SheetName).Cells(currentrow, Premise_ID).Value
+            accountnumber = Worksheets(SheetName).Cells(currentrow, Account_Number).Value
         
             txtEnrollmentID.Text = currentEnrollment
             txtPremiseID.Text = premiseid
@@ -128,7 +127,7 @@ Private Sub UserForm_Initialize()
     PMSheetName = "PM"
     InboundLastReadCol = 5
     currentEnrollment = ""
-    ir = 0
+    currentrow = 0
     Call lstpopulate
 '
 '    ROSAID = Worksheets(SheetName).Cells(EnrollmentFirstDataLine, NexantEnrollments.Enrollment_ID_ROSA).Value
