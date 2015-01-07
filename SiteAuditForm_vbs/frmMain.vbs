@@ -33,11 +33,9 @@ Private Sub cmdReset_Click()
     Call lstpopulate
 End Sub
 
-Private Sub lstpopulate()
 
-    lastROSA = Worksheets(SheetName).Range("B" & Rows.Count).End(xlUp).Row
-    lastHEAP = Worksheets(SheetName).Range("C" & Rows.Count).End(xlUp).Row
-    lastrow = WorksheetFunction.Max(lastROSA, lastHEAP)
+Private Sub lstpopulate()
+    lastrow = getlastrow()
     For i = EnrollmentFirstDataLine To lastrow
         ROSAID = Worksheets(SheetName).Cells(i, NexantEnrollments.Enrollment_ID_ROSA).Value
         HEAPID = Worksheets(SheetName).Cells(i, NexantEnrollments.Enrollment_ID_HEAP).Value

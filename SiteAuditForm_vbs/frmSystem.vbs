@@ -163,12 +163,6 @@ Private toLeft As Integer
 Private toLeft1 As Integer
 Private toLeft2 As Integer
 Private toLeft3 As Integer
-'Private toLeft4 As Integer
-'Private toLeft5 As Integer
-'Private toLeft6 As Integer
-'Private toLeft7 As Integer
-'Private toLeft8 As Integer
-'Private toLeft9 As Integer
 
 Private vertInterval As Integer
 
@@ -1012,7 +1006,6 @@ Private Sub errorstring(ByVal str1 As String)
     Else
         prompt = str1
     End If
-
 End Sub
 
 Private Function heatingvalidation() As Boolean
@@ -1392,9 +1385,10 @@ Private Sub UserForm_Initialize()
     iApplicance = 0
    
     
-    lastrow = thisWB.Worksheets(SheetName).Range("E" & Rows.Count).End(xlUp).Row
-    If lastrow > 1 Then
-        For i = 2 To lastrow
+    lastrow = getlastrow()
+    
+    If lastrow > EnrollmentFirstDataLine - 1 Then
+        For i = EnrollmentFirstDataLine To lastrow
             lstSelectedSystems.AddItem (Worksheets(SheetName).Cells(i, 1))
             Select Case Worksheets(SheetName).Cells(i, 5)
                 Case "HEATING"
