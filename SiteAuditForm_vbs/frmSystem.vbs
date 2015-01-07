@@ -104,6 +104,40 @@ Private CoolingNightTemperature As Object
 Private lblCoolingNightTemperature1 As Object
 Private lblACCtrlPresent As Object
 Private ACCtrlPresent As Object
+Private lblWindowDoorCondition As Object
+Private WindowDoorCondition As Object
+Private lblSurfaceArea As Object
+Private SurfaceArea As Object
+Private lblWindowUVCoated As Object
+Private WindowUVCoated As Object
+Private lblNumberOfGlazing As Object
+Private NumberOfGlazing As Object
+Private lblTotalWeeklyHours As Object
+Private TotalWeeklyHours As Object
+Private lblBulbWattage As Object
+Private BulbWattage As Object
+Private lblSystemHeight As Object
+Private SystemHeight As Object
+Private lblSystemHeight1 As Object
+Private lblVentIndicator As Object
+Private VentIndicator As Object
+Private lblAccessType As Object
+Private AccessType As Object
+Private lblSystemDepth As Object
+Private SystemDepth As Object
+Private lblSystemDepth1 As Object
+Private lblBasementAC As Object
+Private BasementAC As Object
+Private lblRJInsRecommended As Object
+Private RJInsRecommended As Object
+Private lblPerimeterFootage As Object
+Private PerimeterFootage As Object
+Private lblDefrostType As Object
+Private DefrostType As Object
+Private lblSystemMake As Object
+Private SystemMake As Object
+Private lblSystemMeteredUsage As Object
+Private SystemMeteredUsage As Object
 
 Private strCurrentSystemName As String
 
@@ -183,7 +217,7 @@ End Sub
 
 Private Sub cmdCancel_Click()
     frmSystem.Hide
-    frmMain.Show
+    frmMain.Show vbModeless
 '    Application.Visible = True
 '    ThisWorkbook.Saved = True
     'ThisWorkbook.Close SaveChanges:=True
@@ -467,11 +501,29 @@ Private Sub showwindowoptions()
     Call addtextbox(Quantity, "dc_Quantity1", toTop1, toLeft1, txtWidth, txtHeight)
     
     'WINDOW CONDITION
-    Call addlabel(lblWindowCondition, "dc_lblWindowCondition1", "Door Type*", toTop1, toLeft2, lblWidth, lblHeight)
-    Call addcomboBox(WindowCondition, "dc_WindowCondition1", toTop1, toLeft3, cboWidth * 2, cboHeight)
-    frmSystem.Controls("dc_WindowCondition1").AddItem ("METAL/INSULATED")
-    frmSystem.Controls("dc_WindowCondition1").AddItem ("FIBERGLASS/INSULATED")
-    frmSystem.Controls("dc_WindowCondition1").AddItem ("WOOD")
+    Call addlabel(lblWindowDoorCondition, "dc_lblWindowDoorCondition1", "Window Condition*", toTop1, toLeft2, lblWidth, lblHeight)
+    Call addcomboBox(WindowDoorCondition, "dc_WindowDoorCondition1", toTop1, toLeft3, cboWidth * 2, cboHeight)
+    frmSystem.Controls("dc_WindowDoorCondition1").AddItem ("NO APPARENT DAMAGE")
+    frmSystem.Controls("dc_WindowDoorCondition1").AddItem ("SEALS BROKEN")
+    frmSystem.Controls("dc_WindowDoorCondition1").AddItem ("AIR DRAFTS")
+    
+    'TOTAL WINDOW SURFACE AREA
+    Call addlabel(lblSurfaceArea, "dc_lblSurfaceArea1", "Total Windows Area", toTop2, toLeft - 15, lblWidth, lblHeight)
+    Call addtextbox(SurfaceArea, "dc_SurfaceArea1", toTop2, toLeft1, txtWidth, txtHeight)
+    
+    'IS WINDOW UV COATED
+    Call addlabel(lblWindowUVCoated, "dc_lblWindowUVCoated1", "Window UV coated?", toTop2, toLeft2 - 5, lblWidth, lblHeight)
+    Call addcomboBox(WindowUVCoated, "dc_WindowUVCoated1", toTop2, toLeft3, cboWidth, cboHeight)
+    frmSystem.Controls("dc_WindowUVCoated1").AddItem ("Y")
+    frmSystem.Controls("dc_WindowUVCoated1").AddItem ("N")
+    
+    'NUMBER OF GLAZING
+    Call addlabel(lblNumberOfGlazing, "dc_lblNumberOfGlazing1", "Number of glazings", toTop3, toLeft - 15, lblWidth, lblHeight)
+    Call addcomboBox(NumberOfGlazing, "dc_NumberOfGlazing1", toTop3, toLeft1, cboWidth * 2, cboHeight)
+    frmSystem.Controls("dc_NumberOfGlazing1").AddItem ("1")
+    frmSystem.Controls("dc_NumberOfGlazing1").AddItem ("2")
+    frmSystem.Controls("dc_NumberOfGlazing1").AddItem ("3")
+    
 End Sub
 
 Private Sub showdooroptions()
@@ -483,11 +535,48 @@ Private Sub showdooroptions()
     frmSystem.Controls("dc_SystemType1").AddItem ("WOOD")
     frmSystem.Controls("dc_SystemType1").AddItem ("SLIDER")
     frmSystem.Controls("dc_SystemType1").AddItem ("ATRIUM")
+    
+    'QUANTITY
+    Call addlabel(lblQuantity, "dc_lblQuantity1", "Quantity", toTop1, toLeft, lblWidth, lblHeight)
+    Call addtextbox(Quantity, "dc_Quantity1", toTop1, toLeft1, txtWidth, txtHeight)
+    
+    'WINDOW CONDITION
+    Call addlabel(lblWindowDoorCondition, "dc_lblWindowDoorCondition1", "Door Condition*", toTop1, toLeft2, lblWidth, lblHeight)
+    Call addcomboBox(WindowDoorCondition, "dc_WindowDoorCondition1", toTop1, toLeft3, cboWidth * 2, cboHeight)
+    frmSystem.Controls("dc_WindowDoorCondition1").AddItem ("NO APPARENT DAMAGE")
+    frmSystem.Controls("dc_WindowDoorCondition1").AddItem ("SEALS BROKEN")
+    frmSystem.Controls("dc_WindowDoorCondition1").AddItem ("AIR DRAFTS")
 End Sub
 
 Private Sub showlightingoptions()
     'WINDOW TYPE
     'NOT WINDOW TYPE
+    
+    'QUANTITY
+    Call addlabel(lblQuantity, "dc_lblQuantity1", "Quantity*", toTop, toLeft, lblWidth, lblHeight)
+    Call addtextbox(Quantity, "dc_Quantity1", toTop, toLeft1, txtWidth, txtHeight)
+    
+    'SYSTEM LOCATION
+    Call addlabel(lblSystemLocation, "dc_lblSystemLocation1", "System Location*", toTop1, toLeft, lblWidth, lblHeight)
+    Call addcomboBox(SystemLocation, "dc_SystemLocation1", toTop1, toLeft1, 2 * cboWidth, cboHeight)
+    frmSystem.Controls("dc_SystemLocation1").AddItem ("BASEMENT")
+    frmSystem.Controls("dc_SystemLocation1").AddItem ("BEDROOM")
+    frmSystem.Controls("dc_SystemLocation1").AddItem ("DINING ROOM")
+    frmSystem.Controls("dc_SystemLocation1").AddItem ("EXTERIOR")
+    frmSystem.Controls("dc_SystemLocation1").AddItem ("FAMILY/SITTING ROOM")
+    frmSystem.Controls("dc_SystemLocation1").AddItem ("HALLWAY")
+    frmSystem.Controls("dc_SystemLocation1").AddItem ("KITCHEN")
+    frmSystem.Controls("dc_SystemLocation1").AddItem ("LIVING ROOM")
+    frmSystem.Controls("dc_SystemLocation1").AddItem ("BATHROOM TOILET")
+    
+
+    'TOTAL WEEKLY OPERATING HOURS
+    Call addlabel(lblTotalWeeklyHours, "dc_lblTotalWeeklyHours1", "Total weekly hours", toTop2, toLeft - 5, lblWidth, lblHeight)
+    Call addtextbox(TotalWeeklyHours, "dc_TotalWeeklyHours1", toTop2, toLeft1, txtWidth, txtHeight)
+    
+    'EXISTING BULB WATTAGE
+    Call addlabel(lblBulbWattage, "dc_lblBulbWattage1", "Existing Bulb Watt", toTop2, toLeft - 10, lblWidth, lblHeight)
+    Call addtextbox(BulbWattage, "dc_BulbWattage1", toTop2, toLeft1, txtWidth, txtHeight)
 End Sub
 
 Private Sub showwalloptions()
@@ -501,6 +590,41 @@ Private Sub showwalloptions()
     frmSystem.Controls("dc_SystemType1").AddItem ("STUCCO")
     frmSystem.Controls("dc_SystemType1").AddItem ("VINYL")
     frmSystem.Controls("dc_SystemType1").AddItem ("WOOD")
+    
+    'INSULATION EXIST INDICATOR
+    Call addlabel(lblInsIndicator, "dc_lblInsIndicator1", "Insulation exist indicator*", toTop1, toLeft, lblWidth, lblHeight)
+    Call addcomboBox(InsIndicator, "dc_InsIndicator1", toTop1, toLeft1, cboWidth, cboHeight)
+    frmSystem.Controls("dc_InsIndicator1").AddItem ("Y")
+    frmSystem.Controls("dc_InsIndicator1").AddItem ("N")
+    frmSystem.Controls("dc_InsIndicator1").AddItem ("NOT NEEDED")
+    
+    'INSULATION TYPE
+    Call addlabel(lblInsType, "dc_lblInsType1", "Insulation Type*", toTop1, toLeft2, lblWidth, lblHeight)
+    Call addcomboBox(InsType, "dc_InsType1", toTop1, toLeft3, cboWidth * 2, cboHeight)
+    frmSystem.Controls("dc_InsType1").AddItem ("CELLULOSE")
+    frmSystem.Controls("dc_InsType1").AddItem ("FIBERGLASS BATTS")
+    frmSystem.Controls("dc_InsType1").AddItem ("FIBERGLASS BLOWN")
+    frmSystem.Controls("dc_InsType1").AddItem ("LOOSE FIBERGLASS")
+    frmSystem.Controls("dc_InsType1").AddItem ("MINERAL/ROCK WOOL")
+    frmSystem.Controls("dc_InsType1").AddItem ("UREA FORMALDAHYDE")
+    frmSystem.Controls("dc_InsType1").AddItem (".5 LB FOAM")
+    frmSystem.Controls("dc_InsType1").AddItem ("2 LB FOAM")
+    frmSystem.Controls("dc_InsType1").AddItem ("NONE")
+    frmSystem.Controls("dc_InsType1").AddItem ("OTHER")
+    
+    'TANK R-VALUE
+    Call addlabel(lblTankRValue, "dc_lblTankRValue1", "Wall R-Value", toTop2, toLeft, lblWidth, lblHeight)
+    Call addtextbox(TankRValue, "dc_TankRValue1", toTop2, toLeft1, txtWidth, txtHeight)
+    
+    'LENGTH
+    Call addlabel(lblSystemLength, "dc_lblSystemLength1", "Length", toTop2, toLeft2, lblWidth, lblHeight)
+    Call addtextbox(SystemLength, "dc_SystemLength1", toTop2, toLeft3, txtWidth, txtHeight)
+    Call addlabel(lblSystemLength1, "dc_lblSystemLength2", "ft", toTop2, toLeft3 + txtWidth + 5, lblWidth, lblHeight)
+
+    'HEIGHT
+    Call addlabel(lblSystemHeight, "dc_lblSystemHeight1", "Height", toTop3, toLeft, lblWidth, lblHeight)
+    Call addtextbox(SystemHeight, "dc_SystemHeight1", toTop3, toLeft1, txtWidth, txtHeight)
+    Call addlabel(lblSystemHeight1, "dc_lblSystemHeight2", "ft", toTop3, toLeft1 + txtWidth + 5, lblWidth, lblHeight)
 End Sub
 
 Private Sub showatticoptions()
@@ -514,6 +638,54 @@ Private Sub showatticoptions()
     frmSystem.Controls("dc_SystemType1").AddItem ("KW FLAT UNFLOORED")
     frmSystem.Controls("dc_SystemType1").AddItem ("FLAT ROOF")
     frmSystem.Controls("dc_SystemType1").AddItem ("SLOPED")
+    
+    'TOTAL WINDOW SURFACE AREA
+    Call addlabel(lblSurfaceArea, "dc_lblSurfaceArea1", "Square Footage", toTop1, toLeft, lblWidth, lblHeight)
+    Call addtextbox(SurfaceArea, "dc_SurfaceArea1", toTop1, toLeft1, txtWidth, txtHeight)
+    
+    'INSULATION EXIST INDICATOR
+    Call addlabel(lblInsIndicator, "dc_lblInsIndicator1", "Insulation exist indicator*", toTop1, toLeft2, lblWidth, lblHeight)
+    Call addcomboBox(InsIndicator, "dc_InsIndicator1", toTop1, toLeft3, cboWidth, cboHeight)
+    frmSystem.Controls("dc_InsIndicator1").AddItem ("Y")
+    frmSystem.Controls("dc_InsIndicator1").AddItem ("N")
+    frmSystem.Controls("dc_InsIndicator1").AddItem ("NOT NEEDED")
+    
+    'R-VALUE
+    Call addlabel(lblTankRValue, "dc_lblTankRValue1", "Attic R-Value", toTop2, toLeft, lblWidth, lblHeight)
+    Call addtextbox(TankRValue, "dc_TankRValue1", toTop2, toLeft1, txtWidth, txtHeight)
+    
+    'LENGTH
+    Call addlabel(lblSystemLength, "dc_lblSystemLength1", "Length", toTop2, toLeft2, lblWidth, lblHeight)
+    Call addtextbox(SystemLength, "dc_SystemLength1", toTop2, toLeft3, txtWidth, txtHeight)
+    Call addlabel(lblSystemLength1, "dc_lblSystemLength2", "ft", toTop2, toLeft3 + txtWidth + 5, lblWidth, lblHeight)
+
+    'HEIGHT
+    Call addlabel(lblSystemHeight, "dc_lblSystemHeight1", "Height", toTop3, toLeft, lblWidth, lblHeight)
+    Call addtextbox(SystemHeight, "dc_SystemHeight1", toTop3, toLeft1, txtWidth, txtHeight)
+    Call addlabel(lblSystemHeight1, "dc_lblSystemHeight2", "ft", toTop3, toLeft1 + txtWidth + 5, lblWidth, lblHeight)
+    
+    'VENT REQUIRED
+    Call addlabel(lblVentIndicator, "dc_lblVentIndicator1", "Vent Required*", toTop3, toLeft2, lblWidth, lblHeight)
+    Call addcomboBox(VentIndicator, "dc_VentIndicator1", toTop3, toLeft3, cboWidth, cboHeight)
+    frmSystem.Controls("dc_VentIndicator1").AddItem ("Y")
+    frmSystem.Controls("dc_VentIndicator1").AddItem ("N")
+    
+
+    'ACCESS TYPE
+    Call addlabel(lblAccessType, "dc_lblAccessType1", "Access Type*", toTop4, toLeft, lblWidth, lblHeight)
+    Call addcomboBox(AccessType, "dc_AccessType1", toTop4, toLeft1, cboWidth * 2, cboHeight)
+    frmSystem.Controls("dc_AccessType1").AddItem ("CEILING")
+    frmSystem.Controls("dc_AccessType1").AddItem ("EXTERIOR")
+    frmSystem.Controls("dc_AccessType1").AddItem ("KNEE WALL")
+    frmSystem.Controls("dc_AccessType1").AddItem ("NO ACCESS AVAILABLE")
+    frmSystem.Controls("dc_AccessType1").AddItem ("PULL DOWN STAIRS")
+    frmSystem.Controls("dc_AccessType1").AddItem ("TEMPORARY")
+    frmSystem.Controls("dc_AccessType1").AddItem ("WALK UP STAIRWAY")
+    
+    'DEPTH
+    Call addlabel(lblSystemDepth, "dc_lblSystemDepth1", "Depth", toTop5, toLeft, lblWidth, lblHeight)
+    Call addtextbox(SystemDepth, "dc_SystemDepth1", toTop5, toLeft1, txtWidth, txtHeight)
+    Call addlabel(lblSystemDepth1, "dc_lblSystemDepth2", "ft", toTop5, toLeft1 + txtWidth + 5, lblWidth, lblHeight)
 End Sub
 
 Private Sub showbasementoptions()
@@ -526,6 +698,53 @@ Private Sub showbasementoptions()
     frmSystem.Controls("dc_SystemType1").AddItem ("GARAGE")
     frmSystem.Controls("dc_SystemType1").AddItem ("SLAB")
 
+    'TOTAL AREA
+    Call addlabel(lblSurfaceArea, "dc_lblSurfaceArea1", "Square footage", toTop1, toLeft - 10, lblWidth, lblHeight)
+    Call addtextbox(SurfaceArea, "dc_SurfaceArea1", toTop1, toLeft1, txtWidth, txtHeight)
+    
+
+    'Perimeter Footage
+    Call addlabel(lblPerimeterFootage, "dc_lblPerimeterFootage1", "Perimeter footage", toTop1, toLeft2, lblWidth, lblHeight)
+    Call addtextbox(PerimeterFootage, "dc_PerimeterFootage1", toTop1, toLeft3, txtWidth, txtHeight)
+    
+    'INSULATION EXIST INDICATOR
+    Call addlabel(lblInsIndicator, "dc_lblInsIndicator1", "Insulation exist indicator*", toTop2, toLeft, lblWidth, lblHeight)
+    Call addcomboBox(InsIndicator, "dc_InsIndicator1", toTop2, toLeft1, cboWidth, cboHeight)
+    frmSystem.Controls("dc_InsIndicator1").AddItem ("Y")
+    frmSystem.Controls("dc_InsIndicator1").AddItem ("N")
+    frmSystem.Controls("dc_InsIndicator1").AddItem ("NOT NEEDED")
+    
+    'INSULATION TYPE
+    Call addlabel(lblInsType, "dc_lblInsType1", "Insulation Type*", toTop2, toLeft2, lblWidth, lblHeight)
+    Call addcomboBox(InsType, "dc_InsType1", toTop2, toLeft3, cboWidth * 2, cboHeight)
+    frmSystem.Controls("dc_InsType1").AddItem ("CELLULOSE")
+    frmSystem.Controls("dc_InsType1").AddItem ("FIBERGLASS BATTS")
+    frmSystem.Controls("dc_InsType1").AddItem ("FIBERGLASS BLOWN")
+    frmSystem.Controls("dc_InsType1").AddItem ("LOOSE FIBERGLASS")
+    frmSystem.Controls("dc_InsType1").AddItem ("MINERAL/ROCK WOOL")
+    frmSystem.Controls("dc_InsType1").AddItem ("UREA FORMALDAHYDE")
+    frmSystem.Controls("dc_InsType1").AddItem (".5 LB FOAM")
+    frmSystem.Controls("dc_InsType1").AddItem ("2 LB FOAM")
+    frmSystem.Controls("dc_InsType1").AddItem ("NONE")
+    frmSystem.Controls("dc_InsType1").AddItem ("OTHER")
+    
+    'R-VALUE
+    Call addlabel(lblTankRValue, "dc_lblTankRValue1", "Floor R-Value", toTop3, toLeft, lblWidth, lblHeight)
+    Call addtextbox(TankRValue, "dc_TankRValue1", toTop3, toLeft1, txtWidth, txtHeight)
+    
+
+    'BASEMENT AIR CONDITIONED
+    Call addlabel(lblBasementAC, "dc_lblBasementAC1", "Basement AC", toTop3, toLeft2, lblWidth, lblHeight)
+    Call addcomboBox(BasementAC, "dc_BasementAC1", toTop3, toLeft3, cboWidth, cboHeight)
+    frmSystem.Controls("dc_BasementAC1").AddItem ("Y")
+    frmSystem.Controls("dc_BasementAC1").AddItem ("N")
+    
+    'RIM JOIST INSULATION RECOMMENDED
+    Call addlabel(lblRJInsRecommended, "dc_lblRJInsRecommended1", "Rim joist insulation recommended?", toTop4, toLeft - 15, lblWidth, lblHeight)
+    Call addcomboBox(RJInsRecommended, "dc_RJInsRecommended1", toTop4, toLeft1, cboWidth, cboHeight)
+    frmSystem.Controls("dc_RJInsRecommended1").AddItem ("Y")
+    frmSystem.Controls("dc_RJInsRecommended1").AddItem ("N")
+    
 End Sub
 Private Sub showbwoptions()
     'BASEMENT WALL TYPE
@@ -535,6 +754,31 @@ Private Sub showbwoptions()
     frmSystem.Controls("dc_SystemType1").AddItem ("CONCRETE POUR/FORMED")
     frmSystem.Controls("dc_SystemType1").AddItem ("FRAMED 2x4")
     frmSystem.Controls("dc_SystemType1").AddItem ("FRAMED 2x6")
+    
+    'R-VALUE
+    Call addlabel(lblTankRValue, "dc_lblTankRValue1", "Basement wall R-Value", toTop1, toLeft, lblWidth, lblHeight)
+    Call addtextbox(TankRValue, "dc_TankRValue1", toTop1, toLeft1, txtWidth, txtHeight)
+    
+    'INSULATION EXIST INDICATOR
+    Call addlabel(lblInsIndicator, "dc_lblInsIndicator1", "Insulation exist indicator*", toTop1, toLeft2, lblWidth, lblHeight)
+    Call addcomboBox(InsIndicator, "dc_InsIndicator1", toTop1, toLeft3, cboWidth, cboHeight)
+    frmSystem.Controls("dc_InsIndicator1").AddItem ("Y")
+    frmSystem.Controls("dc_InsIndicator1").AddItem ("N")
+    frmSystem.Controls("dc_InsIndicator1").AddItem ("NOT NEEDED")
+
+    'INSULATION TYPE
+    Call addlabel(lblInsType, "dc_lblInsType1", "Insulation Type*", toTop2, toLeft, lblWidth, lblHeight)
+    Call addcomboBox(InsType, "dc_InsType1", toTop2, toLeft1, cboWidth * 2, cboHeight)
+    frmSystem.Controls("dc_InsType1").AddItem ("CELLULOSE")
+    frmSystem.Controls("dc_InsType1").AddItem ("FIBERGLASS BATTS")
+    frmSystem.Controls("dc_InsType1").AddItem ("FIBERGLASS BLOWN")
+    frmSystem.Controls("dc_InsType1").AddItem ("LOOSE FIBERGLASS")
+    frmSystem.Controls("dc_InsType1").AddItem ("MINERAL/ROCK WOOL")
+    frmSystem.Controls("dc_InsType1").AddItem ("UREA FORMALDAHYDE")
+    frmSystem.Controls("dc_InsType1").AddItem (".5 LB FOAM")
+    frmSystem.Controls("dc_InsType1").AddItem ("2 LB FOAM")
+    frmSystem.Controls("dc_InsType1").AddItem ("NONE")
+    frmSystem.Controls("dc_InsType1").AddItem ("OTHER")
 End Sub
 Private Sub showrefrigeratoroptions()
     'REFRIGERATOR TYPE
@@ -545,6 +789,35 @@ Private Sub showrefrigeratoroptions()
     frmSystem.Controls("dc_SystemType1").AddItem ("FREEZER BOTTOM")
     frmSystem.Controls("dc_SystemType1").AddItem ("SINGLE DOOR")
 
+    'SYSTEM SIZE
+    Call addlabel(lblSystemSize, "dc_lblSystemSize1", "System Size*", toTop1, toLeft, lblWidth, lblHeight)
+    Call addtextbox(SystemSize, "dc_SystemSize1", toTop1, toLeft1, txtWidth, txtHeight)
+    
+    'SYSTEM SIZE UNIT
+    Call addlabel(lblSizeUnit, "dc_lblSizeUnit1", "System Size Unit*", toTop1, toLeft2, lblWidth, lblHeight)
+    Call addcomboBox(SizeUnit, "dc_SizeUnit1", toTop1, toLeft3, cboWidth, cboHeight)
+    frmSystem.Controls("dc_SizeUnit1").AddItem ("GALLONS")
+    
+    'SYSTEM Age
+    Call addlabel(lblSystemAge, "dc_lblSystemAge1", "System Age*", toTop2, toLeft, lblWidth, lblHeight)
+    Call addtextbox(SystemAge, "dc_SystemAge1", toTop2, toLeft1, txtWidth, txtHeight)
+    
+
+    'DEFROST TYPE
+    Call addlabel(lblDefrostType, "dc_lblDefrostType1", "Defrost Type*", toTop2, toLeft2, lblWidth, lblHeight)
+    Call addcomboBox(DefrostType, "dc_DefrostType1", toTop2, toLeft3, cboWidth, cboHeight)
+    frmSystem.Controls("dc_DefrostType1").AddItem ("AUTOMATIC")
+    frmSystem.Controls("dc_DefrostType1").AddItem ("MANUAL")
+
+    'MAKE
+    Call addlabel(lblSystemMake, "dc_lblSystemMake1", "Make (Manufacturer)*", toTop3, toLeft, lblWidth, lblHeight)
+    Call addtextbox(SystemMake, "dc_SystemMake1", toTop3, toLeft1, txtWidth, txtHeight)
+
+
+    'SYSTEM Age
+    Call addlabel(lblSystemMeteredUsage, "dc_lblSystemMeteredUsage1", "Metered Usage*", toTop3, toLeft, lblWidth, lblHeight)
+    Call addtextbox(SystemMeteredUsage, "dc_SystemMeteredUsage1", toTop3, toLeft1, txtWidth, txtHeight)
+
 End Sub
 Private Sub showfreezeroptions()
     'FREEZER TYPE
@@ -553,6 +826,25 @@ Private Sub showfreezeroptions()
     frmSystem.Controls("dc_SystemType1").AddItem ("UPRIGHT")
     frmSystem.Controls("dc_SystemType1").AddItem ("CHEST")
 
+    'SYSTEM SIZE
+    Call addlabel(lblSystemSize, "dc_lblSystemSize1", "System Size*", toTop1, toLeft, lblWidth, lblHeight)
+    Call addtextbox(SystemSize, "dc_SystemSize1", toTop1, toLeft1, txtWidth, txtHeight)
+    
+    'SYSTEM SIZE UNIT
+    Call addlabel(lblSizeUnit, "dc_lblSizeUnit1", "System Size Unit*", toTop1, toLeft2, lblWidth, lblHeight)
+    Call addcomboBox(SizeUnit, "dc_SizeUnit1", toTop1, toLeft3, cboWidth, cboHeight)
+    frmSystem.Controls("dc_SizeUnit1").AddItem ("GALLONS")
+    
+    'SYSTEM Age
+    Call addlabel(lblSystemAge, "dc_lblSystemAge1", "System Age*", toTop2, toLeft, lblWidth, lblHeight)
+    Call addtextbox(SystemAge, "dc_SystemAge1", toTop2, toLeft1, txtWidth, txtHeight)
+    
+
+    'DEFROST TYPE
+    Call addlabel(lblDefrostType, "dc_lblDefrostType1", "Defrost Type*", toTop2, toLeft2, lblWidth, lblHeight)
+    Call addcomboBox(DefrostType, "dc_DefrostType1", toTop2, toLeft3, cboWidth, cboHeight)
+    frmSystem.Controls("dc_DefrostType1").AddItem ("AUTOMATIC")
+    frmSystem.Controls("dc_DefrostType1").AddItem ("MANUAL")
 End Sub
 Private Sub showapplianceoptions()
     'APPLIANCE TYPE
@@ -585,6 +877,10 @@ Private Sub showapplianceoptions()
     frmSystem.Controls("dc_SystemType1").AddItem ("SUMP PUMP")
     frmSystem.Controls("dc_SystemType1").AddItem ("WATERBED")
     frmSystem.Controls("dc_SystemType1").AddItem ("WELL PUMP")
+    
+    'QUANTITY
+    Call addlabel(lblQuantity, "dc_lblQuantity1", "Quantity", toTop1, toLeft, lblWidth, lblHeight)
+    Call addtextbox(Quantity, "dc_Quantity1", toTop1, toLeft1, txtWidth, txtHeight)
 End Sub
             
 Private Sub showcoolingoptions()
@@ -784,38 +1080,38 @@ Private Sub cmdLoad_Click()
     End If
         
     ir = lstSelectedSystems.ListIndex
-    strSystem = Worksheets("Audit").Cells(ir + 2, 5).Value
+    strSystem = Worksheets(SheetName).Cells(ir + 2, 5).Value
     cboSystem.Text = strSystem
-    strCurrentSystemName = Worksheets("Audit").Cells(ir + 2, 1).Value
+    strCurrentSystemName = Worksheets(SheetName).Cells(ir + 2, 1).Value
     Select Case strSystem
         Case "HEATING"
-            frmSystem.Controls("dc_SystemType1").Value = Worksheets("Audit").Cells(ir + 2, 7)
-            frmSystem.Controls("dc_FuelSource1").Value = Worksheets("Audit").Cells(ir + 2, 8)
-            frmSystem.Controls("dc_SystemSize1").Value = Worksheets("Audit").Cells(ir + 2, 11)
-            frmSystem.Controls("dc_SizeUnit1").Value = Worksheets("Audit").Cells(ir + 2, 12)
-            frmSystem.Controls("dc_SystemAge1").Value = Worksheets("Audit").Cells(ir + 2, 13)
-            frmSystem.Controls("dc_EffRating1").Value = Worksheets("Audit").Cells(ir + 2, 15)
-            frmSystem.Controls("dc_EffRatingType1").Value = Worksheets("Audit").Cells(ir + 2, 16)
+            frmSystem.Controls("dc_SystemType1").Value = Worksheets(SheetName).Cells(ir + 2, 7)
+            frmSystem.Controls("dc_FuelSource1").Value = Worksheets(SheetName).Cells(ir + 2, 8)
+            frmSystem.Controls("dc_SystemSize1").Value = Worksheets(SheetName).Cells(ir + 2, 11)
+            frmSystem.Controls("dc_SizeUnit1").Value = Worksheets(SheetName).Cells(ir + 2, 12)
+            frmSystem.Controls("dc_SystemAge1").Value = Worksheets(SheetName).Cells(ir + 2, 13)
+            frmSystem.Controls("dc_EffRating1").Value = Worksheets(SheetName).Cells(ir + 2, 15)
+            frmSystem.Controls("dc_EffRatingType1").Value = Worksheets(SheetName).Cells(ir + 2, 16)
         Case "COOLING"
-            frmSystem.Controls("dc_SystemType1").Value = Worksheets("Audit").Cells(ir + 2, 7)
-            frmSystem.Controls("dc_FuelSource1").Value = Worksheets("Audit").Cells(ir + 2, 8)
-            frmSystem.Controls("dc_SystemSize1").Value = Worksheets("Audit").Cells(ir + 2, 11)
-            frmSystem.Controls("dc_SizeUnit1").Value = Worksheets("Audit").Cells(ir + 2, 12)
-            frmSystem.Controls("dc_SystemAge1").Value = Worksheets("Audit").Cells(ir + 2, 13)
-            frmSystem.Controls("dc_EffRating1").Value = Worksheets("Audit").Cells(ir + 2, 15)
-            frmSystem.Controls("dc_EffRatingType1").Value = Worksheets("Audit").Cells(ir + 2, 16)
-            frmSystem.Controls("dc_PercentageCooled1").Value = Worksheets("Audit").Cells(ir + 2, 17)
-            frmSystem.Controls("dc_FrequencyUse1").Value = Worksheets("Audit").Cells(ir + 2, 18)
-            frmSystem.Controls("dc_TotalUnits1").Value = Worksheets("Audit").Cells(ir + 2, 19)
-            frmSystem.Controls("dc_Quantity1").Value = Worksheets("Audit").Cells(ir + 2, 14)
+            frmSystem.Controls("dc_SystemType1").Value = Worksheets(SheetName).Cells(ir + 2, 7)
+            frmSystem.Controls("dc_FuelSource1").Value = Worksheets(SheetName).Cells(ir + 2, 8)
+            frmSystem.Controls("dc_SystemSize1").Value = Worksheets(SheetName).Cells(ir + 2, 11)
+            frmSystem.Controls("dc_SizeUnit1").Value = Worksheets(SheetName).Cells(ir + 2, 12)
+            frmSystem.Controls("dc_SystemAge1").Value = Worksheets(SheetName).Cells(ir + 2, 13)
+            frmSystem.Controls("dc_EffRating1").Value = Worksheets(SheetName).Cells(ir + 2, 15)
+            frmSystem.Controls("dc_EffRatingType1").Value = Worksheets(SheetName).Cells(ir + 2, 16)
+            frmSystem.Controls("dc_PercentageCooled1").Value = Worksheets(SheetName).Cells(ir + 2, 17)
+            frmSystem.Controls("dc_FrequencyUse1").Value = Worksheets(SheetName).Cells(ir + 2, 18)
+            frmSystem.Controls("dc_TotalUnits1").Value = Worksheets(SheetName).Cells(ir + 2, 19)
+            frmSystem.Controls("dc_Quantity1").Value = Worksheets(SheetName).Cells(ir + 2, 14)
         Case "HVAC DISTRIBUTION"
-            frmSystem.Controls("dc_SystemType1").Value = Worksheets("Audit").Cells(ir + 1, 7)
-            frmSystem.Controls("dc_SystemSize1").Value = Worksheets("Audit").Cells(ir + 1, 11)
-            frmSystem.Controls("dc_InsIndicator1").Value = Worksheets("Audit").Cells(ir + 1, 20)
-            frmSystem.Controls("dc_InsType1").Value = Worksheets("Audit").Cells(ir + 1, 21)
-            frmSystem.Controls("dc_SystemLocation1").Value = Worksheets("Audit").Cells(ir + 1, 23)
-            frmSystem.Controls("dc_SystemLength1").Value = Worksheets("Audit").Cells(ir + 1, 24)
-            frmSystem.Controls("dc_FlexCondition1").Value = Worksheets("Audit").Cells(ir + 1, 30)
+            frmSystem.Controls("dc_SystemType1").Value = Worksheets(SheetName).Cells(ir + 1, 7)
+            frmSystem.Controls("dc_SystemSize1").Value = Worksheets(SheetName).Cells(ir + 1, 11)
+            frmSystem.Controls("dc_InsIndicator1").Value = Worksheets(SheetName).Cells(ir + 1, 20)
+            frmSystem.Controls("dc_InsType1").Value = Worksheets(SheetName).Cells(ir + 1, 21)
+            frmSystem.Controls("dc_SystemLocation1").Value = Worksheets(SheetName).Cells(ir + 1, 23)
+            frmSystem.Controls("dc_SystemLength1").Value = Worksheets(SheetName).Cells(ir + 1, 24)
+            frmSystem.Controls("dc_FlexCondition1").Value = Worksheets(SheetName).Cells(ir + 1, 30)
         Case "WATER HEATER"
 
         Case "THERMOSTAT"
@@ -868,19 +1164,19 @@ End Sub
 Private Sub savehvacdistribution()
     If iHVAC < 6 Then
         iHVAC = iHVAC + 1
-        LastRow = Worksheets("Audit").Range("E" & Rows.Count).End(xlUp).Row
+        'LastRow = Worksheets(SheetName).Range("E" & Rows.Count).End(xlUp).Row
         If strCurrentSystemName = "" Then
             strCurrentSystemName = "HVAC DISTRIBUTION-" + CStr(iHVAC)
         End If
-        Worksheets("Audit").Cells(LastRow + 1, 1) = strCurrentSystemName
-        Worksheets("Audit").Cells(LastRow + 1, 5) = "HVAC DISTRIBUTION"
-        Worksheets("Audit").Cells(LastRow + 1, 7) = frmSystem.Controls("dc_SystemType1").Value
-        Worksheets("Audit").Cells(LastRow + 1, 11) = frmSystem.Controls("dc_SystemSize1").Value
-        Worksheets("Audit").Cells(LastRow + 1, 20) = frmSystem.Controls("dc_InsIndicator1").Value
-        Worksheets("Audit").Cells(LastRow + 1, 21) = frmSystem.Controls("dc_InsType1").Value
-        Worksheets("Audit").Cells(LastRow + 1, 23) = frmSystem.Controls("dc_SystemLocation1").Value
-        Worksheets("Audit").Cells(LastRow + 1, 24) = frmSystem.Controls("dc_SystemLength1").Value
-        Worksheets("Audit").Cells(LastRow + 1, 30) = frmSystem.Controls("dc_FlexCondition1").Value
+        Worksheets(SheetName).Cells(lastrow + 1, 1) = strCurrentSystemName
+        Worksheets(SheetName).Cells(lastrow + 1, 5) = "HVAC DISTRIBUTION"
+        Worksheets(SheetName).Cells(lastrow + 1, 7) = frmSystem.Controls("dc_SystemType1").Value
+        Worksheets(SheetName).Cells(lastrow + 1, 11) = frmSystem.Controls("dc_SystemSize1").Value
+        Worksheets(SheetName).Cells(lastrow + 1, 20) = frmSystem.Controls("dc_InsIndicator1").Value
+        Worksheets(SheetName).Cells(lastrow + 1, 21) = frmSystem.Controls("dc_InsType1").Value
+        Worksheets(SheetName).Cells(lastrow + 1, 23) = frmSystem.Controls("dc_SystemLocation1").Value
+        Worksheets(SheetName).Cells(lastrow + 1, 24) = frmSystem.Controls("dc_SystemLength1").Value
+        Worksheets(SheetName).Cells(lastrow + 1, 30) = frmSystem.Controls("dc_FlexCondition1").Value
         lstSelectedSystems.AddItem (strCurrentSystemName)
         strCurrentSystemName = ""
     Else
@@ -891,19 +1187,19 @@ End Sub
 Private Sub saveheatingsystem()
     If iHeating < 6 Then
         iHeating = iHeating + 1
-        LastRow = Worksheets("Audit").Range("E" & Rows.Count).End(xlUp).Row
+        'LastRow = Worksheets(SheetName).Range("E" & Rows.Count).End(xlUp).Row
         If strCurrentSystemName = "" Then
             strCurrentSystemName = "HEATING-" + CStr(iHeating)
         End If
-        Worksheets("Audit").Cells(LastRow + 1, 1) = strCurrentSystemName
-        Worksheets("Audit").Cells(LastRow + 1, 5) = "HEATING"
-        Worksheets("Audit").Cells(LastRow + 1, 7) = frmSystem.Controls("dc_SystemType1").Value
-        Worksheets("Audit").Cells(LastRow + 1, 8) = frmSystem.Controls("dc_FuelSource1").Value
-        Worksheets("Audit").Cells(LastRow + 1, 11) = frmSystem.Controls("dc_SystemSize1").Value
-        Worksheets("Audit").Cells(LastRow + 1, 12) = frmSystem.Controls("dc_SizeUnit1").Value
-        Worksheets("Audit").Cells(LastRow + 1, 13) = frmSystem.Controls("dc_SystemAge1").Value
-        Worksheets("Audit").Cells(LastRow + 1, 15) = frmSystem.Controls("dc_EffRating1").Value
-        Worksheets("Audit").Cells(LastRow + 1, 16) = frmSystem.Controls("dc_EffRatingType1").Value
+        Worksheets(SheetName).Cells(lastrow + 1, 1) = strCurrentSystemName
+        Worksheets(SheetName).Cells(lastrow + 1, 5) = "HEATING"
+        Worksheets(SheetName).Cells(lastrow + 1, 7) = frmSystem.Controls("dc_SystemType1").Value
+        Worksheets(SheetName).Cells(lastrow + 1, 8) = frmSystem.Controls("dc_FuelSource1").Value
+        Worksheets(SheetName).Cells(lastrow + 1, 11) = frmSystem.Controls("dc_SystemSize1").Value
+        Worksheets(SheetName).Cells(lastrow + 1, 12) = frmSystem.Controls("dc_SizeUnit1").Value
+        Worksheets(SheetName).Cells(lastrow + 1, 13) = frmSystem.Controls("dc_SystemAge1").Value
+        Worksheets(SheetName).Cells(lastrow + 1, 15) = frmSystem.Controls("dc_EffRating1").Value
+        Worksheets(SheetName).Cells(lastrow + 1, 16) = frmSystem.Controls("dc_EffRatingType1").Value
         lstSelectedSystems.AddItem (strCurrentSystemName)
         strCurrentSystemName = ""
     Else
@@ -915,24 +1211,24 @@ End Sub
 Private Sub savecoolingsystem()
     If iCooling < 6 Then
         iCooling = iCooling + 1
-        LastRow = Worksheets("Audit").Range("E" & Rows.Count).End(xlUp).Row
+        lastrow = Worksheets(SheetName).Range("E" & Rows.Count).End(xlUp).Row
         If strCurrentSystemName = "" Then
             strCurrentSystemName = "COOLING-" + CStr(iCooling)
         End If
-        Worksheets("Audit").Cells(LastRow + 1, 1) = strCurrentSystemName
-        Worksheets("Audit").Cells(LastRow + 1, 5) = "COOLING"
-        Worksheets("Audit").Cells(LastRow + 1, 7) = frmSystem.Controls("dc_SystemType1").Value
-        Worksheets("Audit").Cells(LastRow + 1, 8) = frmSystem.Controls("dc_FuelSource1").Value
-        Worksheets("Audit").Cells(LastRow + 1, 11) = frmSystem.Controls("dc_SystemSize1").Value
-        Worksheets("Audit").Cells(LastRow + 1, 12) = frmSystem.Controls("dc_SizeUnit1").Value
-        Worksheets("Audit").Cells(LastRow + 1, 13) = frmSystem.Controls("dc_SystemAge1").Value
-        Worksheets("Audit").Cells(LastRow + 1, 15) = frmSystem.Controls("dc_EffRating1").Value
-        Worksheets("Audit").Cells(LastRow + 1, 16) = frmSystem.Controls("dc_EffRatingType1").Value
+        Worksheets(SheetName).Cells(lastrow + 1, 1) = strCurrentSystemName
+        Worksheets(SheetName).Cells(lastrow + 1, 5) = "COOLING"
+        Worksheets(SheetName).Cells(lastrow + 1, 7) = frmSystem.Controls("dc_SystemType1").Value
+        Worksheets(SheetName).Cells(lastrow + 1, 8) = frmSystem.Controls("dc_FuelSource1").Value
+        Worksheets(SheetName).Cells(lastrow + 1, 11) = frmSystem.Controls("dc_SystemSize1").Value
+        Worksheets(SheetName).Cells(lastrow + 1, 12) = frmSystem.Controls("dc_SizeUnit1").Value
+        Worksheets(SheetName).Cells(lastrow + 1, 13) = frmSystem.Controls("dc_SystemAge1").Value
+        Worksheets(SheetName).Cells(lastrow + 1, 15) = frmSystem.Controls("dc_EffRating1").Value
+        Worksheets(SheetName).Cells(lastrow + 1, 16) = frmSystem.Controls("dc_EffRatingType1").Value
         
-        Worksheets("Audit").Cells(LastRow + 1, 17) = frmSystem.Controls("dc_PercentageCooled1").Value
-        Worksheets("Audit").Cells(LastRow + 1, 18) = frmSystem.Controls("dc_FrequencyUse1").Value
-        Worksheets("Audit").Cells(LastRow + 1, 19) = frmSystem.Controls("dc_TotalUnits1").Value
-        Worksheets("Audit").Cells(LastRow + 1, 14) = frmSystem.Controls("dc_Quantity1").Value
+        Worksheets(SheetName).Cells(lastrow + 1, 17) = frmSystem.Controls("dc_PercentageCooled1").Value
+        Worksheets(SheetName).Cells(lastrow + 1, 18) = frmSystem.Controls("dc_FrequencyUse1").Value
+        Worksheets(SheetName).Cells(lastrow + 1, 19) = frmSystem.Controls("dc_TotalUnits1").Value
+        Worksheets(SheetName).Cells(lastrow + 1, 14) = frmSystem.Controls("dc_Quantity1").Value
         lstSelectedSystems.AddItem (strCurrentSystemName)
         strCurrentSystemName = ""
     Else
@@ -943,7 +1239,7 @@ End Sub
 
 Private Sub cmdRemove_Click()
     ir = lstSelectedSystems.ListIndex
-    Select Case Worksheets("Audit").Cells(ir + 2, 5).Value
+    Select Case Worksheets(SheetName).Cells(ir + 2, 5).Value
         Case "HEATING"
             iHeating = iHeating - 1
         Case "COOLING"
@@ -977,15 +1273,15 @@ Private Sub cmdRemove_Click()
         Case Else
     End Select
     lstSelectedSystems.RemoveItem (ir)
-    Worksheets("Audit").Rows(ir + 2).Delete
+    Worksheets(SheetName).Rows(ir + 2).Delete
 
 End Sub
 
 Private Sub cmdRemoveAll_Click()
-    LastRow = Worksheets("Audit").Range("E" & Rows.Count).End(xlUp).Row
+    lastrow = Worksheets(SheetName).Range("E" & Rows.Count).End(xlUp).Row
     cboSystem.Text = ""
     strCurrentSystemName = ""
-    Worksheets("Audit").Range("A2:AZ" & LastRow).Clear
+    Worksheets(SheetName).Range("A2:AZ" & lastrow).Clear
     lstSelectedSystems.Clear
 End Sub
 
@@ -997,7 +1293,7 @@ Private Sub cmdRename_Click()
     End If
         
     ir = lstSelectedSystems.ListIndex
-    strSystem = Worksheets("Audit").Cells(ir + 2, 5).Value
+    strSystem = Worksheets(SheetName).Cells(ir + 2, 5).Value
     
     Dim message, title, defaultValue As String
     Dim myValue As String
@@ -1009,13 +1305,13 @@ Private Sub cmdRename_Click()
     If myValue = "" Then myValue = defaultValue
 
     strCurrentSystemName = strSystem + "-" + myValue
-    Worksheets("Audit").Cells(ir + 2, 1).Value = strCurrentSystemName
+    Worksheets(SheetName).Cells(ir + 2, 1).Value = strCurrentSystemName
     
-    LastRow = thisWB.Worksheets("Audit").Range("E" & Rows.Count).End(xlUp).Row
+    lastrow = thisWB.Worksheets(SheetName).Range("E" & Rows.Count).End(xlUp).Row
     lstSelectedSystems.Clear
-    If LastRow > 1 Then
-        For i = 2 To LastRow
-            lstSelectedSystems.AddItem (Worksheets("Audit").Cells(i, 1))
+    If lastrow > 1 Then
+        For i = 2 To lastrow
+            lstSelectedSystems.AddItem (Worksheets(SheetName).Cells(i, 1))
         Next i
     End If
 End Sub
@@ -1050,8 +1346,8 @@ Private Sub UserForm_Initialize()
     
     toLeft = 20
     toLeft1 = 85
-    toLeft2 = 150
-    toLeft3 = 220
+    toLeft2 = 180
+    toLeft3 = 250
     
     cboHeight = 15
     cboWidth = 70
@@ -1096,11 +1392,11 @@ Private Sub UserForm_Initialize()
     iApplicance = 0
    
     
-    LastRow = thisWB.Worksheets("Audit").Range("E" & Rows.Count).End(xlUp).Row
-    If LastRow > 1 Then
-        For i = 2 To LastRow
-            lstSelectedSystems.AddItem (Worksheets("Audit").Cells(i, 1))
-            Select Case Worksheets("Audit").Cells(i, 5)
+    lastrow = thisWB.Worksheets(SheetName).Range("E" & Rows.Count).End(xlUp).Row
+    If lastrow > 1 Then
+        For i = 2 To lastrow
+            lstSelectedSystems.AddItem (Worksheets(SheetName).Cells(i, 1))
+            Select Case Worksheets(SheetName).Cells(i, 5)
                 Case "HEATING"
                     iHeating = iHeating + 1
                 Case "COOLING"

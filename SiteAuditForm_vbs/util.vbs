@@ -1,14 +1,17 @@
 Attribute VB_Name = "util"
 Public EnrollmentFirstDataLine As Integer
-Public ImportSheetName As String
+Public SheetName As String
 Public PMSheetName As String
 Public InboundLastReadCol As Integer
 Public currentEnrollment As String
 Public premiseid As String
 Public accountnumber As String
+Public lastrow As Integer
+Public ir As Integer
+
 
 Sub Main()
-    frmMain.Show
+    frmMain.Show vbModeless
 End Sub
 
 'todo list
