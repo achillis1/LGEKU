@@ -27,7 +27,7 @@ Private iBasement As Integer
 Private iBW As Integer
 Private iRefrigerator As Integer
 Private iFreezer As Integer
-Private iApplicance As Integer
+Private iAppliance As Integer
 
 Private thisWB As Workbook
 Private prompt As String
@@ -84,6 +84,8 @@ Private AverageHeatingTemperature As Object
 Private lblAverageHeatingTemperature2 As Object
 Private lblDaytimeSetback As Object
 Private DaytimeSetback As Object
+Private lblEveningSetback As Object
+Private EveningSetback As Object
 Private lblNightSetback As Object
 Private NightSetback As Object
 Private lblHeatingDayTemperature As Object
@@ -169,13 +171,80 @@ Private toLeft3 As Integer
 
 Private vertInterval As Integer
 
+Private applianceStartCol As Integer
+Private applianceNum As Integer
+Private applianceLimit As Integer
+
+Private atticStartCol As Integer
+Private atticNum As Integer
+Private atticLimit As Integer
+
+Private basementStartCol As Integer
+Private basementNum As Integer
+Private basementLimit As Integer
+
+Private basementwallStartCol As Integer
+Private basementwallNum As Integer
+Private basementwallLimit As Integer
+
+Private coolingStartCol As Integer
+Private coolingNum As Integer
+Private coolingLimit As Integer
+
+Private doorStartCol As Integer
+Private doorNum As Integer
+Private doorLimit As Integer
+
+Private freezerStartCol As Integer
+Private freezerNum As Integer
+Private freezerLimit As Integer
+
+Private heatingStartCol As Integer
+Private heatingNum As Integer
+Private heatingLimit As Integer
+
+Private hvacdistStartCol As Integer
+Private hvacdistNum As Integer
+Private hvacdistLimit As Integer
+
+Private lightingStartCol As Integer
+Private lightingNum As Integer
+Private lightingLimit As Integer
+
+Private refrigStartCol As Integer
+Private refrigNum As Integer
+Private refrigLimit As Integer
+
+Private thermostatStartCol As Integer
+Private thermostatNum As Integer
+Private thermostatLimit As Integer
+
+Private wallStartCol As Integer
+Private wallNum As Integer
+Private wallLimit As Integer
+
+Private waterheaterStartCol As Integer
+Private waterheaterNum As Integer
+Private waterheaterLimit As Integer
+
+Private sysnum As Variant
+Private syslimit As Variant
+
 Private Sub cboSystem_Change()
     'remove all dynamic controls on selection change
+'    For i = 0 To lstSelectedSystems.ListCount - 1
+'    If lstSelectedSystems.Selected(x) = True Then
+'    lstSelectedSystems.Selected(x) = False
+'    End If
+'    Next
+    
     For Each ctrl In frmSystem.Controls
         If left(ctrl.Name, 3) = "dc_" Then
             frmSystem.Controls.Remove (ctrl.Name)
         End If
     Next
+    
+    a = lstSelectedSystems.ListIndex
     
     Select Case cboSystem.Text
         Case "HEATING"
@@ -209,6 +278,9 @@ Private Sub cboSystem_Change()
         Case "APPLIANCE"
             Call showapplianceoptions
     End Select
+    'Call updatelistbox
+    'auditlastrow = Worksheets(AuditSheetName).Range("E" & Rows.Count).End(xlUp).Row
+    'auditcurrentrow = auditlastrow + 1
     cmdOK.Enabled = True
 End Sub
 
@@ -458,26 +530,32 @@ Private Sub showthermostatoptions()
     frmSystem.Controls("dc_DaytimeSetback1").AddItem ("Y")
     frmSystem.Controls("dc_DaytimeSetback1").AddItem ("N")
     
+    'EVENING SETBACK
+    Call addlabel(lblEveningSetback, "dc_lblEveningSetback1", "Evening set back?", toTop2, toLeft2, lblWidth, lblHeight)
+    Call addcomboBox(EveningSetback, "dc_EveningSetback1", toTop2, toLeft3, cboWidth, cboHeight)
+    frmSystem.Controls("dc_EveningSetback1").AddItem ("Y")
+    frmSystem.Controls("dc_EveningSetback1").AddItem ("N")
+    
     'NIGHTTIME SETBACK
-    Call addlabel(lblNightSetback, "dc_lblNightSetback1", "Night set back?", toTop2, toLeft2 + 10, lblWidth, lblHeight)
-    Call addcomboBox(NightSetback, "dc_NightSetback1", toTop2, toLeft3, cboWidth, cboHeight)
+    Call addlabel(lblNightSetback, "dc_lblNightSetback1", "Night set back?", toTop3, toLeft, lblWidth, lblHeight)
+    Call addcomboBox(NightSetback, "dc_NightSetback1", toTop3, toLeft1, cboWidth, cboHeight)
     frmSystem.Controls("dc_NightSetback1").AddItem ("Y")
     frmSystem.Controls("dc_NightSetback1").AddItem ("N")
     
     'HEATING DAY TEMP SETTING
-    Call addlabel(lblHeatingDayTemperature, "dc_lblHeatingDayTemperature1", "Heating Day Temp.", toTop3, toLeft - 13, lblWidth, lblHeight)
-    Call addtextbox(HeatingDayTemperature, "dc_HeatingDayTemperature1", toTop3, toLeft1, txtWidth, txtHeight)
-    Call addlabel(lblHeatingDayTemperature1, "dc_lblHeatingDayTemperature2", "F", toTop3, toLeft1 + txtWidth + 5, lblWidth, lblHeight)
+    Call addlabel(lblHeatingDayTemperature, "dc_lblHeatingDayTemperature1", "Heating Day Temp.", toTop3, toLeft2, lblWidth, lblHeight)
+    Call addtextbox(HeatingDayTemperature, "dc_HeatingDayTemperature1", toTop3, toLeft3, txtWidth, txtHeight)
+    Call addlabel(lblHeatingDayTemperature1, "dc_lblHeatingDayTemperature2", "F", toTop3, toLeft3 + txtWidth + 5, lblWidth, lblHeight)
     
     'HEATING EVENING TEMP SETTING
-    Call addlabel(lblHeatingEveningTemperature, "dc_lblHeatingEveningTemperature1", "Heating Evening Temp.", toTop3, toLeft2 + 10, lblWidth, lblHeight)
-    Call addtextbox(HeatingEveningTemperature, "dc_HeatingEveningTemperature1", toTop3, toLeft3, txtWidth, txtHeight)
-    Call addlabel(lblHeatingEveningTemperature1, "dc_lblHeatingEveningTemperature2", "F", toTop3, toLeft3 + txtWidth + 5, lblWidth, lblHeight)
+    Call addlabel(lblHeatingEveningTemperature, "dc_lblHeatingEveningTemperature1", "Heating Evening Temp.", toTop4, toLeft, lblWidth, lblHeight)
+    Call addtextbox(HeatingEveningTemperature, "dc_HeatingEveningTemperature1", toTop4, toLeft1, txtWidth, txtHeight)
+    Call addlabel(lblHeatingEveningTemperature1, "dc_lblHeatingEveningTemperature2", "F", toTop4, toLeft1 + txtWidth + 5, lblWidth, lblHeight)
     
     'HEATING NIGHT TEMP SETTING
-    Call addlabel(lblHeatingNightTemperature, "dc_lblHeatingNightTemperature1", "Heating Night Temp.", toTop4, toLeft - 15, lblWidth, lblHeight)
-    Call addtextbox(HeatingNightTemperature, "dc_HeatingNightTemperature1", toTop4, toLeft1, txtWidth, txtHeight)
-    Call addlabel(lblHeatingNightTemperature1, "dc_lblHeatingNightTemperature2", "F", toTop4, toLeft1 + txtWidth + 5, lblWidth, lblHeight)
+    Call addlabel(lblHeatingNightTemperature, "dc_lblHeatingNightTemperature1", "Heating Night Temp.", toTop4, toLeft2, lblWidth, lblHeight)
+    Call addtextbox(HeatingNightTemperature, "dc_HeatingNightTemperature1", toTop4, toLeft3, txtWidth, txtHeight)
+    Call addlabel(lblHeatingNightTemperature1, "dc_lblHeatingNightTemperature2", "F", toTop4, toLeft3 + txtWidth + 5, lblWidth, lblHeight)
     
     'COOLING DAY TEMP SETTING
     Call addlabel(lblCoolingDayTemperature, "dc_lblCoolingDayTemperature1", "Cooling Day Temp.", toTop5, toLeft - 13, lblWidth, lblHeight)
@@ -704,23 +782,37 @@ Private Sub showatticoptions()
     frmSystem.Controls("dc_InsIndicator1").AddItem ("N")
     frmSystem.Controls("dc_InsIndicator1").AddItem ("NOT NEEDED")
     
+    'INSULATION TYPE
+    Call addlabel(lblInsType, "dc_lblInsType1", "Insulation Type*", toTop2, toLeft, lblWidth, lblHeight)
+    Call addcomboBox(InsType, "dc_InsType1", toTop2, toLeft1, cboWidth * 2, cboHeight)
+    frmSystem.Controls("dc_InsType1").AddItem ("CELLULOSE")
+    frmSystem.Controls("dc_InsType1").AddItem ("FIBERGLASS BATTS")
+    frmSystem.Controls("dc_InsType1").AddItem ("FIBERGLASS BLOWN")
+    frmSystem.Controls("dc_InsType1").AddItem ("LOOSE FIBERGLASS")
+    frmSystem.Controls("dc_InsType1").AddItem ("MINERAL/ROCK WOOL")
+    frmSystem.Controls("dc_InsType1").AddItem ("UREA FORMALDAHYDE")
+    frmSystem.Controls("dc_InsType1").AddItem (".5 LB FOAM")
+    frmSystem.Controls("dc_InsType1").AddItem ("2 LB FOAM")
+    frmSystem.Controls("dc_InsType1").AddItem ("NONE")
+    frmSystem.Controls("dc_InsType1").AddItem ("OTHER")
+    
     'R-VALUE
-    Call addlabel(lblTankRValue, "dc_lblTankRValue1", "Attic R-Value", toTop2, toLeft, lblWidth, lblHeight)
-    Call addtextbox(TankRValue, "dc_TankRValue1", toTop2, toLeft1, txtWidth, txtHeight)
+    Call addlabel(lblTankRValue, "dc_lblTankRValue1", "Attic R-Value", toTop2, toLeft2, lblWidth, lblHeight)
+    Call addtextbox(TankRValue, "dc_TankRValue1", toTop2, toLeft3, txtWidth, txtHeight)
     
     'LENGTH
-    Call addlabel(lblSystemLength, "dc_lblSystemLength1", "Length", toTop2, toLeft2, lblWidth, lblHeight)
-    Call addtextbox(SystemLength, "dc_SystemLength1", toTop2, toLeft3, txtWidth, txtHeight)
+    Call addlabel(lblSystemLength, "dc_lblSystemLength1", "Length", toTop3, toLeft, lblWidth, lblHeight)
+    Call addtextbox(SystemLength, "dc_SystemLength1", toTop3, toLeft1, txtWidth, txtHeight)
     Call addlabel(lblSystemLength1, "dc_lblSystemLength2", "ft", toTop2, toLeft3 + txtWidth + 5, lblWidth, lblHeight)
 
     'HEIGHT
-    Call addlabel(lblSystemHeight, "dc_lblSystemHeight1", "Height", toTop3, toLeft, lblWidth, lblHeight)
-    Call addtextbox(SystemHeight, "dc_SystemHeight1", toTop3, toLeft1, txtWidth, txtHeight)
-    Call addlabel(lblSystemHeight1, "dc_lblSystemHeight2", "ft", toTop3, toLeft1 + txtWidth + 5, lblWidth, lblHeight)
+    Call addlabel(lblSystemHeight, "dc_lblSystemHeight1", "Height", toTop3, toLeft2, lblWidth, lblHeight)
+    Call addtextbox(SystemHeight, "dc_SystemHeight1", toTop3, toLeft3, txtWidth, txtHeight)
+    Call addlabel(lblSystemHeight1, "dc_lblSystemHeight2", "ft", toTop3, toLeft3 + txtWidth + 5, lblWidth, lblHeight)
     
     'VENT REQUIRED
-    Call addlabel(lblVentIndicator, "dc_lblVentIndicator1", "Vent Required*", toTop3, toLeft2, lblWidth, lblHeight)
-    Call addcomboBox(VentIndicator, "dc_VentIndicator1", toTop3, toLeft3, cboWidth, cboHeight)
+    Call addlabel(lblVentIndicator, "dc_lblVentIndicator1", "Vent Required*", toTop4, toLeft, lblWidth, lblHeight)
+    Call addcomboBox(VentIndicator, "dc_VentIndicator1", toTop4, toLeft1, cboWidth, cboHeight)
     frmSystem.Controls("dc_VentIndicator1").AddItem ("Y")
     frmSystem.Controls("dc_VentIndicator1").AddItem ("N")
     
@@ -1177,66 +1269,165 @@ End Function
 Private Sub cmdLoad_Click()
     Dim strSystem As String
     If lstSelectedSystems.ListIndex = -1 Then
-        iReply = MsgBox("Please select the system to load", vbOKOnly, "Select a system!")
+        iReply = MsgBox("Please select the system to load", vbOKOnly, "Please select a system in the system list!")
         Exit Sub
     End If
         
-    currentrow = lstSelectedSystems.ListIndex
-    strSystem = Worksheets(SheetName).Cells(currentrow + 2, 5).Value
+    auditlastrow = Worksheets(AuditSheetName).Range("E" & Rows.Count).End(xlUp).Row
+    auditcurrentrow = lstSelectedSystems.ListIndex + 2
+    strSystem = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Name).Value
     cboSystem.Text = strSystem
-    strCurrentSystemName = Worksheets(SheetName).Cells(currentrow + 2, 1).Value
+    strCurrentSystemName = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Record_Type).Value
     Select Case strSystem
         Case "HEATING"
-            frmSystem.Controls("dc_SystemType1").Value = Worksheets(SheetName).Cells(currentrow + 2, 7)
-            frmSystem.Controls("dc_FuelSource1").Value = Worksheets(SheetName).Cells(currentrow + 2, 8)
-            frmSystem.Controls("dc_SystemSize1").Value = Worksheets(SheetName).Cells(currentrow + 2, 11)
-            frmSystem.Controls("dc_SizeUnit1").Value = Worksheets(SheetName).Cells(currentrow + 2, 12)
-            frmSystem.Controls("dc_SystemAge1").Value = Worksheets(SheetName).Cells(currentrow + 2, 13)
-            frmSystem.Controls("dc_EffRating1").Value = Worksheets(SheetName).Cells(currentrow + 2, 15)
-            frmSystem.Controls("dc_EffRatingType1").Value = Worksheets(SheetName).Cells(currentrow + 2, 16)
+            frmSystem.Controls("dc_SystemApplicable1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable)
+            frmSystem.Controls("dc_SystemType1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Type)
+            frmSystem.Controls("dc_FuelSource1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Fuel_Source)
+            frmSystem.Controls("dc_SystemSize1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Size)
+            frmSystem.Controls("dc_SizeUnit1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Size_Unit_of_Measure)
+            frmSystem.Controls("dc_SystemAge1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Age)
+            frmSystem.Controls("dc_EffRating1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Efficiency_Rating)
+            frmSystem.Controls("dc_EffRatingType1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Efficiency_Rating_Type)
         Case "COOLING"
-            frmSystem.Controls("dc_SystemType1").Value = Worksheets(SheetName).Cells(currentrow + 2, 7)
-            frmSystem.Controls("dc_FuelSource1").Value = Worksheets(SheetName).Cells(currentrow + 2, 8)
-            frmSystem.Controls("dc_SystemSize1").Value = Worksheets(SheetName).Cells(currentrow + 2, 11)
-            frmSystem.Controls("dc_SizeUnit1").Value = Worksheets(SheetName).Cells(currentrow + 2, 12)
-            frmSystem.Controls("dc_SystemAge1").Value = Worksheets(SheetName).Cells(currentrow + 2, 13)
-            frmSystem.Controls("dc_EffRating1").Value = Worksheets(SheetName).Cells(currentrow + 2, 15)
-            frmSystem.Controls("dc_EffRatingType1").Value = Worksheets(SheetName).Cells(currentrow + 2, 16)
-            frmSystem.Controls("dc_PercentageCooled1").Value = Worksheets(SheetName).Cells(currentrow + 2, 17)
-            frmSystem.Controls("dc_FrequencyUse1").Value = Worksheets(SheetName).Cells(currentrow + 2, 18)
-            frmSystem.Controls("dc_TotalUnits1").Value = Worksheets(SheetName).Cells(currentrow + 2, 19)
-            frmSystem.Controls("dc_Quantity1").Value = Worksheets(SheetName).Cells(currentrow + 2, 14)
+            frmSystem.Controls("dc_SystemApplicable1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable)
+            frmSystem.Controls("dc_SystemType1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Type)
+            frmSystem.Controls("dc_FuelSource1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Fuel_Source)
+            frmSystem.Controls("dc_SystemSize1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Size)
+            frmSystem.Controls("dc_SizeUnit1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Size_Unit_of_Measure)
+            frmSystem.Controls("dc_SystemAge1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Age)
+            frmSystem.Controls("dc_EffRating1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Efficiency_Rating)
+            frmSystem.Controls("dc_EffRatingType1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Efficiency_Rating_Type)
+            frmSystem.Controls("dc_PercentageCooled1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Percent_of_space_heated_or_cooled)
+            frmSystem.Controls("dc_FrequencyUse1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Frequency_of_system_use)
+            frmSystem.Controls("dc_TotalUnits1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Total_units_used)
+            frmSystem.Controls("dc_Quantity1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Quantity)
         Case "HVAC DISTRIBUTION"
-            frmSystem.Controls("dc_SystemType1").Value = Worksheets(SheetName).Cells(currentrow + 1, 7)
-            frmSystem.Controls("dc_SystemSize1").Value = Worksheets(SheetName).Cells(currentrow + 1, 11)
-            frmSystem.Controls("dc_InsIndicator1").Value = Worksheets(SheetName).Cells(currentrow + 1, 20)
-            frmSystem.Controls("dc_InsType1").Value = Worksheets(SheetName).Cells(currentrow + 1, 21)
-            frmSystem.Controls("dc_SystemLocation1").Value = Worksheets(SheetName).Cells(currentrow + 1, 23)
-            frmSystem.Controls("dc_SystemLength1").Value = Worksheets(SheetName).Cells(currentrow + 1, 24)
-            frmSystem.Controls("dc_FlexCondition1").Value = Worksheets(SheetName).Cells(currentrow + 1, 30)
+            frmSystem.Controls("dc_SystemApplicable1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable)
+            frmSystem.Controls("dc_SystemType1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Type)
+            frmSystem.Controls("dc_SystemSize1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Size)
+            frmSystem.Controls("dc_InsIndicator1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Insulation_exist_indicator)
+            frmSystem.Controls("dc_InsType1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Insulation_Type)
+            frmSystem.Controls("dc_SystemLocation1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Location)
+            frmSystem.Controls("dc_SystemLength1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Length)
+            frmSystem.Controls("dc_FlexCondition1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Condition_of_flex_duct)
         Case "WATER HEATER"
+            frmSystem.Controls("dc_SystemApplicable1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable)
+            frmSystem.Controls("dc_SystemType1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Type)
+            frmSystem.Controls("dc_FuelSource1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Fuel_Source)
+            frmSystem.Controls("dc_SystemSize1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Size)
+            frmSystem.Controls("dc_SizeUnit1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Size_Unit_of_Measure)
+            frmSystem.Controls("dc_SystemAge1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Age)
+            frmSystem.Controls("dc_InsIndicator1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Insulation_exist_indicator)
+            frmSystem.Controls("dc_InsType1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Insulation_Type)
+            frmSystem.Controls("dc_TankRValue1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.R_Value)
+            frmSystem.Controls("dc_PercentageLoad1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Percent_of_Load)
+            frmSystem.Controls("dc_TemperatureSetting1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Current_temperature_setting)
+            frmSystem.Controls("dc_EnergyFactor1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Energy_Factor)
 
         Case "THERMOSTAT"
+            frmSystem.Controls("dc_SystemApplicable1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable)
+            frmSystem.Controls("dc_SystemType1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Type)
+            frmSystem.Controls("dc_PercentageLoad1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Percent_of_Load)
+            frmSystem.Controls("dc_AverageCoolingTemperature1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Average_cooling_temperature)
+            frmSystem.Controls("dc_AverageHeatingTemperature1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Average_heating_temperature)
+            frmSystem.Controls("dc_DaytimeSetback1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Day_setback_indicator)
+            frmSystem.Controls("dc_EveningSetback1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Evening_setback_indicator)
+            frmSystem.Controls("dc_NightSetback1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Night_setback_indicator)
+            frmSystem.Controls("dc_HeatingDayTemperature1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Heating_day_temperature_setting)
+            frmSystem.Controls("dc_HeatingEveningTemperature1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Heating_evening_temperature_setting)
+            frmSystem.Controls("dc_HeatingNightTemperature1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Heating_night_temperature_setting)
+            frmSystem.Controls("dc_CoolingDayTemperature1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Cooling_day_temperature_setting)
+            frmSystem.Controls("dc_CoolingEveningTemperature1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Cooling_evening_temperature_setting)
+            frmSystem.Controls("dc_CoolingNightTemperature1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Cooling_night_temperature_setting)
+            frmSystem.Controls("dc_ACCtrlPresent1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.AC_load_control_present_indicator)
 
         Case "WINDOW"
+            frmSystem.Controls("dc_SystemApplicable1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable)
+            frmSystem.Controls("dc_SystemType1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Type)
+            frmSystem.Controls("dc_Quantity1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Quantity)
+            frmSystem.Controls("dc_WindowDoorCondition1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Condition_of_window_or_door)
+            frmSystem.Controls("dc_SurfaceArea1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Square_Footage)
+            frmSystem.Controls("dc_WindowUVCoated1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Window_UV_coated_indicator)
+            frmSystem.Controls("dc_NumberOfGlazing1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Number_of_window_glazings)
 
         Case "DOOR"
+            frmSystem.Controls("dc_SystemApplicable1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable)
+            frmSystem.Controls("dc_SystemType1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Type)
+            frmSystem.Controls("dc_Quantity1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Quantity)
+            frmSystem.Controls("dc_WindowDoorCondition1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Condition_of_window_or_door)
 
         Case "LIGHTING"
+            frmSystem.Controls("dc_SystemApplicable1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable)
+            frmSystem.Controls("dc_SystemType1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Type)
+            frmSystem.Controls("dc_Quantity1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Quantity)
+            frmSystem.Controls("dc_SystemLocation1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Location)
+            frmSystem.Controls("dc_TotalWeeklyHours1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Weekly_operating_hours)
+            frmSystem.Controls("dc_BulbWattage1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Existing_bulb_wattage)
 
         Case "WALL"
+            frmSystem.Controls("dc_SystemApplicable1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable)
+            frmSystem.Controls("dc_SystemType1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Type)
+            frmSystem.Controls("dc_InsIndicator1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Insulation_exist_indicator)
+            frmSystem.Controls("dc_InsType1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Insulation_Type)
+            frmSystem.Controls("dc_TankRValue1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.R_Value)
+            frmSystem.Controls("dc_SystemLength1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Length)
+            frmSystem.Controls("dc_SystemHeight1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.height)
 
         Case "ATTIC"
+            frmSystem.Controls("dc_SystemApplicable1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable)
+            frmSystem.Controls("dc_SystemType1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Type)
+            frmSystem.Controls("dc_SurfaceArea1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Total_window_surface_area)
+            frmSystem.Controls("dc_InsIndicator1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Insulation_exist_indicator)
+            frmSystem.Controls("dc_InsType1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Insulation_Type)
+            frmSystem.Controls("dc_TankRValue1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.R_Value)
+            frmSystem.Controls("dc_SystemLength1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Length)
+            frmSystem.Controls("dc_SystemHeight1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.height)
+            frmSystem.Controls("dc_VentIndicator1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Vent_required_indicator)
+            frmSystem.Controls("dc_AccessType1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Access_Type)
+            frmSystem.Controls("dc_SystemDepth1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Depth)
 
         Case "BASEMENT"
+            frmSystem.Controls("dc_SystemApplicable1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable)
+            frmSystem.Controls("dc_SystemType1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Type)
+            frmSystem.Controls("dc_SurfaceArea1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Square_Footage)
+            frmSystem.Controls("dc_PerimeterFootage1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Perimeter_Footage)
+            frmSystem.Controls("dc_InsIndicator1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Insulation_exist_indicator)
+            frmSystem.Controls("dc_InsType1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Insulation_Type)
+            frmSystem.Controls("dc_TankRValue1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.R_Value)
+            frmSystem.Controls("dc_BasementAC1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Basement_air_conditioned_indicator)
+            frmSystem.Controls("dc_RJInsRecommended1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Rim_joist_recommended_indicator)
+        
 
         Case "BASEMENT WALL"
+            frmSystem.Controls("dc_SystemApplicable1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable)
+            frmSystem.Controls("dc_SystemType1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Type)
+            frmSystem.Controls("dc_TankRValue1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.R_Value)
+            frmSystem.Controls("dc_InsIndicator1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Insulation_exist_indicator)
+            frmSystem.Controls("dc_InsType1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Insulation_Type)
 
         Case "REFRIGERATOR"
-
+            frmSystem.Controls("dc_SystemApplicable1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable)
+            frmSystem.Controls("dc_SystemType1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Type)
+            frmSystem.Controls("dc_SystemSize1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Size)
+            frmSystem.Controls("dc_SizeUnit1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Size_Unit_of_Measure)
+            frmSystem.Controls("dc_SystemAge1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Age)
+            frmSystem.Controls("dc_DefrostType1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Defrost_Type)
+            frmSystem.Controls("dc_SystemMake1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_make_manufacturer)
+            frmSystem.Controls("dc_SystemMeteredUsage1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Metered_Usage)
+            
         Case "FREEZER"
-
+            frmSystem.Controls("dc_SystemApplicable1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable)
+            frmSystem.Controls("dc_SystemType1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Type)
+            frmSystem.Controls("dc_SystemSize1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Size)
+            frmSystem.Controls("dc_SizeUnit1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Size_Unit_of_Measure)
+            frmSystem.Controls("dc_SystemAge1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Age)
+            frmSystem.Controls("dc_DefrostType1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Defrost_Type)
+        
         Case "APPLIANCE"
+            frmSystem.Controls("dc_SystemApplicable1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable)
+            frmSystem.Controls("dc_SystemType1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Type)
+            frmSystem.Controls("dc_Quantity1").Value = Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Quantity)
+    
     End Select
     
 
@@ -1245,10 +1436,18 @@ End Sub
 Private Sub cmdNew_Click()
     cboSystem.Text = ""
     strCurrentSystemName = ""
+    'auditcurrentrow = Worksheets(AuditSheetName).Range("E" & Rows.Count).End(xlUp).Row + 1
+    Call updatelistbox
 End Sub
 
 Private Sub cmdOK_Click()
     Dim flag As Boolean
+    If lstSelectedSystems.ListIndex <> -1 Then
+        auditcurrentrow = lstSelectedSystems.ListIndex + 2
+    Else
+        auditlastrow = Worksheets(AuditSheetName).Range("E" & Rows.Count).End(xlUp).Row
+        auditcurrentrow = auditlastrow + 1
+    End If
     Select Case cboSystem
         Case "HEATING"
             'flag = heatingvalidation
@@ -1259,27 +1458,355 @@ Private Sub cmdOK_Click()
             Call savecoolingsystem
         Case "HVAC DISTRIBUTION"
             Call savehvacdistribution
-            
+        Case "WATER HEATER"
+            Call savewh
+        Case "THERMOSTAT"
+            Call savethermo
+        Case "WINDOW"
+            Call savewindow
+        Case "DOOR"
+            Call savedoor
+        Case "LIGHTING"
+            Call savelighting
+        Case "WALL"
+            Call savewall
+        Case "ATTIC"
+            Call saveattic
+        Case "BASEMENT"
+            Call savebasement
+        Case "BASEMENT WALL"
+            Call savebasementwall
+        Case "REFRIGERATOR"
+            Call saverefrigerator
+        Case "FREEZER"
+            Call savefreezer
+        Case "APPLIANCE"
+            Call saveappliance
     End Select
+End Sub
+
+Private Sub savewh()
+    If iWH < 3 Or auditcurrentrow <= auditlastrow Then
+        If auditcurrentrow <= auditlastrow Then
+            lstSelectedSystems.AddItem (strCurrentSystemName)
+            iWH = iWH + 1
+        End If
+        If strCurrentSystemName = "" Then
+            strCurrentSystemName = "WATER HEATER-" + CStr(iWH)
+        End If
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Record_Type) = strCurrentSystemName
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Name) = "WATER HEATER"
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable) = frmSystem.Controls("dc_SystemApplicable1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Type) = frmSystem.Controls("dc_SystemType1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Fuel_Source) = frmSystem.Controls("dc_FuelSource1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Size) = frmSystem.Controls("dc_SystemSize1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Size_Unit_of_Measure) = frmSystem.Controls("dc_SizeUnit1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Age) = frmSystem.Controls("dc_SystemAge1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Insulation_exist_indicator) = frmSystem.Controls("dc_InsIndicator1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Insulation_Type) = frmSystem.Controls("dc_InsType1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.R_Value) = frmSystem.Controls("dc_TankRValue1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Percent_of_Load) = frmSystem.Controls("dc_PercentageLoad1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Current_temperature_setting) = frmSystem.Controls("dc_TemperatureSetting1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Energy_Factor) = frmSystem.Controls("dc_EnergyFactor1").Value
+        If auditcurrentrow <= auditlastrow Then lstSelectedSystems.AddItem (strCurrentSystemName)
+        strCurrentSystemName = ""
+    Else
+        MsgBox ("You can only enter at most 3 water heater systems!")
+    End If
+End Sub
+Private Sub savethermo()
+    If iThermostat < 3 Or auditcurrentrow <= auditlastrow Then
+        If auditcurrentrow <= auditlastrow Then
+            lstSelectedSystems.AddItem (strCurrentSystemName)
+            iThermostat = iThermostat + 1
+        End If
+        If strCurrentSystemName = "" Then
+            strCurrentSystemName = "THERMOSTAT-" + CStr(iThermostat)
+        End If
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Record_Type) = strCurrentSystemName
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Name) = "THERMOSTAT"
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable) = frmSystem.Controls("dc_SystemApplicable1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Type) = frmSystem.Controls("dc_SystemType1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Percent_of_Load) = frmSystem.Controls("dc_PercentageLoad1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Average_cooling_temperature) = frmSystem.Controls("dc_AverageCoolingTemperature1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Average_heating_temperature) = frmSystem.Controls("dc_AverageHeatingTemperature1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Day_setback_indicator) = frmSystem.Controls("dc_DaytimeSetback1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Evening_setback_indicator) = frmSystem.Controls("dc_EveningSetback1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Night_setback_indicator) = frmSystem.Controls("dc_NightSetback1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Heating_day_temperature_setting) = frmSystem.Controls("dc_HeatingDayTemperature1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Heating_evening_temperature_setting) = frmSystem.Controls("dc_HeatingEveningTemperature1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Heating_night_temperature_setting) = frmSystem.Controls("dc_HeatingNightTemperature1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Cooling_day_temperature_setting) = frmSystem.Controls("dc_CoolingDayTemperature1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Cooling_evening_temperature_setting) = frmSystem.Controls("dc_CoolingEveningTemperature1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Cooling_night_temperature_setting) = frmSystem.Controls("dc_CoolingNightTemperature1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.AC_load_control_present_indicator) = frmSystem.Controls("dc_ACCtrlPresent1").Value
+        If auditcurrentrow <= auditlastrow Then lstSelectedSystems.AddItem (strCurrentSystemName)
+        strCurrentSystemName = ""
+    Else
+        MsgBox ("You can only enter at most 3 thermostat!")
+    End If
+End Sub
+
+Private Sub savewindow()
+    If iWindow < 5 Or auditcurrentrow <= auditlastrow Then
+        If auditcurrentrow <= auditlastrow Then
+            lstSelectedSystems.AddItem (strCurrentSystemName)
+            iWindow = iWindow + 1
+        End If
+        If strCurrentSystemName = "" Then
+            strCurrentSystemName = "THERMOSTAT-" + CStr(iWindow)
+        End If
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Record_Type) = strCurrentSystemName
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Name) = "WINDOW"
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable) = frmSystem.Controls("dc_SystemApplicable1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Type) = frmSystem.Controls("dc_SystemType1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Quantity) = frmSystem.Controls("dc_Quantity1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Condition_of_window_or_door) = frmSystem.Controls("dc_WindowDoorCondition1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Square_Footage) = frmSystem.Controls("dc_SurfaceArea1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Window_UV_coated_indicator) = frmSystem.Controls("dc_WindowUVCoated1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Number_of_window_glazings) = frmSystem.Controls("dc_NumberOfGlazing1").Value
+        If auditcurrentrow <= auditlastrow Then lstSelectedSystems.AddItem (strCurrentSystemName)
+        strCurrentSystemName = ""
+    Else
+        MsgBox ("You can only enter at most 5 windows!")
+    End If
+End Sub
+Private Sub savedoor()
+    If iDoor < 5 Or auditcurrentrow <= auditlastrow Then
+        If auditcurrentrow <= auditlastrow Then
+            lstSelectedSystems.AddItem (strCurrentSystemName)
+            iDoor = iDoor + 1
+        End If
+        If strCurrentSystemName = "" Then
+            strCurrentSystemName = "DOOR-" + CStr(iDoor)
+        End If
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Record_Type) = strCurrentSystemName
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Name) = "DOOR"
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable) = frmSystem.Controls("dc_SystemApplicable1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Type) = frmSystem.Controls("dc_SystemType1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Quantity) = frmSystem.Controls("dc_Quantity1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Condition_of_window_or_door) = frmSystem.Controls("dc_WindowDoorCondition1").Value
+        If auditcurrentrow <= auditlastrow Then lstSelectedSystems.AddItem (strCurrentSystemName)
+        strCurrentSystemName = ""
+    Else
+        MsgBox ("You can only enter at most 5 doors!")
+    End If
+End Sub
+Private Sub savelighting()
+    If iLighting < 4 Or auditcurrentrow <= auditlastrow Then
+        If auditcurrentrow <= auditlastrow Then
+            lstSelectedSystems.AddItem (strCurrentSystemName)
+            iLighting = iLighting + 1
+        End If
+        If strCurrentSystemName = "" Then
+            strCurrentSystemName = "LIGHTING-" + CStr(iLighting)
+        End If
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Record_Type) = strCurrentSystemName
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Name) = "LIGHTING"
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable) = frmSystem.Controls("dc_SystemApplicable1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Type) = frmSystem.Controls("dc_SystemType1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Quantity) = frmSystem.Controls("dc_Quantity1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Location) = frmSystem.Controls("dc_SystemLocation1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Weekly_operating_hours) = frmSystem.Controls("dc_TotalWeeklyHours1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Existing_bulb_wattage) = frmSystem.Controls("dc_BulbWattage1").Value
+        If auditcurrentrow <= auditlastrow Then lstSelectedSystems.AddItem (strCurrentSystemName)
+        strCurrentSystemName = ""
+    Else
+        MsgBox ("You can only enter at most 4 lighting locations!")
+    End If
+End Sub
+Private Sub savewall()
+    If iWall < 4 Or auditcurrentrow <= auditlastrow Then
+        If auditcurrentrow <= auditlastrow Then
+            lstSelectedSystems.AddItem (strCurrentSystemName)
+            iWall = iWall + 1
+        End If
+        If strCurrentSystemName = "" Then
+            strCurrentSystemName = "WALL-" + CStr(iWall)
+        End If
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Record_Type) = strCurrentSystemName
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Name) = "WALL"
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable) = frmSystem.Controls("dc_SystemApplicable1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Type) = frmSystem.Controls("dc_SystemType1").Value
+        
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Insulation_exist_indicator) = frmSystem.Controls("dc_InsIndicator1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Insulation_Type) = frmSystem.Controls("dc_InsType1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.R_Value) = frmSystem.Controls("dc_TankRValue1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Length) = frmSystem.Controls("dc_SystemLength1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.height) = frmSystem.Controls("dc_SystemHeight1").Value
+        If auditcurrentrow <= auditlastrow Then lstSelectedSystems.AddItem (strCurrentSystemName)
+        strCurrentSystemName = ""
+    Else
+        MsgBox ("You can only enter at most 4 walls!")
+    End If
+End Sub
+Private Sub saveattic()
+    If iAttic < 4 Or auditcurrentrow <= auditlastrow Then
+        If auditcurrentrow <= auditlastrow Then
+            lstSelectedSystems.AddItem (strCurrentSystemName)
+            iAttic = iAttic + 1
+        End If
+        If strCurrentSystemName = "" Then
+            strCurrentSystemName = "ATTIC-" + CStr(iAttic)
+        End If
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Record_Type) = strCurrentSystemName
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Name) = "ATTIC"
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable) = frmSystem.Controls("dc_SystemApplicable1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Type) = frmSystem.Controls("dc_SystemType1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Total_window_surface_area) = frmSystem.Controls("dc_SurfaceArea1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Insulation_exist_indicator) = frmSystem.Controls("dc_InsIndicator1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Insulation_Type) = frmSystem.Controls("dc_InsType1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.R_Value) = frmSystem.Controls("dc_TankRValue1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Length) = frmSystem.Controls("dc_SystemLength1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.height) = frmSystem.Controls("dc_SystemHeight1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Vent_required_indicator) = frmSystem.Controls("dc_VentIndicator1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Access_Type) = frmSystem.Controls("dc_AccessType1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Depth) = frmSystem.Controls("dc_SystemDepth1").Value
+        If auditcurrentrow <= auditlastrow Then lstSelectedSystems.AddItem (strCurrentSystemName)
+        strCurrentSystemName = ""
+    Else
+        MsgBox ("You can only enter at most 4 attics!")
+    End If
+End Sub
+Private Sub savebasement()
+    If iBasement < 3 Or auditcurrentrow <= auditlastrow Then
+        If auditcurrentrow <= auditlastrow Then
+            lstSelectedSystems.AddItem (strCurrentSystemName)
+            iBasement = iBasement + 1
+        End If
+        If strCurrentSystemName = "" Then
+            strCurrentSystemName = "BASEMENT-" + CStr(iBasement)
+        End If
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Record_Type) = strCurrentSystemName
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Name) = "BASEMENT"
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable) = frmSystem.Controls("dc_SystemApplicable1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Type) = frmSystem.Controls("dc_SystemType1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Square_Footage) = frmSystem.Controls("dc_SurfaceArea1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Perimeter_Footage) = frmSystem.Controls("dc_PerimeterFootage1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Insulation_exist_indicator) = frmSystem.Controls("dc_InsIndicator1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Insulation_Type) = frmSystem.Controls("dc_InsType1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.R_Value) = frmSystem.Controls("dc_TankRValue1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Basement_air_conditioned_indicator) = frmSystem.Controls("dc_BasementAC1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Rim_joist_recommended_indicator) = frmSystem.Controls("dc_RJInsRecommended1").Value
+
+        If auditcurrentrow <= auditlastrow Then lstSelectedSystems.AddItem (strCurrentSystemName)
+        strCurrentSystemName = ""
+    Else
+        MsgBox ("You can only enter at most 3 basements!")
+    End If
+End Sub
+Private Sub savebasementwall()
+    If iBW < 3 Or auditcurrentrow <= auditlastrow Then
+        If auditcurrentrow <= auditlastrow Then
+            lstSelectedSystems.AddItem (strCurrentSystemName)
+            iBW = iBW + 1
+        End If
+        If strCurrentSystemName = "" Then
+            strCurrentSystemName = "BASEMENT WALL-" + CStr(iBW)
+        End If
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Record_Type) = strCurrentSystemName
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Name) = "BASEMENT WALL"
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable) = frmSystem.Controls("dc_SystemApplicable1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Type) = frmSystem.Controls("dc_SystemType1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.R_Value) = frmSystem.Controls("dc_TankRValue1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Insulation_exist_indicator) = frmSystem.Controls("dc_InsIndicator1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Insulation_Type) = frmSystem.Controls("dc_InsType1").Value
+        If auditcurrentrow <= auditlastrow Then lstSelectedSystems.AddItem (strCurrentSystemName)
+        strCurrentSystemName = ""
+    Else
+        MsgBox ("You can only enter at most 3 basement walls!")
+    End If
     
 End Sub
-Private Sub savehvacdistribution()
-    If iHVAC < 6 Then
-        iHVAC = iHVAC + 1
-        'LastRow = Worksheets(SheetName).Range("E" & Rows.Count).End(xlUp).Row
-        If strCurrentSystemName = "" Then
-            strCurrentSystemName = "HVAC DISTRIBUTION-" + CStr(iHVAC)
+Private Sub saverefrigerator()
+    If iRefrigerator < 3 Or auditcurrentrow <= auditlastrow Then
+        If auditcurrentrow <= auditlastrow Then
+            lstSelectedSystems.AddItem (strCurrentSystemName)
+            iRefrigerator = iRefrigerator + 1
         End If
-        Worksheets(SheetName).Cells(lastrow + 1, 1) = strCurrentSystemName
-        Worksheets(SheetName).Cells(lastrow + 1, 5) = "HVAC DISTRIBUTION"
-        Worksheets(SheetName).Cells(lastrow + 1, 7) = frmSystem.Controls("dc_SystemType1").Value
-        Worksheets(SheetName).Cells(lastrow + 1, 11) = frmSystem.Controls("dc_SystemSize1").Value
-        Worksheets(SheetName).Cells(lastrow + 1, 20) = frmSystem.Controls("dc_InsIndicator1").Value
-        Worksheets(SheetName).Cells(lastrow + 1, 21) = frmSystem.Controls("dc_InsType1").Value
-        Worksheets(SheetName).Cells(lastrow + 1, 23) = frmSystem.Controls("dc_SystemLocation1").Value
-        Worksheets(SheetName).Cells(lastrow + 1, 24) = frmSystem.Controls("dc_SystemLength1").Value
-        Worksheets(SheetName).Cells(lastrow + 1, 30) = frmSystem.Controls("dc_FlexCondition1").Value
-        lstSelectedSystems.AddItem (strCurrentSystemName)
+        If strCurrentSystemName = "" Then
+            strCurrentSystemName = "REFRIGERATOR-" + CStr(iRefrigerator)
+        End If
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Record_Type) = strCurrentSystemName
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Name) = "REFRIGERATOR"
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable) = frmSystem.Controls("dc_SystemApplicable1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Type) = frmSystem.Controls("dc_SystemType1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Size) = frmSystem.Controls("dc_SystemSize1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Size_Unit_of_Measure) = frmSystem.Controls("dc_SizeUnit1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Age) = frmSystem.Controls("dc_SystemAge1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Defrost_Type) = frmSystem.Controls("dc_DefrostType1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_make_manufacturer) = frmSystem.Controls("dc_SystemMake1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Metered_Usage) = frmSystem.Controls("dc_SystemMeteredUsage1").Value
+        
+        strCurrentSystemName = ""
+    Else
+        MsgBox ("You can only enter at most 3 basement walls!")
+    End If
+End Sub
+Private Sub savefreezer()
+    If iFreezer < 3 Or auditcurrentrow <= auditlastrow Then
+        If auditcurrentrow <= auditlastrow Then
+            lstSelectedSystems.AddItem (strCurrentSystemName)
+            iFreezer = iFreezer + 1
+        End If
+        If strCurrentSystemName = "" Then
+            strCurrentSystemName = "FREEZER-" + CStr(iFreezer)
+        End If
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Record_Type) = strCurrentSystemName
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Name) = "FREEZER"
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable) = frmSystem.Controls("dc_SystemApplicable1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Type) = frmSystem.Controls("dc_SystemType1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Size) = frmSystem.Controls("dc_SystemSize1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Size_Unit_of_Measure) = frmSystem.Controls("dc_SizeUnit1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Age) = frmSystem.Controls("dc_SystemAge1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Defrost_Type) = frmSystem.Controls("dc_DefrostType1").Value
+        If auditcurrentrow <= auditlastrow Then lstSelectedSystems.AddItem (strCurrentSystemName)
+        strCurrentSystemName = ""
+    Else
+        MsgBox ("You can only enter at most 3 basement walls!")
+    End If
+End Sub
+Private Sub saveappliance()
+    If iAppliance < 27 Or auditcurrentrow <= auditlastrow Then
+        If auditcurrentrow <= auditlastrow Then
+            lstSelectedSystems.AddItem (strCurrentSystemName)
+            iAppliance = iAppliance + 1
+        End If
+        If strCurrentSystemName = "" Then
+            strCurrentSystemName = "APPLIANCE-" + CStr(iAppliance)
+        End If
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Record_Type) = strCurrentSystemName
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Name) = "APPLIANCE"
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable) = frmSystem.Controls("dc_SystemApplicable1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Type) = frmSystem.Controls("dc_SystemType1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Quantity) = frmSystem.Controls("dc_Quantity1").Value
+        If auditcurrentrow <= auditlastrow Then lstSelectedSystems.AddItem (strCurrentSystemName)
+        strCurrentSystemName = ""
+    Else
+        MsgBox ("You can only enter at most 27 appliances!")
+    End If
+End Sub
+Private Sub savehvacdistribution()
+    If iHVAC < 6 Or auditcurrentrow <= auditlastrow Then
+        
+        If auditcurrentrow = auditlastrow + 1 And iHVAC < 6 Then
+            iHVAC = iHVAC + 1
+            If strCurrentSystemName = "" Then
+                strCurrentSystemName = "HVAC DISTRIBUTION-" + CStr(iHVAC)
+            End If
+            lstSelectedSystems.AddItem (strCurrentSystemName)
+        End If
+'        auditlastrow = Worksheets(AuditSheetName).Range("E" & Rows.Count).End(xlUp).Row
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Record_Type) = strCurrentSystemName
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Name) = "HVAC DISTRIBUTION"
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable) = frmSystem.Controls("dc_SystemApplicable1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Type) = frmSystem.Controls("dc_SystemType1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Size) = frmSystem.Controls("dc_SystemSize1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Insulation_exist_indicator) = frmSystem.Controls("dc_InsIndicator1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Insulation_Type) = frmSystem.Controls("dc_InsType1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Location) = frmSystem.Controls("dc_SystemLocation1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Length) = frmSystem.Controls("dc_SystemLength1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Condition_of_flex_duct) = frmSystem.Controls("dc_FlexCondition1").Value
         strCurrentSystemName = ""
     Else
         MsgBox ("You can only enter at most 6 HVAC Distribution systems!")
@@ -1287,22 +1814,28 @@ Private Sub savehvacdistribution()
     
 End Sub
 Private Sub saveheatingsystem()
-    If iHeating < 6 Then
-        iHeating = iHeating + 1
-        'LastRow = Worksheets(SheetName).Range("E" & Rows.Count).End(xlUp).Row
+    If iHeating < 6 Or auditcurrentrow <= auditlastrow Then
+        If auditcurrentrow = auditlastrow + 1 And iHeating < 6 Then
+            iHeating = iHeating + 1
+            If strCurrentSystemName = "" Then
+                strCurrentSystemName = "HEATING-" + CStr(iHeating)
+            End If
+            lstSelectedSystems.AddItem (strCurrentSystemName)
+        End If
+        
         If strCurrentSystemName = "" Then
             strCurrentSystemName = "HEATING-" + CStr(iHeating)
         End If
-        Worksheets(SheetName).Cells(lastrow + 1, 1) = strCurrentSystemName
-        Worksheets(SheetName).Cells(lastrow + 1, 5) = "HEATING"
-        Worksheets(SheetName).Cells(lastrow + 1, 7) = frmSystem.Controls("dc_SystemType1").Value
-        Worksheets(SheetName).Cells(lastrow + 1, 8) = frmSystem.Controls("dc_FuelSource1").Value
-        Worksheets(SheetName).Cells(lastrow + 1, 11) = frmSystem.Controls("dc_SystemSize1").Value
-        Worksheets(SheetName).Cells(lastrow + 1, 12) = frmSystem.Controls("dc_SizeUnit1").Value
-        Worksheets(SheetName).Cells(lastrow + 1, 13) = frmSystem.Controls("dc_SystemAge1").Value
-        Worksheets(SheetName).Cells(lastrow + 1, 15) = frmSystem.Controls("dc_EffRating1").Value
-        Worksheets(SheetName).Cells(lastrow + 1, 16) = frmSystem.Controls("dc_EffRatingType1").Value
-        lstSelectedSystems.AddItem (strCurrentSystemName)
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Record_Type) = strCurrentSystemName
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Name) = "HEATING"
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable) = frmSystem.Controls("dc_SystemApplicable1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Type) = frmSystem.Controls("dc_SystemType1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Fuel_Source) = frmSystem.Controls("dc_FuelSource1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Size) = frmSystem.Controls("dc_SystemSize1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Size_Unit_of_Measure) = frmSystem.Controls("dc_SizeUnit1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Age) = frmSystem.Controls("dc_SystemAge1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Efficiency_Rating) = frmSystem.Controls("dc_EffRating1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Efficiency_Rating_Type) = frmSystem.Controls("dc_EffRatingType1").Value
         strCurrentSystemName = ""
     Else
         MsgBox ("You can only enter at most 6 HEATING systems!")
@@ -1311,27 +1844,31 @@ Private Sub saveheatingsystem()
 End Sub
 
 Private Sub savecoolingsystem()
-    If iCooling < 6 Then
-        iCooling = iCooling + 1
-        lastrow = Worksheets(SheetName).Range("E" & Rows.Count).End(xlUp).Row
-        If strCurrentSystemName = "" Then
-            strCurrentSystemName = "COOLING-" + CStr(iCooling)
+    If iCooling < 6 Or auditcurrentrow <= auditlastrow Then
+        If auditcurrentrow = auditlastrow + 1 And iCooling < 6 Then
+            iCooling = iCooling + 1
+            If strCurrentSystemName = "" Then
+                strCurrentSystemName = "COOLING-" + CStr(iCooling)
+            End If
+            lstSelectedSystems.AddItem (strCurrentSystemName)
         End If
-        Worksheets(SheetName).Cells(lastrow + 1, 1) = strCurrentSystemName
-        Worksheets(SheetName).Cells(lastrow + 1, 5) = "COOLING"
-        Worksheets(SheetName).Cells(lastrow + 1, 7) = frmSystem.Controls("dc_SystemType1").Value
-        Worksheets(SheetName).Cells(lastrow + 1, 8) = frmSystem.Controls("dc_FuelSource1").Value
-        Worksheets(SheetName).Cells(lastrow + 1, 11) = frmSystem.Controls("dc_SystemSize1").Value
-        Worksheets(SheetName).Cells(lastrow + 1, 12) = frmSystem.Controls("dc_SizeUnit1").Value
-        Worksheets(SheetName).Cells(lastrow + 1, 13) = frmSystem.Controls("dc_SystemAge1").Value
-        Worksheets(SheetName).Cells(lastrow + 1, 15) = frmSystem.Controls("dc_EffRating1").Value
-        Worksheets(SheetName).Cells(lastrow + 1, 16) = frmSystem.Controls("dc_EffRatingType1").Value
+
+
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Record_Type) = strCurrentSystemName
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Name) = "COOLING"
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable) = frmSystem.Controls("dc_SystemApplicable1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Type) = frmSystem.Controls("dc_SystemType1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Fuel_Source) = frmSystem.Controls("dc_FuelSource1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Size) = frmSystem.Controls("dc_SystemSize1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Size_Unit_of_Measure) = frmSystem.Controls("dc_SizeUnit1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Age) = frmSystem.Controls("dc_SystemAge1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Efficiency_Rating) = frmSystem.Controls("dc_EffRating1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Efficiency_Rating_Type) = frmSystem.Controls("dc_EffRatingType1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Percent_of_space_heated_or_cooled) = frmSystem.Controls("dc_PercentageCooled1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Frequency_of_system_use) = frmSystem.Controls("dc_FrequencyUse1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Total_units_used) = frmSystem.Controls("dc_TotalUnits1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Quantity) = frmSystem.Controls("dc_Quantity1").Value
         
-        Worksheets(SheetName).Cells(lastrow + 1, 17) = frmSystem.Controls("dc_PercentageCooled1").Value
-        Worksheets(SheetName).Cells(lastrow + 1, 18) = frmSystem.Controls("dc_FrequencyUse1").Value
-        Worksheets(SheetName).Cells(lastrow + 1, 19) = frmSystem.Controls("dc_TotalUnits1").Value
-        Worksheets(SheetName).Cells(lastrow + 1, 14) = frmSystem.Controls("dc_Quantity1").Value
-        lstSelectedSystems.AddItem (strCurrentSystemName)
         strCurrentSystemName = ""
     Else
         MsgBox ("You can only enter at most 6 COOLING systems!")
@@ -1341,7 +1878,7 @@ End Sub
 
 Private Sub cmdRemove_Click()
     currentrow = lstSelectedSystems.ListIndex
-    Select Case Worksheets(SheetName).Cells(currentrow + 2, 5).Value
+    Select Case Worksheets(AuditSheetName).Cells(currentrow + 2, 5).Value
         Case "HEATING"
             iHeating = iHeating - 1
         Case "COOLING"
@@ -1374,17 +1911,34 @@ Private Sub cmdRemove_Click()
             iAppliance = iAppliance - 1
         Case Else
     End Select
+    strCurrentSystemName = ""
     lstSelectedSystems.RemoveItem (currentrow)
-    Worksheets(SheetName).Rows(currentrow + 2).Delete
-
+    Worksheets(AuditSheetName).Rows(currentrow + 2).Delete
+    Call updatelistbox
 End Sub
 
 Private Sub cmdRemoveAll_Click()
-    lastrow = Worksheets(SheetName).Range("E" & Rows.Count).End(xlUp).Row
+    auditlastrow = Worksheets(AuditSheetName).Range("E" & Rows.Count).End(xlUp).Row
     cboSystem.Text = ""
     strCurrentSystemName = ""
-    Worksheets(SheetName).Range("A2:AZ" & lastrow).Clear
+    Worksheets(AuditSheetName).Range("A2:AZ" & auditlastrow).Clear
     lstSelectedSystems.Clear
+    iHeating = 0
+    iCooling = 0
+    iHVAC = 0
+    iWH = 0
+    iThermostat = 0
+    iWindow = 0
+    iDoor = 0
+    iLighting = 0
+    iWall = 0
+    iAttic = 0
+    iBasement = 0
+    iBW = 0
+    iRefrigerator = 0
+    iFreezer = 0
+    iAppliance = 0
+    Call updatelistbox
 End Sub
 
 Private Sub cmdRename_Click()
@@ -1395,7 +1949,7 @@ Private Sub cmdRename_Click()
     End If
         
     currentrow = lstSelectedSystems.ListIndex
-    strSystem = Worksheets(SheetName).Cells(currentrow + 2, 5).Value
+    strSystem = Worksheets(AuditSheetName).Cells(currentrow + 2, 5).Value
     
     Dim message, title, defaultValue As String
     Dim myValue As String
@@ -1407,13 +1961,13 @@ Private Sub cmdRename_Click()
     If myValue = "" Then myValue = defaultValue
 
     strCurrentSystemName = strSystem + "-" + myValue
-    Worksheets(SheetName).Cells(currentrow + 2, 1).Value = strCurrentSystemName
+    Worksheets(AuditSheetName).Cells(currentrow + 2, 1).Value = strCurrentSystemName
     
-    lastrow = thisWB.Worksheets(SheetName).Range("E" & Rows.Count).End(xlUp).Row
+    auditlastrow = Worksheets(AuditSheetName).Range("E" & Rows.Count).End(xlUp).Row
     lstSelectedSystems.Clear
-    If lastrow > 1 Then
-        For i = 2 To lastrow
-            lstSelectedSystems.AddItem (Worksheets(SheetName).Cells(i, 1))
+    If auditlastrow > 1 Then
+        For i = 2 To auditlastrow
+            lstSelectedSystems.AddItem (Worksheets(AuditSheetName).Cells(i, 1))
         Next i
     End If
 End Sub
@@ -1422,19 +1976,11 @@ Private Sub lstSelectedSystems_Change()
     If lstSelectedSystems.ListIndex <> -1 Then
         cmdRemove.Enabled = True
     End If
+    auditcurrentrow = CInt(lstSelectedSystems.ListIndex + 2)
 End Sub
 
-
 Private Sub UserForm_Initialize()
-    Dim rngSystem As Range
-
-    Dim thisWS As Worksheet
-    Dim rngItem As Range
-    
-    Set thisWB = ActiveWorkbook
-    
     vertInterval = 25
-    
     toTop0 = 60 ' not applicable
     toTop = 85
     toTop1 = toTop + vertInterval
@@ -1477,7 +2023,173 @@ Private Sub UserForm_Initialize()
 
     cmdOK.Enabled = False
     cmdCancel.Enabled = True
+    
+    Call updatelistbox
+'    auditlastrow = Worksheets(AuditSheetName).Range("E" & Rows.Count).End(xlUp).Row
+'
+'    If auditlastrow > 1 Then
+'        For i = 2 To auditlastrow
+'            lstSelectedSystems.AddItem (Worksheets(AuditSheetName).Cells(i, 1))
+'            Select Case Worksheets(AuditSheetName).Cells(i, 5)
+'                Case "HEATING"
+'                    iHeating = iHeating + 1
+'                Case "COOLING"
+'                    iCooling = iCooling + 1
+'                Case "HVAC DISTRIBUTION"
+'                    iHVAC = iHVAC + 1
+'                Case "WATER HEATER"
+'                    iWH = iWH + 1
+'                Case "THERMOSTAT"
+'                    iThermostat = iThermostat + 1
+'                Case "WINDOW"
+'                    iWindow = iWindow + 1
+'                Case "DOOR"
+'                    iDoor = iDoor + 1
+'                Case "LIGHTING"
+'                    iLighting = iLighting + 1
+'                Case "WALL"
+'                    iWall = iWall + 1
+'                Case "ATTIC"
+'                    iAttic = iAttic + 1
+'                Case "BASEMENT"
+'                    iBasement = iBasement + 1
+'                Case "BASEMENT WALL"
+'                    iBW = iBW + 1
+'                Case "REFRIGERATOR"
+'                    iRefrigerator = iRefrigerator + 1
+'                Case "FREEZER"
+'                    iFreezer = iFreezer + 1
+'                Case "APPLIANCE"
+'                    iAppliance = iAppliance + 1
+'            End Select
+'        Next i
+'    End If
 
+    If lstSelectedSystems.ListIndex = -1 Then
+        cmdRemove.Enabled = False
+    End If
+    
+    txtEnrollmentID.Text = currentEnrollment
+    txtPremiseID.Text = premiseid
+    txtAccountNumber.Text = accountnumber
+    txtEnrollmentID.Enabled = False
+    txtPremiseID.Enabled = False
+    txtAccountNumber.Enabled = False
+    
+    'Application.Visible = False
+    
+'    applianceStartCol = NexantEnrollments.APPLIANCE_AQUARIUM_quantity
+'    applianceNum = NexantEnrollments.ATTIC_1_access_type - NexantEnrollments.APPLIANCE_AQUARIUM_quantity
+'    applianceLimit = 1
+'    atticStartCol = NexantEnrollments.ATTIC_1_access_type
+'    atticNum = NexantEnrollments.ATTIC_1_vent - NexantEnrollments.ATTIC_1_access_type + 1
+'    atticLimit = 4
+'    basementStartCol = NexantEnrollments.BASEMENT_1_air_conditioned
+'    basementNum = NexantEnrollments.BASEMENT_1_type - NexantEnrollments.BASEMENT_1_air_conditioned + 1
+'    basementLimit = 3
+'    basementwallStartCol = NexantEnrollments.BASEMENT_WALL_1_insulation
+'    basementwallNum = NexantEnrollments.BASEMENT_WALL_1_type - NexantEnrollments.BASEMENT_WALL_1_insulation + 1
+'    basementwallLimit = 3
+'    coolingStartCol = NexantEnrollments.COOLING_1_age
+'    coolingNum = NexantEnrollments.COOLING_1_usage_frequency - NexantEnrollments.COOLING_1_age + 1
+'    coolingLimit = 6
+'    doorStartCol = NexantEnrollments.DOOR_1_condition
+'    doorNum = NexantEnrollments.DOOR_1_type - NexantEnrollments.DOOR_1_condition + 1
+'    doorLimit = 5
+'    freezerStartCol = NexantEnrollments.FREEZER_1_age
+'    freezerNum = NexantEnrollments.FREEZER_1_type - NexantEnrollments.FREEZER_1_age + 1
+'    freezerLimit = 3
+'    heatingStartCol = NexantEnrollments.HEATING_1_age
+'    heatingNum = NexantEnrollments.HEATING_1_type - NexantEnrollments.HEATING_1_age + 1
+'    heatingLimit = 6
+'    hvacdistStartCol = NexantEnrollments.HVAC_DIST_1_flex_duct_condition
+'    hvacdistNum = NexantEnrollments.HVAC_DIST_1_type - NexantEnrollments.HVAC_DIST_1_flex_duct_condition + 1
+'    hvacdistLimit = 6
+'    lightingStartCol = NexantEnrollments.LIGHTING_1_not_applicable
+'    lightingNum = NexantEnrollments.LIGHTING_1_weekly_hrs - NexantEnrollments.LIGHTING_1_not_applicable + 1
+'    lightingLimit = 4
+'    refrigStartCol = NexantEnrollments.REFRIGERATOR_1_age
+'    refrigNum = NexantEnrollments.REFRIGERATOR_1_type - NexantEnrollments.REFRIGERATOR_1_age + 1
+'    refrigLimit = 3
+'    thermostatStartCol = NexantEnrollments.THERMOSTAT_1_ac_load_control
+'    thermostatNum = NexantEnrollments.THERMOSTAT_1_type - NexantEnrollments.THERMOSTAT_1_ac_load_control + 1
+'    thermostatLimit = 3
+'    wallStartCol = NexantEnrollments.WALL_1_height
+'    wallNum = NexantEnrollments.WALL_1_type - NexantEnrollments.WALL_1_height + 1
+'    wallLimit = 4
+'    waterheaterStartCol = NexantEnrollments.WATER_HEATER_1_age
+'    waterheaterNum = NexantEnrollments.WATER_HEATER_1_type - NexantEnrollments.WATER_HEATER_1_age + 1
+'    waterheaterLimit = 3
+'
+'    sysnum = Array(applianceNum, atticNum, basementNum, basementwallNum, coolingNum, doorNum, freezerNum, heatingNum, hvacdistNum, lightingNum, refrigNum, thermostatNum, wallNum, waterheaterNum)
+'    syslimit = Array(applianceLimit, atticLimit, basementLimit, basementwallLimit, coolingLimit, doorLimit, freezerLimit, heatingLimit, hvacdistLimit, lightingLimit, refrigLimit, thermostatLimit, wallLimit, waterheaterLimit)
+'    Call updatesystem(currentrow)
+End Sub
+
+'Private Sub updatesystem(ByVal ir As Integer)
+'    Dim sflg As Boolean
+'
+'    'iBasement
+'    For m = 0 To 13 ' 14 systems
+'
+'        startcol = applianceStartCol
+'        If m > 0 Then
+'            For n = 0 To m - 1
+'                startcol = startcol + sysnum(n) * syslimit(n)
+'            Next n
+'        End If
+'
+'        For i = 1 To syslimit(m)
+'            sflg = False
+'            For j = 1 To sysnum(m)
+'                k = startcol + sysnum(m) * (i - 1) + j - 1
+'                If Worksheets(SheetName).Cells(ir, k).Value <> "" Then
+'                    sflg = True
+'                    Select Case m
+'                        Case SYSEnum.APPLIANCE
+'                            iAppliance = iAppliance + 1
+'                        Case SYSEnum.ATTIC
+'                            iAttic = iAttic + 1
+'                        Case SYSEnum.BASEMENT
+'                            iBasement = iBasement + 1
+'                        Case SYSEnum.BASEMENT_WALL
+'                            iBW = iBW + 1
+'                        Case SYSEnum.COOLING
+'                            iCooling = iCooling + 1
+'                        Case SYSEnum.DOOR
+'                            iDoor = iDoor + 1
+'                        Case SYSEnum.FREEZER
+'                            iFreezer = iFreezer + 1
+'                        Case SYSEnum.HEATING
+'                            iHeating = iHeating + 1
+'                        Case SYSEnum.HVAC_DISTRIBUTION
+'                            iHVAC = iHVAC + 1
+'                        Case SYSEnum.LIGHTING
+'                            iLighting = iLighting + 1
+'                        Case SYSEnum.REFRIGERATOR
+'                            iRefrigerator = iRefrigerator + 1
+'                        Case SYSEnum.THERMOSTAT
+'                            iThermostat = iThermostat + 1
+'                        Case SYSEnum.WALL
+'                            iWall = iWall + 1
+'                        Case SYSEnum.WATER_HEATER
+'                            iWH = iWH + 1
+'                    End Select
+'
+'                    Exit For
+'                End If
+'            Next j
+'        Next i
+'    Next m
+'End Sub
+
+Private Sub updatelistbox()
+    auditlastrow = Worksheets(AuditSheetName).Range("E" & Rows.Count).End(xlUp).Row
+    auditcurrentrow = auditlastrow + 1
+'    If lstSelectedSystems.ListIndex <> -1 Then
+'        auditcurrentrow = lstSelectedSystems.ListIndex + 2
+'    End If
+    
     iHeating = 0
     iCooling = 0
     iHVAC = 0
@@ -1492,15 +2204,14 @@ Private Sub UserForm_Initialize()
     iBW = 0
     iRefrigerator = 0
     iFreezer = 0
-    iApplicance = 0
-   
+    iAppliance = 0
     
-    lastrow = getlastrow()
+    lstSelectedSystems.Clear
     
-    If lastrow > EnrollmentFirstDataLine - 1 Then
-        For i = EnrollmentFirstDataLine To lastrow
-            lstSelectedSystems.AddItem (Worksheets(SheetName).Cells(i, 1))
-            Select Case Worksheets(SheetName).Cells(i, 5)
+    If auditlastrow > 1 Then
+        For i = 2 To auditlastrow
+            lstSelectedSystems.AddItem (Worksheets(AuditSheetName).Cells(i, 1))
+            Select Case Worksheets(AuditSheetName).Cells(i, 5)
                 Case "HEATING"
                     iHeating = iHeating + 1
                 Case "COOLING"
@@ -1534,23 +2245,7 @@ Private Sub UserForm_Initialize()
             End Select
         Next i
     End If
-
-    If lstSelectedSystems.ListIndex = -1 Then
-        cmdRemove.Enabled = False
-    End If
-    
-    txtEnrollmentID.Text = currentEnrollment
-    txtPremiseID.Text = premiseid
-    txtAccountNumber.Text = accountnumber
-    txtEnrollmentID.Enabled = False
-    txtPremiseID.Enabled = False
-    txtAccountNumber.Enabled = False
-    
-    'Application.Visible = False
-    
 End Sub
-
-
 
 Private Sub UserForm_QueryClose(Cancel As Integer, CloseMode As Integer)
     If CloseMode = 0 Then

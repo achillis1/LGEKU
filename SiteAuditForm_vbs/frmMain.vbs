@@ -35,7 +35,7 @@ End Sub
 
 
 Private Sub lstpopulate()
-    lastrow = getlastrow()
+    lastrow = getenrolllastrow()
     For i = EnrollmentFirstDataLine To lastrow
         ROSAID = Worksheets(SheetName).Cells(i, NexantEnrollments.Enrollment_ID_ROSA).Value
         HEAPID = Worksheets(SheetName).Cells(i, NexantEnrollments.Enrollment_ID_HEAP).Value
@@ -88,6 +88,7 @@ End Sub
 Private Sub cmdSystem_Click()
     Me.Hide
     frmSystem.Show vbModeless
+
 End Sub
 
 Private Sub lstEnrollments_Click()
@@ -110,8 +111,8 @@ Private Sub lstEnrollments_Click()
         Next i
         
         If flg Then
-            premiseid = Worksheets(SheetName).Cells(currentrow, Premise_ID).Value
-            accountnumber = Worksheets(SheetName).Cells(currentrow, Account_Number).Value
+            premiseid = Worksheets(SheetName).Cells(currentrow, NexantEnrollments.Premise_ID).Value
+            accountnumber = Worksheets(SheetName).Cells(currentrow, NexantEnrollments.Account_Number).Value
         
             txtEnrollmentID.Text = currentEnrollment
             txtPremiseID.Text = premiseid
@@ -123,6 +124,7 @@ End Sub
 Private Sub UserForm_Initialize()
 '    Application.Visible = False
     EnrollmentFirstDataLine = 11
+    AuditSheetName = "Audit"
     SheetName = "Enrollments"
     PMSheetName = "PM"
     InboundLastReadCol = 5
