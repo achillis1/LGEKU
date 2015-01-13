@@ -1,6 +1,6 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmSystem 
-   Caption         =   "Systems"
+   Caption         =   "Systems ROSA"
    ClientHeight    =   6855
    ClientLeft      =   45
    ClientTop       =   375
@@ -230,21 +230,16 @@ Private waterheaterLimit As Integer
 Private sysnum As Variant
 Private syslimit As Variant
 
+Private bSystemLoad As Boolean
+Private oldSystemName As String
+
 Private Sub cboSystem_Change()
-    'remove all dynamic controls on selection change
-'    For i = 0 To lstSelectedSystems.ListCount - 1
-'    If lstSelectedSystems.Selected(x) = True Then
-'    lstSelectedSystems.Selected(x) = False
-'    End If
-'    Next
     
     For Each ctrl In frmSystem.Controls
         If left(ctrl.Name, 3) = "dc_" Then
             frmSystem.Controls.Remove (ctrl.Name)
         End If
     Next
-    
-    a = lstSelectedSystems.ListIndex
     
     Select Case cboSystem.Text
         Case "HEATING"
@@ -278,9 +273,7 @@ Private Sub cboSystem_Change()
         Case "APPLIANCE"
             Call showapplianceoptions
     End Select
-    'Call updatelistbox
-    'auditlastrow = Worksheets(AuditSheetName).Range("E" & Rows.Count).End(xlUp).Row
-    'auditcurrentrow = auditlastrow + 1
+
     cmdOK.Enabled = True
 End Sub
 
@@ -1212,9 +1205,9 @@ End Sub
 Private Function heatingvalidation() As Boolean
     Dim iReply As Integer
 
-    If cboSystem.ListIndex < 0 Then
-        prompt = "Heating system"
-    End If
+'    If cboSystem.ListIndex < 0 Then
+'        prompt = "Heating system"
+'    End If
     
     stv = frmSystem.Controls("dc_SystemType1").Value
     If stv = "GAS FURNACE" Or stv = "HEAT PUMP-AIR SOURCE" Or stv = "HEAT PUMP-GROUND SOURCE" _
@@ -1267,6 +1260,8 @@ Private Function heatingvalidation() As Boolean
 End Function
 
 Private Sub cmdLoad_Click()
+
+    
     Dim strSystem As String
     If lstSelectedSystems.ListIndex = -1 Then
         iReply = MsgBox("Please select the system to load", vbOKOnly, "Please select a system in the system list!")
@@ -1430,10 +1425,12 @@ Private Sub cmdLoad_Click()
     
     End Select
     
-
+    bSystemLoad = True
+    oldSystemName = cboSystem.Text
 End Sub
 
 Private Sub cmdNew_Click()
+    bSystemLoad = False
     cboSystem.Text = ""
     strCurrentSystemName = ""
     'auditcurrentrow = Worksheets(AuditSheetName).Range("E" & Rows.Count).End(xlUp).Row + 1
@@ -1450,7 +1447,6 @@ Private Sub cmdOK_Click()
     End If
     Select Case cboSystem
         Case "HEATING"
-            'flag = heatingvalidation
             If heatingvalidation = True Then
                 Call saveheatingsystem
             End If
@@ -1482,18 +1478,36 @@ Private Sub cmdOK_Click()
             Call savefreezer
         Case "APPLIANCE"
             Call saveappliance
+        Case Else
+            MsgBox "The system type is invalid."
     End Select
+    Call updatelistbox
 End Sub
 
 Private Sub savewh()
-    If iWH < 3 Or auditcurrentrow <= auditlastrow Then
-        If auditcurrentrow <= auditlastrow Then
-            lstSelectedSystems.AddItem (strCurrentSystemName)
+    If lstSelectedSystems.ListIndex = -1 Then
+        Call addwh
+    Else
+        pos = InStr(1, lstSelectedSystems.Text, "-")
+        lastSystemType = Mid(lstSelectedSystems.Text, 1, pos - 1)
+        If lastSystemType = cboSystem.Text Then
+            Call writewh
+        Else
+            Call addwh
+        End If
+    End If
+    Call updatelistbox
+End Sub
+Private Sub addwh()
+        If iWH < 3 Then
             iWH = iWH + 1
-        End If
-        If strCurrentSystemName = "" Then
             strCurrentSystemName = "WATER HEATER-" + CStr(iWH)
+            Call writewh
+        Else
+            MsgBox ("You can only enter at most 3 water heaters!")
         End If
+End Sub
+Private Sub writewh()
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Record_Type) = strCurrentSystemName
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Name) = "WATER HEATER"
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable) = frmSystem.Controls("dc_SystemApplicable1").Value
@@ -1508,21 +1522,31 @@ Private Sub savewh()
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Percent_of_Load) = frmSystem.Controls("dc_PercentageLoad1").Value
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Current_temperature_setting) = frmSystem.Controls("dc_TemperatureSetting1").Value
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Energy_Factor) = frmSystem.Controls("dc_EnergyFactor1").Value
-        If auditcurrentrow <= auditlastrow Then lstSelectedSystems.AddItem (strCurrentSystemName)
-        strCurrentSystemName = ""
-    Else
-        MsgBox ("You can only enter at most 3 water heater systems!")
-    End If
 End Sub
 Private Sub savethermo()
-    If iThermostat < 3 Or auditcurrentrow <= auditlastrow Then
-        If auditcurrentrow <= auditlastrow Then
-            lstSelectedSystems.AddItem (strCurrentSystemName)
+    If lstSelectedSystems.ListIndex = -1 Then
+        Call addthermo
+    Else
+        pos = InStr(1, lstSelectedSystems.Text, "-")
+        lastSystemType = Mid(lstSelectedSystems.Text, 1, pos - 1)
+        If lastSystemType = cboSystem.Text Then
+            Call writethermo
+        Else
+            Call addthermo
+        End If
+    End If
+    Call updatelistbox
+End Sub
+Private Sub addthermo()
+        If iThermostat < 3 Then
             iThermostat = iThermostat + 1
-        End If
-        If strCurrentSystemName = "" Then
             strCurrentSystemName = "THERMOSTAT-" + CStr(iThermostat)
+            Call writethermo
+        Else
+            MsgBox ("You can only enter at most 3 thermostats!")
         End If
+End Sub
+Private Sub writethermo()
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Record_Type) = strCurrentSystemName
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Name) = "THERMOSTAT"
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable) = frmSystem.Controls("dc_SystemApplicable1").Value
@@ -1540,22 +1564,32 @@ Private Sub savethermo()
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Cooling_evening_temperature_setting) = frmSystem.Controls("dc_CoolingEveningTemperature1").Value
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Cooling_night_temperature_setting) = frmSystem.Controls("dc_CoolingNightTemperature1").Value
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.AC_load_control_present_indicator) = frmSystem.Controls("dc_ACCtrlPresent1").Value
-        If auditcurrentrow <= auditlastrow Then lstSelectedSystems.AddItem (strCurrentSystemName)
-        strCurrentSystemName = ""
-    Else
-        MsgBox ("You can only enter at most 3 thermostat!")
-    End If
 End Sub
 
 Private Sub savewindow()
-    If iWindow < 5 Or auditcurrentrow <= auditlastrow Then
-        If auditcurrentrow <= auditlastrow Then
-            lstSelectedSystems.AddItem (strCurrentSystemName)
+    If lstSelectedSystems.ListIndex = -1 Then
+        Call addwindow
+    Else
+        pos = InStr(1, lstSelectedSystems.Text, "-")
+        lastSystemType = Mid(lstSelectedSystems.Text, 1, pos - 1)
+        If lastSystemType = cboSystem.Text Then
+            Call writewindow
+        Else
+            Call addwindow
+        End If
+    End If
+    Call updatelistbox
+End Sub
+Private Sub addwindow()
+        If iWindow < 5 Then
             iWindow = iWindow + 1
+            strCurrentSystemName = "WINDOW-" + CStr(iWindow)
+            Call writewindow
+        Else
+            MsgBox ("You can only enter at most 5 windows!")
         End If
-        If strCurrentSystemName = "" Then
-            strCurrentSystemName = "THERMOSTAT-" + CStr(iWindow)
-        End If
+End Sub
+Private Sub writewindow()
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Record_Type) = strCurrentSystemName
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Name) = "WINDOW"
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable) = frmSystem.Controls("dc_SystemApplicable1").Value
@@ -1565,42 +1599,62 @@ Private Sub savewindow()
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Square_Footage) = frmSystem.Controls("dc_SurfaceArea1").Value
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Window_UV_coated_indicator) = frmSystem.Controls("dc_WindowUVCoated1").Value
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Number_of_window_glazings) = frmSystem.Controls("dc_NumberOfGlazing1").Value
-        If auditcurrentrow <= auditlastrow Then lstSelectedSystems.AddItem (strCurrentSystemName)
-        strCurrentSystemName = ""
-    Else
-        MsgBox ("You can only enter at most 5 windows!")
-    End If
 End Sub
 Private Sub savedoor()
-    If iDoor < 5 Or auditcurrentrow <= auditlastrow Then
-        If auditcurrentrow <= auditlastrow Then
-            lstSelectedSystems.AddItem (strCurrentSystemName)
+    If lstSelectedSystems.ListIndex = -1 Then
+        Call adddoor
+    Else
+        pos = InStr(1, lstSelectedSystems.Text, "-")
+        lastSystemType = Mid(lstSelectedSystems.Text, 1, pos - 1)
+        If lastSystemType = cboSystem.Text Then
+            Call writedoor
+        Else
+            Call adddoor
+        End If
+    End If
+    Call updatelistbox
+End Sub
+Private Sub adddoor()
+        If iDoor < 5 Then
             iDoor = iDoor + 1
-        End If
-        If strCurrentSystemName = "" Then
             strCurrentSystemName = "DOOR-" + CStr(iDoor)
+            Call writedoor
+        Else
+            MsgBox ("You can only enter at most 5 doors!")
         End If
+End Sub
+Private Sub writedoor()
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Record_Type) = strCurrentSystemName
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Name) = "DOOR"
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable) = frmSystem.Controls("dc_SystemApplicable1").Value
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Type) = frmSystem.Controls("dc_SystemType1").Value
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Quantity) = frmSystem.Controls("dc_Quantity1").Value
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Condition_of_window_or_door) = frmSystem.Controls("dc_WindowDoorCondition1").Value
-        If auditcurrentrow <= auditlastrow Then lstSelectedSystems.AddItem (strCurrentSystemName)
-        strCurrentSystemName = ""
-    Else
-        MsgBox ("You can only enter at most 5 doors!")
-    End If
 End Sub
 Private Sub savelighting()
-    If iLighting < 4 Or auditcurrentrow <= auditlastrow Then
-        If auditcurrentrow <= auditlastrow Then
-            lstSelectedSystems.AddItem (strCurrentSystemName)
+    If lstSelectedSystems.ListIndex = -1 Then
+        Call addlighting
+    Else
+        pos = InStr(1, lstSelectedSystems.Text, "-")
+        lastSystemType = Mid(lstSelectedSystems.Text, 1, pos - 1)
+        If lastSystemType = cboSystem.Text Then
+            Call writelighting
+        Else
+            Call addlighting
+        End If
+    End If
+    Call updatelistbox
+End Sub
+Private Sub addlighting()
+        If iLighting < 4 Then
             iLighting = iLighting + 1
-        End If
-        If strCurrentSystemName = "" Then
             strCurrentSystemName = "LIGHTING-" + CStr(iLighting)
+            Call writelighting
+        Else
+            MsgBox ("You can only enter at most 4 lighting systems!")
         End If
+End Sub
+Private Sub writelighting()
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Record_Type) = strCurrentSystemName
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Name) = "LIGHTING"
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable) = frmSystem.Controls("dc_SystemApplicable1").Value
@@ -1609,46 +1663,65 @@ Private Sub savelighting()
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Location) = frmSystem.Controls("dc_SystemLocation1").Value
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Weekly_operating_hours) = frmSystem.Controls("dc_TotalWeeklyHours1").Value
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Existing_bulb_wattage) = frmSystem.Controls("dc_BulbWattage1").Value
-        If auditcurrentrow <= auditlastrow Then lstSelectedSystems.AddItem (strCurrentSystemName)
-        strCurrentSystemName = ""
-    Else
-        MsgBox ("You can only enter at most 4 lighting locations!")
-    End If
 End Sub
 Private Sub savewall()
-    If iWall < 4 Or auditcurrentrow <= auditlastrow Then
-        If auditcurrentrow <= auditlastrow Then
-            lstSelectedSystems.AddItem (strCurrentSystemName)
+    If lstSelectedSystems.ListIndex = -1 Then
+        Call addwall
+    Else
+        pos = InStr(1, lstSelectedSystems.Text, "-")
+        lastSystemType = Mid(lstSelectedSystems.Text, 1, pos - 1)
+        If lastSystemType = cboSystem.Text Then
+            Call writewall
+        Else
+            Call addwall
+        End If
+    End If
+    Call updatelistbox
+End Sub
+Private Sub addwall()
+        If iWall < 4 Then
             iWall = iWall + 1
-        End If
-        If strCurrentSystemName = "" Then
             strCurrentSystemName = "WALL-" + CStr(iWall)
+            Call writewall
+        Else
+            MsgBox ("You can only enter at most 4 walls!")
         End If
+End Sub
+Private Sub writewall()
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Record_Type) = strCurrentSystemName
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Name) = "WALL"
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable) = frmSystem.Controls("dc_SystemApplicable1").Value
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Type) = frmSystem.Controls("dc_SystemType1").Value
-        
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Insulation_exist_indicator) = frmSystem.Controls("dc_InsIndicator1").Value
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Insulation_Type) = frmSystem.Controls("dc_InsType1").Value
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.R_Value) = frmSystem.Controls("dc_TankRValue1").Value
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Length) = frmSystem.Controls("dc_SystemLength1").Value
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.height) = frmSystem.Controls("dc_SystemHeight1").Value
-        If auditcurrentrow <= auditlastrow Then lstSelectedSystems.AddItem (strCurrentSystemName)
-        strCurrentSystemName = ""
-    Else
-        MsgBox ("You can only enter at most 4 walls!")
-    End If
 End Sub
 Private Sub saveattic()
-    If iAttic < 4 Or auditcurrentrow <= auditlastrow Then
-        If auditcurrentrow <= auditlastrow Then
-            lstSelectedSystems.AddItem (strCurrentSystemName)
+    If lstSelectedSystems.ListIndex = -1 Then
+        Call addattic
+    Else
+        pos = InStr(1, lstSelectedSystems.Text, "-")
+        lastSystemType = Mid(lstSelectedSystems.Text, 1, pos - 1)
+        If lastSystemType = cboSystem.Text Then
+            Call writeattic
+        Else
+            Call addattic
+        End If
+    End If
+    Call updatelistbox
+End Sub
+Private Sub addattic()
+        If iAttic < 4 Then
             iAttic = iAttic + 1
-        End If
-        If strCurrentSystemName = "" Then
             strCurrentSystemName = "ATTIC-" + CStr(iAttic)
+            Call writeattic
+        Else
+            MsgBox ("You can only enter at most 4 attics!")
         End If
+End Sub
+Private Sub writeattic()
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Record_Type) = strCurrentSystemName
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Name) = "ATTIC"
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable) = frmSystem.Controls("dc_SystemApplicable1").Value
@@ -1662,21 +1735,31 @@ Private Sub saveattic()
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Vent_required_indicator) = frmSystem.Controls("dc_VentIndicator1").Value
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Access_Type) = frmSystem.Controls("dc_AccessType1").Value
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Depth) = frmSystem.Controls("dc_SystemDepth1").Value
-        If auditcurrentrow <= auditlastrow Then lstSelectedSystems.AddItem (strCurrentSystemName)
-        strCurrentSystemName = ""
-    Else
-        MsgBox ("You can only enter at most 4 attics!")
-    End If
 End Sub
 Private Sub savebasement()
-    If iBasement < 3 Or auditcurrentrow <= auditlastrow Then
-        If auditcurrentrow <= auditlastrow Then
-            lstSelectedSystems.AddItem (strCurrentSystemName)
+    If lstSelectedSystems.ListIndex = -1 Then
+        Call addbasement
+    Else
+        pos = InStr(1, lstSelectedSystems.Text, "-")
+        lastSystemType = Mid(lstSelectedSystems.Text, 1, pos - 1)
+        If lastSystemType = cboSystem.Text Then
+            Call writebasement
+        Else
+            Call addbasement
+        End If
+    End If
+    Call updatelistbox
+End Sub
+Private Sub addbasement()
+        If iBasement < 3 Then
             iBasement = iBasement + 1
-        End If
-        If strCurrentSystemName = "" Then
             strCurrentSystemName = "BASEMENT-" + CStr(iBasement)
+            Call writebasement
+        Else
+            MsgBox ("You can only enter at most 3 basements!")
         End If
+End Sub
+Private Sub writebasement()
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Record_Type) = strCurrentSystemName
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Name) = "BASEMENT"
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable) = frmSystem.Controls("dc_SystemApplicable1").Value
@@ -1688,22 +1771,31 @@ Private Sub savebasement()
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.R_Value) = frmSystem.Controls("dc_TankRValue1").Value
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Basement_air_conditioned_indicator) = frmSystem.Controls("dc_BasementAC1").Value
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Rim_joist_recommended_indicator) = frmSystem.Controls("dc_RJInsRecommended1").Value
-
-        If auditcurrentrow <= auditlastrow Then lstSelectedSystems.AddItem (strCurrentSystemName)
-        strCurrentSystemName = ""
-    Else
-        MsgBox ("You can only enter at most 3 basements!")
-    End If
 End Sub
 Private Sub savebasementwall()
-    If iBW < 3 Or auditcurrentrow <= auditlastrow Then
-        If auditcurrentrow <= auditlastrow Then
-            lstSelectedSystems.AddItem (strCurrentSystemName)
+    If lstSelectedSystems.ListIndex = -1 Then
+        Call addbasementwall
+    Else
+        pos = InStr(1, lstSelectedSystems.Text, "-")
+        lastSystemType = Mid(lstSelectedSystems.Text, 1, pos - 1)
+        If lastSystemType = cboSystem.Text Then
+            Call writebasementwall
+        Else
+            Call addbasementwall
+        End If
+    End If
+    Call updatelistbox
+End Sub
+Private Sub addbasementwall()
+        If iBW < 3 Then
             iBW = iBW + 1
-        End If
-        If strCurrentSystemName = "" Then
             strCurrentSystemName = "BASEMENT WALL-" + CStr(iBW)
+            Call writebasementwall
+        Else
+            MsgBox ("You can only enter at most 3 basementwalls!")
         End If
+End Sub
+Private Sub writebasementwall()
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Record_Type) = strCurrentSystemName
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Name) = "BASEMENT WALL"
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable) = frmSystem.Controls("dc_SystemApplicable1").Value
@@ -1711,22 +1803,31 @@ Private Sub savebasementwall()
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.R_Value) = frmSystem.Controls("dc_TankRValue1").Value
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Insulation_exist_indicator) = frmSystem.Controls("dc_InsIndicator1").Value
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Insulation_Type) = frmSystem.Controls("dc_InsType1").Value
-        If auditcurrentrow <= auditlastrow Then lstSelectedSystems.AddItem (strCurrentSystemName)
-        strCurrentSystemName = ""
-    Else
-        MsgBox ("You can only enter at most 3 basement walls!")
-    End If
-    
 End Sub
 Private Sub saverefrigerator()
-    If iRefrigerator < 3 Or auditcurrentrow <= auditlastrow Then
-        If auditcurrentrow <= auditlastrow Then
-            lstSelectedSystems.AddItem (strCurrentSystemName)
+    If lstSelectedSystems.ListIndex = -1 Then
+        Call addrefrigerator
+    Else
+        pos = InStr(1, lstSelectedSystems.Text, "-")
+        lastSystemType = Mid(lstSelectedSystems.Text, 1, pos - 1)
+        If lastSystemType = cboSystem.Text Then
+            Call writerefrigerator
+        Else
+            Call addrefrigerator
+        End If
+    End If
+    Call updatelistbox
+End Sub
+Private Sub addrefrigerator()
+        If iRefrigerator < 3 Then
             iRefrigerator = iRefrigerator + 1
-        End If
-        If strCurrentSystemName = "" Then
             strCurrentSystemName = "REFRIGERATOR-" + CStr(iRefrigerator)
+            Call writerefrigerator
+        Else
+            MsgBox ("You can only enter at most 3 refrigerators!")
         End If
+End Sub
+Private Sub writerefrigerator()
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Record_Type) = strCurrentSystemName
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Name) = "REFRIGERATOR"
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable) = frmSystem.Controls("dc_SystemApplicable1").Value
@@ -1737,21 +1838,31 @@ Private Sub saverefrigerator()
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Defrost_Type) = frmSystem.Controls("dc_DefrostType1").Value
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_make_manufacturer) = frmSystem.Controls("dc_SystemMake1").Value
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Metered_Usage) = frmSystem.Controls("dc_SystemMeteredUsage1").Value
-        
-        strCurrentSystemName = ""
-    Else
-        MsgBox ("You can only enter at most 3 basement walls!")
-    End If
 End Sub
 Private Sub savefreezer()
-    If iFreezer < 3 Or auditcurrentrow <= auditlastrow Then
-        If auditcurrentrow <= auditlastrow Then
-            lstSelectedSystems.AddItem (strCurrentSystemName)
+    If lstSelectedSystems.ListIndex = -1 Then
+        Call addfreezer
+    Else
+        pos = InStr(1, lstSelectedSystems.Text, "-")
+        lastSystemType = Mid(lstSelectedSystems.Text, 1, pos - 1)
+        If lastSystemType = cboSystem.Text Then
+            Call writefreezer
+        Else
+            Call addfreezer
+        End If
+    End If
+    Call updatelistbox
+End Sub
+Private Sub addfreezer()
+        If iFreezer < 3 Then
             iFreezer = iFreezer + 1
-        End If
-        If strCurrentSystemName = "" Then
             strCurrentSystemName = "FREEZER-" + CStr(iFreezer)
+            Call writefreezer
+        Else
+            MsgBox ("You can only enter at most 3 freezers!")
         End If
+End Sub
+Private Sub writefreezer()
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Record_Type) = strCurrentSystemName
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Name) = "FREEZER"
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable) = frmSystem.Controls("dc_SystemApplicable1").Value
@@ -1760,43 +1871,61 @@ Private Sub savefreezer()
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Size_Unit_of_Measure) = frmSystem.Controls("dc_SizeUnit1").Value
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Age) = frmSystem.Controls("dc_SystemAge1").Value
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Defrost_Type) = frmSystem.Controls("dc_DefrostType1").Value
-        If auditcurrentrow <= auditlastrow Then lstSelectedSystems.AddItem (strCurrentSystemName)
-        strCurrentSystemName = ""
-    Else
-        MsgBox ("You can only enter at most 3 basement walls!")
-    End If
 End Sub
 Private Sub saveappliance()
-    If iAppliance < 27 Or auditcurrentrow <= auditlastrow Then
-        If auditcurrentrow <= auditlastrow Then
-            lstSelectedSystems.AddItem (strCurrentSystemName)
+    If lstSelectedSystems.ListIndex = -1 Then
+        Call addappliance
+    Else
+        pos = InStr(1, lstSelectedSystems.Text, "-")
+        lastSystemType = Mid(lstSelectedSystems.Text, 1, pos - 1)
+        If lastSystemType = cboSystem.Text Then
+            Call writeappliance
+        Else
+            Call addappliance
+        End If
+    End If
+    Call updatelistbox
+End Sub
+Private Sub addappliance()
+        If iAppliance < 27 Then
             iAppliance = iAppliance + 1
-        End If
-        If strCurrentSystemName = "" Then
             strCurrentSystemName = "APPLIANCE-" + CStr(iAppliance)
+            Call writeappliance
+        Else
+            MsgBox ("You can only enter at most 27 appliance!")
         End If
+End Sub
+Private Sub writeappliance()
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Record_Type) = strCurrentSystemName
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Name) = "APPLIANCE"
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable) = frmSystem.Controls("dc_SystemApplicable1").Value
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Type) = frmSystem.Controls("dc_SystemType1").Value
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Quantity) = frmSystem.Controls("dc_Quantity1").Value
-        If auditcurrentrow <= auditlastrow Then lstSelectedSystems.AddItem (strCurrentSystemName)
-        strCurrentSystemName = ""
-    Else
-        MsgBox ("You can only enter at most 27 appliances!")
-    End If
 End Sub
 Private Sub savehvacdistribution()
-    If iHVAC < 6 Or auditcurrentrow <= auditlastrow Then
-        
-        If auditcurrentrow = auditlastrow + 1 And iHVAC < 6 Then
-            iHVAC = iHVAC + 1
-            If strCurrentSystemName = "" Then
-                strCurrentSystemName = "HVAC DISTRIBUTION-" + CStr(iHVAC)
-            End If
-            lstSelectedSystems.AddItem (strCurrentSystemName)
+    If lstSelectedSystems.ListIndex = -1 Then
+        Call addhvac
+    Else
+        pos = InStr(1, lstSelectedSystems.Text, "-")
+        lastSystemType = Mid(lstSelectedSystems.Text, 1, pos - 1)
+        If lastSystemType = cboSystem.Text Then
+            Call writehvac
+        Else
+            Call addhvac
         End If
-'        auditlastrow = Worksheets(AuditSheetName).Range("E" & Rows.Count).End(xlUp).Row
+    End If
+    Call updatelistbox
+End Sub
+Private Sub addhvac()
+        If iHVAC < 6 Then
+            iHVAC = iHVAC + 1
+            strCurrentSystemName = "HVAC DISTRIBUTION-" + CStr(iHVAC)
+            Call writehvac
+        Else
+            MsgBox ("You can only enter at most 6 HVAC distribution systems!")
+        End If
+End Sub
+Private Sub writehvac()
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Record_Type) = strCurrentSystemName
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Name) = "HVAC DISTRIBUTION"
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable) = frmSystem.Controls("dc_SystemApplicable1").Value
@@ -1807,25 +1936,31 @@ Private Sub savehvacdistribution()
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Location) = frmSystem.Controls("dc_SystemLocation1").Value
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Length) = frmSystem.Controls("dc_SystemLength1").Value
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Condition_of_flex_duct) = frmSystem.Controls("dc_FlexCondition1").Value
-        strCurrentSystemName = ""
-    Else
-        MsgBox ("You can only enter at most 6 HVAC Distribution systems!")
-    End If
-    
 End Sub
 Private Sub saveheatingsystem()
-    If iHeating < 6 Or auditcurrentrow <= auditlastrow Then
-        If auditcurrentrow = auditlastrow + 1 And iHeating < 6 Then
+    If lstSelectedSystems.ListIndex = -1 Then
+        Call addheating
+    Else
+        pos = InStr(1, lstSelectedSystems.Text, "-")
+        lastSystemType = Mid(lstSelectedSystems.Text, 1, pos - 1)
+        If lastSystemType = cboSystem.Text Then
+            Call writeheating
+        Else
+            Call addheating
+        End If
+    End If
+    Call updatelistbox
+End Sub
+Private Sub addheating()
+        If iHeating < 6 Then
             iHeating = iHeating + 1
-            If strCurrentSystemName = "" Then
-                strCurrentSystemName = "HEATING-" + CStr(iHeating)
-            End If
-            lstSelectedSystems.AddItem (strCurrentSystemName)
-        End If
-        
-        If strCurrentSystemName = "" Then
             strCurrentSystemName = "HEATING-" + CStr(iHeating)
+            Call writeheating
+        Else
+            MsgBox ("You can only enter at most 6 heating systems!")
         End If
+End Sub
+Private Sub writeheating()
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Record_Type) = strCurrentSystemName
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Name) = "HEATING"
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable) = frmSystem.Controls("dc_SystemApplicable1").Value
@@ -1836,24 +1971,17 @@ Private Sub saveheatingsystem()
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Age) = frmSystem.Controls("dc_SystemAge1").Value
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Efficiency_Rating) = frmSystem.Controls("dc_EffRating1").Value
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Efficiency_Rating_Type) = frmSystem.Controls("dc_EffRatingType1").Value
-        strCurrentSystemName = ""
-    Else
-        MsgBox ("You can only enter at most 6 HEATING systems!")
-    End If
-    
 End Sub
-
-Private Sub savecoolingsystem()
-    If iCooling < 6 Or auditcurrentrow <= auditlastrow Then
-        If auditcurrentrow = auditlastrow + 1 And iCooling < 6 Then
+Private Sub addcooling()
+        If iCooling < 6 Then
             iCooling = iCooling + 1
-            If strCurrentSystemName = "" Then
-                strCurrentSystemName = "COOLING-" + CStr(iCooling)
-            End If
-            lstSelectedSystems.AddItem (strCurrentSystemName)
+            strCurrentSystemName = "COOLING-" + CStr(iCooling)
+            Call writecooling
+        Else
+            MsgBox ("You can only enter at most 6 cooling systems!")
         End If
-
-
+End Sub
+Private Sub writecooling()
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Record_Type) = strCurrentSystemName
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Name) = "COOLING"
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable) = frmSystem.Controls("dc_SystemApplicable1").Value
@@ -1868,12 +1996,20 @@ Private Sub savecoolingsystem()
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Frequency_of_system_use) = frmSystem.Controls("dc_FrequencyUse1").Value
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Total_units_used) = frmSystem.Controls("dc_TotalUnits1").Value
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Quantity) = frmSystem.Controls("dc_Quantity1").Value
-        
-        strCurrentSystemName = ""
+End Sub
+Private Sub savecoolingsystem()
+    If lstSelectedSystems.ListIndex = -1 Then
+        Call addcooling
     Else
-        MsgBox ("You can only enter at most 6 COOLING systems!")
+        pos = InStr(1, lstSelectedSystems.Text, "-")
+        lastSystemType = Mid(lstSelectedSystems.Text, 1, pos - 1)
+        If lastSystemType = cboSystem.Text Then
+            Call writecooling
+        Else
+            Call addcooling
+        End If
     End If
-    
+    Call updatelistbox
 End Sub
 
 Private Sub cmdRemove_Click()
@@ -1970,6 +2106,7 @@ Private Sub cmdRename_Click()
             lstSelectedSystems.AddItem (Worksheets(AuditSheetName).Cells(i, 1))
         Next i
     End If
+    Call updatelistbox
 End Sub
 
 Private Sub lstSelectedSystems_Change()
@@ -1979,7 +2116,7 @@ Private Sub lstSelectedSystems_Change()
     auditcurrentrow = CInt(lstSelectedSystems.ListIndex + 2)
 End Sub
 
-Private Sub UserForm_Initialize()
+Private Sub UserForm_Activate()
     vertInterval = 25
     toTop0 = 60 ' not applicable
     toTop = 85
@@ -2126,62 +2263,6 @@ Private Sub UserForm_Initialize()
 '    Call updatesystem(currentrow)
 End Sub
 
-'Private Sub updatesystem(ByVal ir As Integer)
-'    Dim sflg As Boolean
-'
-'    'iBasement
-'    For m = 0 To 13 ' 14 systems
-'
-'        startcol = applianceStartCol
-'        If m > 0 Then
-'            For n = 0 To m - 1
-'                startcol = startcol + sysnum(n) * syslimit(n)
-'            Next n
-'        End If
-'
-'        For i = 1 To syslimit(m)
-'            sflg = False
-'            For j = 1 To sysnum(m)
-'                k = startcol + sysnum(m) * (i - 1) + j - 1
-'                If Worksheets(SheetName).Cells(ir, k).Value <> "" Then
-'                    sflg = True
-'                    Select Case m
-'                        Case SYSEnum.APPLIANCE
-'                            iAppliance = iAppliance + 1
-'                        Case SYSEnum.ATTIC
-'                            iAttic = iAttic + 1
-'                        Case SYSEnum.BASEMENT
-'                            iBasement = iBasement + 1
-'                        Case SYSEnum.BASEMENT_WALL
-'                            iBW = iBW + 1
-'                        Case SYSEnum.COOLING
-'                            iCooling = iCooling + 1
-'                        Case SYSEnum.DOOR
-'                            iDoor = iDoor + 1
-'                        Case SYSEnum.FREEZER
-'                            iFreezer = iFreezer + 1
-'                        Case SYSEnum.HEATING
-'                            iHeating = iHeating + 1
-'                        Case SYSEnum.HVAC_DISTRIBUTION
-'                            iHVAC = iHVAC + 1
-'                        Case SYSEnum.LIGHTING
-'                            iLighting = iLighting + 1
-'                        Case SYSEnum.REFRIGERATOR
-'                            iRefrigerator = iRefrigerator + 1
-'                        Case SYSEnum.THERMOSTAT
-'                            iThermostat = iThermostat + 1
-'                        Case SYSEnum.WALL
-'                            iWall = iWall + 1
-'                        Case SYSEnum.WATER_HEATER
-'                            iWH = iWH + 1
-'                    End Select
-'
-'                    Exit For
-'                End If
-'            Next j
-'        Next i
-'    Next m
-'End Sub
 
 Private Sub updatelistbox()
     auditlastrow = Worksheets(AuditSheetName).Range("E" & Rows.Count).End(xlUp).Row

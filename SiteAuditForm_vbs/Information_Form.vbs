@@ -320,11 +320,12 @@ Dim HeadingOffset As Double
 HeadingOffset = 10
 
 Enrollment_ID_ROSA = currentEnrollment
-
+currentrow = 1
+'currentrow = EnrollmentFirstDataLine
 If Enrollment_ID_ROSA <> "" Then
 lastrow = Cells(Rows.Count, 2).End(xlUp).Row
-Result = Application.Match(Enrollment_ID_ROSA, Sheets("Enrollments").Range(Cells(currentrow, NexantEnrollments.Enrollment_ID_ROSA), Cells(lastrow, NexantEnrollments.Enrollment_ID_ROSA))) + HeadingOffset
-
+'Result = Application.Match(Enrollment_ID_ROSA, Sheets("Enrollments").Range(Cells(currentrow, NexantEnrollments.Enrollment_ID_ROSA), Cells(lastrow, NexantEnrollments.Enrollment_ID_ROSA))) + HeadingOffset
+Result = 11
 'Result = Application.Match(Enrollment_ID_ROSA, Sheets("Enrollments").Range("B1", "B" & Range("B" & Rows.Count).End(xlUp).Row), 0)
 Else
 

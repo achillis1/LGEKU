@@ -2,15 +2,24 @@ Attribute VB_Name = "util"
 Public EnrollmentFirstDataLine As Integer
 Public SheetName As String 'Enrollments
 Public AuditSheetName As String 'Audit
-Public PMSheetName As String
+Public MeasureSheetName As String 'Measure
+Public PMSheetName As String 'PM
 Public InboundLastReadCol As Integer
 Public currentEnrollment As String
 Public premiseid As String
 Public accountnumber As String
+Public ROSAWONumber As String
+Public HEAPWONumber As String
+Public currentrow As Integer
+
 Public lastrow As Integer
 Public auditlastrow As Integer
-Public currentrow As Integer
 Public auditcurrentrow As Integer
+
+
+Public measurelastrow As Integer
+Public measurecurrentrow As Integer
+Public selectedmeasurelastrow As Integer
 
 Sub Main()
     frmMain.Show vbModeless
