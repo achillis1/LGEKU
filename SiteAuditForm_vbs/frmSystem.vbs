@@ -174,55 +174,42 @@ Private vertInterval As Integer
 Private applianceStartCol As Integer
 Private applianceNum As Integer
 Private applianceLimit As Integer
-
 Private atticStartCol As Integer
 Private atticNum As Integer
 Private atticLimit As Integer
-
 Private basementStartCol As Integer
 Private basementNum As Integer
 Private basementLimit As Integer
-
 Private basementwallStartCol As Integer
 Private basementwallNum As Integer
 Private basementwallLimit As Integer
-
 Private coolingStartCol As Integer
 Private coolingNum As Integer
 Private coolingLimit As Integer
-
 Private doorStartCol As Integer
 Private doorNum As Integer
 Private doorLimit As Integer
-
 Private freezerStartCol As Integer
 Private freezerNum As Integer
 Private freezerLimit As Integer
-
 Private heatingStartCol As Integer
 Private heatingNum As Integer
 Private heatingLimit As Integer
-
 Private hvacdistStartCol As Integer
 Private hvacdistNum As Integer
 Private hvacdistLimit As Integer
-
 Private lightingStartCol As Integer
 Private lightingNum As Integer
 Private lightingLimit As Integer
-
 Private refrigStartCol As Integer
 Private refrigNum As Integer
 Private refrigLimit As Integer
-
 Private thermostatStartCol As Integer
 Private thermostatNum As Integer
 Private thermostatLimit As Integer
-
 Private wallStartCol As Integer
 Private wallNum As Integer
 Private wallLimit As Integer
-
 Private waterheaterStartCol As Integer
 Private waterheaterNum As Integer
 Private waterheaterLimit As Integer
@@ -230,8 +217,6 @@ Private waterheaterLimit As Integer
 Private sysnum As Variant
 Private syslimit As Variant
 
-Private bSystemLoad As Boolean
-Private oldSystemName As String
 
 Private Sub cboSystem_Change()
     
@@ -790,29 +775,29 @@ Private Sub showatticoptions()
     frmSystem.Controls("dc_InsType1").AddItem ("OTHER")
     
     'R-VALUE
-    Call addlabel(lblTankRValue, "dc_lblTankRValue1", "Attic R-Value", toTop2, toLeft2, lblWidth, lblHeight)
-    Call addtextbox(TankRValue, "dc_TankRValue1", toTop2, toLeft3, txtWidth, txtHeight)
+    Call addlabel(lblTankRValue, "dc_lblTankRValue1", "Attic R-Value", toTop3, toLeft, lblWidth, lblHeight)
+    Call addtextbox(TankRValue, "dc_TankRValue1", toTop3, toLeft1, txtWidth, txtHeight)
     
     'LENGTH
-    Call addlabel(lblSystemLength, "dc_lblSystemLength1", "Length", toTop3, toLeft, lblWidth, lblHeight)
-    Call addtextbox(SystemLength, "dc_SystemLength1", toTop3, toLeft1, txtWidth, txtHeight)
-    Call addlabel(lblSystemLength1, "dc_lblSystemLength2", "ft", toTop2, toLeft3 + txtWidth + 5, lblWidth, lblHeight)
+    Call addlabel(lblSystemLength, "dc_lblSystemLength1", "Length", toTop3, toLeft2, lblWidth, lblHeight)
+    Call addtextbox(SystemLength, "dc_SystemLength1", toTop3, toLeft3, txtWidth, txtHeight)
+    Call addlabel(lblSystemLength1, "dc_lblSystemLength2", "ft", toTop3, toLeft3 + txtWidth + 5, lblWidth, lblHeight)
 
     'HEIGHT
-    Call addlabel(lblSystemHeight, "dc_lblSystemHeight1", "Height", toTop3, toLeft2, lblWidth, lblHeight)
-    Call addtextbox(SystemHeight, "dc_SystemHeight1", toTop3, toLeft3, txtWidth, txtHeight)
-    Call addlabel(lblSystemHeight1, "dc_lblSystemHeight2", "ft", toTop3, toLeft3 + txtWidth + 5, lblWidth, lblHeight)
+    Call addlabel(lblSystemHeight, "dc_lblSystemHeight1", "Height", toTop4, toLeft, lblWidth, lblHeight)
+    Call addtextbox(SystemHeight, "dc_SystemHeight1", toTop4, toLeft1, txtWidth, txtHeight)
+    Call addlabel(lblSystemHeight1, "dc_lblSystemHeight2", "ft", toTop4, toLeft1 + txtWidth + 5, lblWidth, lblHeight)
     
     'VENT REQUIRED
-    Call addlabel(lblVentIndicator, "dc_lblVentIndicator1", "Vent Required*", toTop4, toLeft, lblWidth, lblHeight)
-    Call addcomboBox(VentIndicator, "dc_VentIndicator1", toTop4, toLeft1, cboWidth, cboHeight)
+    Call addlabel(lblVentIndicator, "dc_lblVentIndicator1", "Vent Required*", toTop4, toLeft2, lblWidth, lblHeight)
+    Call addcomboBox(VentIndicator, "dc_VentIndicator1", toTop4, toLeft3, cboWidth, cboHeight)
     frmSystem.Controls("dc_VentIndicator1").AddItem ("Y")
     frmSystem.Controls("dc_VentIndicator1").AddItem ("N")
     
 
     'ACCESS TYPE
-    Call addlabel(lblAccessType, "dc_lblAccessType1", "Access Type*", toTop4, toLeft, lblWidth, lblHeight)
-    Call addcomboBox(AccessType, "dc_AccessType1", toTop4, toLeft1, cboWidth * 2, cboHeight)
+    Call addlabel(lblAccessType, "dc_lblAccessType1", "Access Type*", toTop5, toLeft, lblWidth, lblHeight)
+    Call addcomboBox(AccessType, "dc_AccessType1", toTop5, toLeft1, cboWidth * 2, cboHeight)
     frmSystem.Controls("dc_AccessType1").AddItem ("CEILING")
     frmSystem.Controls("dc_AccessType1").AddItem ("EXTERIOR")
     frmSystem.Controls("dc_AccessType1").AddItem ("KNEE WALL")
@@ -822,9 +807,9 @@ Private Sub showatticoptions()
     frmSystem.Controls("dc_AccessType1").AddItem ("WALK UP STAIRWAY")
     
     'DEPTH
-    Call addlabel(lblSystemDepth, "dc_lblSystemDepth1", "Depth", toTop5, toLeft, lblWidth, lblHeight)
-    Call addtextbox(SystemDepth, "dc_SystemDepth1", toTop5, toLeft1, txtWidth, txtHeight)
-    Call addlabel(lblSystemDepth1, "dc_lblSystemDepth2", "ft", toTop5, toLeft1 + txtWidth + 5, lblWidth, lblHeight)
+    Call addlabel(lblSystemDepth, "dc_lblSystemDepth1", "Depth", toTop6, toLeft, lblWidth, lblHeight)
+    Call addtextbox(SystemDepth, "dc_SystemDepth1", toTop6, toLeft1, txtWidth, txtHeight)
+    Call addlabel(lblSystemDepth1, "dc_lblSystemDepth2", "ft", toTop6, toLeft1 + txtWidth + 5, lblWidth, lblHeight)
 End Sub
 
 Private Sub showbasementoptions()
@@ -1183,7 +1168,7 @@ Private Sub showheatingoptions()
     Call addtextbox(SystemAge, "dc_SystemAge1", toTop3, toLeft1, txtWidth, txtHeight)
     
     'SYSTEM Efficiency Rating
-    Call addlabel(lblEffRating, "dc_lblEffRating1", "Efficiency Rating", toTop4, toLeft - 10, lblWidth, lblHeight)
+    Call addlabel(lblEffRating, "dc_lblEffRating1", "Efficiency Rating*", toTop4, toLeft - 10, lblWidth, lblHeight)
     Call addtextbox(EffRating, "dc_EffRating1", toTop4, toLeft1, txtWidth, txtHeight)
     
     'SYSTEM Efficiency Rating Type
@@ -1192,6 +1177,10 @@ Private Sub showheatingoptions()
     frmSystem.Controls("dc_EffRatingType1").AddItem ("AFUE")
     frmSystem.Controls("dc_EffRatingType1").AddItem ("HSPF")
     frmSystem.Controls("dc_EffRatingType1").AddItem ("COP")
+    
+    'TOTAL PERCENTAGE OF SPACE HEATED
+    Call addlabel(lblPercentageCooled, "dc_lblPercentageCooled1", "% of space heated*", toTop5, toLeft - 13, lblWidth, lblHeight)
+    Call addtextbox(PercentageCooled, "dc_PercentageCooled1", toTop5, toLeft1, txtWidth, txtHeight)
 End Sub
 
 Private Sub errorstring(ByVal str1 As String)
@@ -1204,10 +1193,13 @@ End Sub
 
 Private Function heatingvalidation() As Boolean
     Dim iReply As Integer
-
-'    If cboSystem.ListIndex < 0 Then
-'        prompt = "Heating system"
-'    End If
+    prompt = ""
+    
+    sna = frmSystem.Controls("dc_SystemApplicable1").Value
+    If sna = "N/A" Or sna = "X" Or sna = "BLANK" Then
+    Else
+        errorstring ("System not applicable value")
+    End If
     
     stv = frmSystem.Controls("dc_SystemType1").Value
     If stv = "GAS FURNACE" Or stv = "HEAT PUMP-AIR SOURCE" Or stv = "HEAT PUMP-GROUND SOURCE" _
@@ -1239,8 +1231,14 @@ Private Function heatingvalidation() As Boolean
         errorstring ("System Age")
     End If
     
+    
     If Not IsNumeric(frmSystem.Controls("dc_EffRating1").Value) Then
         errorstring ("Efficiency Rating")
+    Else
+        te = CDbl(frmSystem.Controls("dc_EffRating1").Value)
+        If te <= 0 Or te > 99.9 Then
+            errorstring ("Efficiency Rating number range")
+        End If
     End If
     
     et = frmSystem.Controls("dc_EffRatingType1").Value
@@ -1249,19 +1247,415 @@ Private Function heatingvalidation() As Boolean
         errorstring ("Efficiency Rating Type")
     End If
     
+    
+    If frmSystem.Controls("dc_PercentageCooled1").Value = "" Then
+        errorstring ("Total % of space heated")
+    Else
+        tp = CDbl(frmSystem.Controls("dc_PercentageCooled1").Value)
+        If tp < 0 Or tp > 100 Then
+            errorstring ("Total % of space heated number range")
+        End If
+    End If
+    
     If prompt <> "" Then
         iReply = MsgBox(prompt + " not filled out correctly", vbOKOnly, "Input error!")
         prompt = ""
         heatingvalidation = 0
-        Exit Function
     Else
-    heatingvalidation = 1
+        heatingvalidation = 1
     End If
 End Function
 
-Private Sub cmdLoad_Click()
-
+Private Function coolingvalidation() As Boolean
+    Dim iReply As Integer
+    prompt = ""
     
+    sna = frmSystem.Controls("dc_SystemApplicable1").Value
+    If sna = "N/A" Or sna = "X" Or sna = "BLANK" Then
+    Else
+        errorstring ("System not applicable value")
+    End If
+    
+    stv = frmSystem.Controls("dc_SystemType1").Value
+    If stv = "CENTRAL AC" Or stv = "HEAT PUMP-AIR SOURCE" Or stv = "HEAT PUMP-WATER SOURCE" _
+        Or stv = "SPLIT SYSTEM" Or stv = "WINDOW AC" Then
+    Else
+        errorstring ("Cooling Type")
+    End If
+    
+    fs = frmSystem.Controls("dc_FuelSource1").Value
+    If fs = "ELECTRIC" Then
+    Else
+        errorstring ("Fuel Source")
+    End If
+    
+    If Not IsNumeric(frmSystem.Controls("dc_SystemSize1").Value) Then
+        errorstring ("System Size")
+    End If
+
+    su = frmSystem.Controls("dc_SizeUnit1").Value
+    If su = "BTU" Or su = "MBTU" Or su = "MMBTU" Or su = "TON" Then
+    Else
+        errorstring ("Size Unit")
+    End If
+    
+    If IsNumeric(frmSystem.Controls("dc_SystemAge1").Value) Then
+    Else
+        errorstring ("System Age")
+    End If
+    
+    If Not IsNumeric(frmSystem.Controls("dc_EffRating1").Value) Then
+        errorstring ("Efficiency Rating")
+    Else
+        te = CDbl(frmSystem.Controls("dc_EffRating1").Value)
+        If te <= 0 Or te > 99.9 Then
+            errorstring ("Efficiency Rating number range")
+        End If
+    End If
+    
+    et = frmSystem.Controls("dc_EffRatingType1").Value
+    If et = "EER" Or et = "SEER" Or et = "COP" Then
+    Else
+        errorstring ("Efficiency Rating Type")
+    End If
+    
+    
+    If frmSystem.Controls("dc_PercentageCooled1").Value = "" Then
+        errorstring ("Total % of space cooled")
+    Else
+        tp = CDbl(frmSystem.Controls("dc_PercentageCooled1").Value)
+        If tp < 0 Or tp > 100 Then
+            errorstring ("Total % of space heated number range")
+        End If
+    End If
+    
+    fsu = frmSystem.Controls("dc_FrequencyUse1").Value
+    If fsu = "0%" Or fsu = "10-30%" Or fsu = "31-70%" Or fsu = "71-100%" Then
+    Else
+        errorstring ("Frequency of system use")
+    End If
+    
+    If stv = "WINDOW AC" Then
+        tuu = frmSystem.Controls("dc_TotalUnits1").Value
+        If IsNumeric(tuu) Then
+            If Abs(Int(tuu) - CDbl(tuu)) < 0.000000001 And Int(tuu) > 0 Then
+            Else
+                errorstring ("Total units used format")
+            End If
+        Else
+            errorstring ("Total units used")
+        End If
+        
+        qty = frmSystem.Controls("dc_Quantity1").Value
+        If IsNumeric(qty) Then
+            If Abs(Int(qty) - CDbl(qty)) < 0.000000001 And Int(tuu) > 0 Then
+            Else
+                errorstring ("Quantity format")
+            End If
+        Else
+            errorstring ("Quantity")
+        End If
+    End If
+    
+    If prompt <> "" Then
+        iReply = MsgBox(prompt + " not filled out correctly", vbOKOnly, "Input error!")
+        prompt = ""
+        coolingvalidation = 0
+    Else
+        coolingvalidation = 1
+    End If
+
+End Function
+Private Function hvacvalidation() As Boolean
+    Dim iReply As Integer
+    prompt = ""
+    
+    sna = frmSystem.Controls("dc_SystemApplicable1").Value
+    If sna = "N/A" Or sna = "X" Or sna = "BLANK" Then
+    Else
+        errorstring ("System not applicable value")
+    End If
+    
+    stv = frmSystem.Controls("dc_SystemType1").Value
+    If stv = "DUCT ROUND" Or stv = "DUCT RECTANGULAR" Or stv = "IRON PIPE" _
+        Or stv = "COPPER" Or stv = "ELBOWS" Then
+    Else
+        errorstring ("Cooling Type")
+    End If
+    
+    sz = frmSystem.Controls("dc_SystemSize1").Value
+    If sz = "SMALL" Or sz = "MEDIUM" Or sz = "LARGE" _
+        Or sz = "EXTRA LARGE" Then
+    Else
+        errorstring ("System Size")
+    End If
+
+    iei = frmSystem.Controls("dc_InsIndicator1").Value
+    If iei = "Y" Or iei = "N" Or iei = "NOT NEEDED" Then
+    Else
+        errorstring ("Insulation exist indicator")
+    End If
+    
+    If iei = "Y" Then
+        it = frmSystem.Controls("dc_InsType1").Value
+        If it = "CELLULOSE" Or it = "FIBERGLASS BATTS" Or it = "LOOSE FIBERGLASS" Or _
+            it = "FIBERGLASS BLOWN" Or it = "MINERAL/ROCK WOOL" Or it = "UREA FORMALDAHYDE" Or _
+            it = ".5 LB FOAM" Or it = "2 LB FOAM" Or it = "NONE" Or it = "OTHER" Then
+        Else
+            errorstring ("Insulation type")
+        End If
+    End If
+    
+    sl = frmSystem.Controls("dc_SystemLocation1").Value
+    If sl = "ATTIC" Or sl = "BASEMENT" Or sl = "CRAWL" Then
+    Else
+        errorstring ("System location")
+    End If
+    
+    length1 = frmSystem.Controls("dc_SystemLength1").Value
+    If Not (length1 = "" Or IsNumeric(length1)) Then
+        errorstring ("Length")
+    End If
+    
+    cf = frmSystem.Controls("dc_FlexCondition1").Value
+    If cf = "" Or cf = "COLLAPSED" Or cf = "DAMAGED" Or cf = "FUNCTIONAL" Or cf = "NON-FUNCTIONAL CLLAPSED" Or _
+        cf = "NON-FUNCTIONAL DAMAGED" Then
+    Else
+        errorstring ("Condition of flex duct")
+    End If
+        
+    If prompt <> "" Then
+        iReply = MsgBox(prompt + " not filled out correctly", vbOKOnly, "Input error!")
+        prompt = ""
+        hvacvalidation = 0
+    Else
+        hvacvalidation = 1
+    End If
+End Function
+Private Function whvalidation() As Boolean
+    Dim iReply As Integer
+    prompt = ""
+    
+    sna = frmSystem.Controls("dc_SystemApplicable1").Value
+    If sna = "N/A" Or sna = "X" Or sna = "BLANK" Then
+    Else
+        errorstring ("System not applicable value")
+    End If
+    
+    stv = frmSystem.Controls("dc_SystemType1").Value
+    If stv = "CONVENTIONAL STORAGE" Or stv = "DEMAND" Or stv = "TANKLESS\INSTANTANEOUS" _
+        Or stv = "SOLAR/TANK" Or stv = "GEOTHERMAL DESUPERHEATER/TANK" Then
+    Else
+        errorstring ("System Type")
+    End If
+    
+    fs = frmSystem.Controls("dc_FuelSource1").Value
+    If fs = "ELECTRIC" Or fs = "GAS" Or fs = "PROPANE" Or fs = "SOLAR" Or fs = "WOOD" Or fs = "OIL" _
+        Or "OTHER" Then
+    Else
+        errorstring ("Fuel Source")
+    End If
+    
+    If Not IsNumeric(frmSystem.Controls("dc_SystemSize1").Value) Then
+        errorstring ("System Size")
+    End If
+
+    su = frmSystem.Controls("dc_SizeUnit1").Value
+    If su = "GALLONS" Then
+    Else
+        errorstring ("Size Unit")
+    End If
+
+    If IsNumeric(frmSystem.Controls("dc_SystemAge1").Value) Then
+    Else
+        errorstring ("System Age")
+    End If
+
+    iei = frmSystem.Controls("dc_InsIndicator1").Value
+    If iei = "Y" Or iei = "N" Or iei = "NOT NEEDED" Then
+    Else
+        errorstring ("Insulation exist indicator")
+    End If
+    
+    If iei = "Y" Then
+        it = frmSystem.Controls("dc_InsType1").Value
+        If it = "FIBERGLASS BATTS" Or it = "MINERAL/ROCK WOOL" Or it = "NONE" Or it = "OTHER" Then
+        Else
+            errorstring ("Insulation type")
+        End If
+    End If
+
+    tv1 = frmSystem.Controls("dc_TankRValue1").Value
+    If Not (tv1 = "" Or IsNumeric(tv1)) Then
+        errorstring ("Tank R-Value")
+    End If
+
+    If frmSystem.Controls("dc_PercentageLoad1").Value = "" Then
+        errorstring ("% of load")
+    Else
+        tp = CDbl(frmSystem.Controls("dc_PercentageLoad1").Value)
+        If tp < 0 Or tp > 100 Then
+            errorstring ("% of load number range")
+        End If
+    End If
+    
+    If Not IsNumeric(frmSystem.Controls("dc_TemperatureSetting1").Value) Then
+        errorstring ("Current temperature setting")
+    Else
+        te = CDbl(frmSystem.Controls("dc_TemperatureSetting1").Value)
+        If te <= 0 Or te > 99.9 Then
+            errorstring ("Current temperature setting number range")
+        End If
+    End If
+    
+    tv1 = frmSystem.Controls("dc_EnergyFactor1").Value
+    If Not (tv1 = "" Or IsNumeric(tv1)) Then
+        errorstring ("Energy factor")
+    End If
+    
+    If prompt <> "" Then
+        iReply = MsgBox(prompt + " not filled out correctly", vbOKOnly, "Input error!")
+        prompt = ""
+        whvalidation = 0
+    Else
+        whvalidation = 1
+    End If
+
+End Function
+Private Function thermovalidation() As Boolean
+    Dim iReply As Integer
+    prompt = ""
+    
+    sna = frmSystem.Controls("dc_SystemApplicable1").Value
+    If sna = "N/A" Or sna = "X" Or sna = "BLANK" Then
+    Else
+        errorstring ("System not applicable value")
+    End If
+    
+    stv = frmSystem.Controls("dc_SystemType1").Value
+    If stv = "DIGITAL" Or stv = "DIGITAL PROGRAMMABLE" Or stv = "STANDARD" Then
+    Else
+        errorstring ("System Type")
+    End If
+    
+    If frmSystem.Controls("dc_PercentageLoad1").Value = "" Then
+        errorstring ("% of load")
+    Else
+        tp = CDbl(frmSystem.Controls("dc_PercentageLoad1").Value)
+        If tp < 0 Or tp > 100 Then
+            errorstring ("% of load number range")
+        End If
+    End If
+
+    If Not IsNumeric(frmSystem.Controls("dc_AverageCoolingTemperature1").Value) Then
+        errorstring ("Average cooling temperature setting")
+    Else
+        te = CDbl(frmSystem.Controls("dc_AverageCoolingTemperature1").Value)
+        If te <= 0 Or te > 99.9 Then
+            errorstring ("Average cooling temperature setting number range")
+        End If
+    End If
+    
+    If Not IsNumeric(frmSystem.Controls("dc_AverageHeatingTemperature1").Value) Then
+        errorstring ("Average heating temperature setting")
+    Else
+        te = CDbl(frmSystem.Controls("dc_AverageHeatingTemperature1").Value)
+        If te <= 0 Or te > 99.9 Then
+            errorstring ("Average heating temperature setting number range")
+        End If
+    End If
+    
+    dsb1 = frmSystem.Controls("dc_DaytimeSetback1").Value
+    If Not (dsb1 = "" Or dsb1 = "Y" Or dsb1 = "N") Then
+        errorstring ("temperature set back during daytime hours")
+    End If
+
+    esb1 = frmSystem.Controls("dc_EveningSetback1").Value
+    If Not (esb1 = "" Or dsb1 = "Y" Or dsb1 = "N") Then
+        errorstring ("temperature set back during evening hours")
+    End If
+    
+    nsb1 = frmSystem.Controls("dc_NightSetback1").Value
+    If Not (nsb1 = "" Or dsb1 = "Y" Or dsb1 = "N") Then
+        errorstring ("temperature set back during night hours")
+    End If
+    
+    hd1 = frmSystem.Controls("dc_HeatingDayTemperature1").Value
+    If Not (hd1 = "" Or IsNumeric(hd1)) Then
+        errorstring ("Heating day temperature setting")
+    End If
+    
+    he1 = frmSystem.Controls("dc_HeatingEveningTemperature1").Value
+    If Not (he1 = "" Or IsNumeric(he1)) Then
+        errorstring ("Heating evening temperature setting")
+    End If
+    
+    hn1 = frmSystem.Controls("dc_HeatingNightTemperature1").Value
+    If Not (hn1 = "" Or IsNumeric(hn1)) Then
+        errorstring ("Heating night temperature setting")
+    End If
+    
+    cd1 = frmSystem.Controls("dc_CoolingDayTemperature1").Value
+    If Not (cd1 = "" Or IsNumeric(cd1)) Then
+        errorstring ("Cooling day temperature setting")
+    End If
+    
+    ce1 = frmSystem.Controls("dc_CoolingEveningTemperature1").Value
+    If Not (ce1 = "" Or IsNumeric(ce1)) Then
+        errorstring ("Cooling evening temperature setting")
+    End If
+    
+    cn1 = frmSystem.Controls("dc_CoolingNightTemperature1").Value
+    If Not (cn1 = "" Or IsNumeric(cn1)) Then
+        errorstring ("Cooling night temperature setting")
+    End If
+    
+    esb1 = frmSystem.Controls("dc_ACCtrlPresent1").Value
+    If Not (esb1 = "" Or dsb1 = "Y" Or dsb1 = "N") Then
+        errorstring ("AC load control present")
+    End If
+    
+    If prompt <> "" Then
+        iReply = MsgBox(prompt + " not filled out correctly", vbOKOnly, "Input error!")
+        prompt = ""
+        thermovalidation = False
+    Else
+        thermovalidation = True
+        
+    End If
+End Function
+Private Function windowvalidation() As Boolean
+    windowvalidation = True
+End Function
+Private Function doorvalidation() As Boolean
+    doorvalidation = True
+End Function
+Private Function lightingvalidation() As Boolean
+    lightingvalidation = True
+End Function
+Private Function wallvalidation() As Boolean
+    wallvalidation = True
+End Function
+Private Function atticvalidation() As Boolean
+    atticvalidation = True
+End Function
+Private Function basementvalidation() As Boolean
+    basementvalidation = True
+End Function
+Private Function basementwallvalidation() As Boolean
+    basementwallvalidation = True
+End Function
+Private Function refrigeratorvalidation() As Boolean
+    refrigeratorvalidation = True
+End Function
+Private Function freezervalidation() As Boolean
+    freezervalidation = True
+End Function
+Private Function appliancevalidation() As Boolean
+    appliancevalidation = True
+End Function
+            
+Private Sub cmdLoad_Click()
     Dim strSystem As String
     If lstSelectedSystems.ListIndex = -1 Then
         iReply = MsgBox("Please select the system to load", vbOKOnly, "Please select a system in the system list!")
@@ -1425,12 +1819,10 @@ Private Sub cmdLoad_Click()
     
     End Select
     
-    bSystemLoad = True
-    oldSystemName = cboSystem.Text
 End Sub
 
 Private Sub cmdNew_Click()
-    bSystemLoad = False
+
     cboSystem.Text = ""
     strCurrentSystemName = ""
     'auditcurrentrow = Worksheets(AuditSheetName).Range("E" & Rows.Count).End(xlUp).Row + 1
@@ -1445,45 +1837,47 @@ Private Sub cmdOK_Click()
         auditlastrow = Worksheets(AuditSheetName).Range("E" & Rows.Count).End(xlUp).Row
         auditcurrentrow = auditlastrow + 1
     End If
-    Select Case cboSystem
+    Select Case cboSystem.Text
         Case "HEATING"
-            If heatingvalidation = True Then
-                Call saveheatingsystem
-            End If
+            If heatingvalidation Then Call saveheatingsystem
         Case "COOLING"
-            Call savecoolingsystem
+            If coolingvalidation Then Call savecoolingsystem
         Case "HVAC DISTRIBUTION"
-            Call savehvacdistribution
+            If hvacvalidation Then Call savehvacdistribution
         Case "WATER HEATER"
-            Call savewh
+            If whvalidation Then Call savewh
         Case "THERMOSTAT"
-            Call savethermo
+            If thermovalidation Then Call savethermo
         Case "WINDOW"
-            Call savewindow
+            If windowvalidation Then Call savewindow
         Case "DOOR"
-            Call savedoor
+            If doorvalidation Then Call savedoor
         Case "LIGHTING"
-            Call savelighting
+            If lightingvalidation Then Call savelighting
         Case "WALL"
-            Call savewall
+            If wallvalidation Then Call savewall
         Case "ATTIC"
-            Call saveattic
+            If atticvalidation Then Call saveattic
         Case "BASEMENT"
-            Call savebasement
+            If basementvalidation Then Call savebasement
         Case "BASEMENT WALL"
-            Call savebasementwall
+            If basementwallvalidation Then Call savebasementwall
         Case "REFRIGERATOR"
-            Call saverefrigerator
+            If refrigeratorvalidation Then Call saverefrigerator
         Case "FREEZER"
-            Call savefreezer
+            If freezervalidation Then Call savefreezer
         Case "APPLIANCE"
-            Call saveappliance
+            If appliancevalidation Then Call saveappliance
         Case Else
             MsgBox "The system type is invalid."
     End Select
     Call updatelistbox
+    Call savedb
 End Sub
 
+Private Sub savedb()
+
+End Sub
 Private Sub savewh()
     If lstSelectedSystems.ListIndex = -1 Then
         Call addwh
@@ -1658,7 +2052,7 @@ Private Sub writelighting()
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Record_Type) = strCurrentSystemName
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Name) = "LIGHTING"
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Not_Applicable) = frmSystem.Controls("dc_SystemApplicable1").Value
-        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Type) = frmSystem.Controls("dc_SystemType1").Value
+        'Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Type) = frmSystem.Controls("dc_SystemType1").Value
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Quantity) = frmSystem.Controls("dc_Quantity1").Value
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Location) = frmSystem.Controls("dc_SystemLocation1").Value
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Weekly_operating_hours) = frmSystem.Controls("dc_TotalWeeklyHours1").Value
@@ -1971,6 +2365,7 @@ Private Sub writeheating()
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.System_Age) = frmSystem.Controls("dc_SystemAge1").Value
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Efficiency_Rating) = frmSystem.Controls("dc_EffRating1").Value
         Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Efficiency_Rating_Type) = frmSystem.Controls("dc_EffRatingType1").Value
+        Worksheets(AuditSheetName).Cells(auditcurrentrow, LGEContextual.Percent_of_space_heated_or_cooled) = frmSystem.Controls("dc_PercentageCooled1").Value
 End Sub
 Private Sub addcooling()
         If iCooling < 6 Then
@@ -2013,8 +2408,12 @@ Private Sub savecoolingsystem()
 End Sub
 
 Private Sub cmdRemove_Click()
+    If lstSelectedSystems.ListIndex = -1 Then
+        MsgBox "You must select a system first."
+        Exit Sub
+    End If
     currentrow = lstSelectedSystems.ListIndex
-    Select Case Worksheets(AuditSheetName).Cells(currentrow + 2, 5).Value
+    Select Case Worksheets(AuditSheetName).Cells(currentrow + 2, LGEContextual.System_Name).Value
         Case "HEATING"
             iHeating = iHeating - 1
         Case "COOLING"
@@ -2141,6 +2540,8 @@ Private Sub UserForm_Activate()
     txtWidth = 50
     lblHeight = 20
     lblWidth = 80
+    
+    cboSystem.Clear
 
     cboSystem.AddItem ("HEATING")
     cboSystem.AddItem ("COOLING")
@@ -2162,45 +2563,6 @@ Private Sub UserForm_Activate()
     cmdCancel.Enabled = True
     
     Call updatelistbox
-'    auditlastrow = Worksheets(AuditSheetName).Range("E" & Rows.Count).End(xlUp).Row
-'
-'    If auditlastrow > 1 Then
-'        For i = 2 To auditlastrow
-'            lstSelectedSystems.AddItem (Worksheets(AuditSheetName).Cells(i, 1))
-'            Select Case Worksheets(AuditSheetName).Cells(i, 5)
-'                Case "HEATING"
-'                    iHeating = iHeating + 1
-'                Case "COOLING"
-'                    iCooling = iCooling + 1
-'                Case "HVAC DISTRIBUTION"
-'                    iHVAC = iHVAC + 1
-'                Case "WATER HEATER"
-'                    iWH = iWH + 1
-'                Case "THERMOSTAT"
-'                    iThermostat = iThermostat + 1
-'                Case "WINDOW"
-'                    iWindow = iWindow + 1
-'                Case "DOOR"
-'                    iDoor = iDoor + 1
-'                Case "LIGHTING"
-'                    iLighting = iLighting + 1
-'                Case "WALL"
-'                    iWall = iWall + 1
-'                Case "ATTIC"
-'                    iAttic = iAttic + 1
-'                Case "BASEMENT"
-'                    iBasement = iBasement + 1
-'                Case "BASEMENT WALL"
-'                    iBW = iBW + 1
-'                Case "REFRIGERATOR"
-'                    iRefrigerator = iRefrigerator + 1
-'                Case "FREEZER"
-'                    iFreezer = iFreezer + 1
-'                Case "APPLIANCE"
-'                    iAppliance = iAppliance + 1
-'            End Select
-'        Next i
-'    End If
 
     If lstSelectedSystems.ListIndex = -1 Then
         cmdRemove.Enabled = False
@@ -2213,50 +2575,48 @@ Private Sub UserForm_Activate()
     txtPremiseID.Enabled = False
     txtAccountNumber.Enabled = False
     
-    'Application.Visible = False
-    
-'    applianceStartCol = NexantEnrollments.APPLIANCE_AQUARIUM_quantity
-'    applianceNum = NexantEnrollments.ATTIC_1_access_type - NexantEnrollments.APPLIANCE_AQUARIUM_quantity
-'    applianceLimit = 1
-'    atticStartCol = NexantEnrollments.ATTIC_1_access_type
-'    atticNum = NexantEnrollments.ATTIC_1_vent - NexantEnrollments.ATTIC_1_access_type + 1
-'    atticLimit = 4
-'    basementStartCol = NexantEnrollments.BASEMENT_1_air_conditioned
-'    basementNum = NexantEnrollments.BASEMENT_1_type - NexantEnrollments.BASEMENT_1_air_conditioned + 1
-'    basementLimit = 3
-'    basementwallStartCol = NexantEnrollments.BASEMENT_WALL_1_insulation
-'    basementwallNum = NexantEnrollments.BASEMENT_WALL_1_type - NexantEnrollments.BASEMENT_WALL_1_insulation + 1
-'    basementwallLimit = 3
-'    coolingStartCol = NexantEnrollments.COOLING_1_age
-'    coolingNum = NexantEnrollments.COOLING_1_usage_frequency - NexantEnrollments.COOLING_1_age + 1
-'    coolingLimit = 6
-'    doorStartCol = NexantEnrollments.DOOR_1_condition
-'    doorNum = NexantEnrollments.DOOR_1_type - NexantEnrollments.DOOR_1_condition + 1
-'    doorLimit = 5
-'    freezerStartCol = NexantEnrollments.FREEZER_1_age
-'    freezerNum = NexantEnrollments.FREEZER_1_type - NexantEnrollments.FREEZER_1_age + 1
-'    freezerLimit = 3
-'    heatingStartCol = NexantEnrollments.HEATING_1_age
-'    heatingNum = NexantEnrollments.HEATING_1_type - NexantEnrollments.HEATING_1_age + 1
-'    heatingLimit = 6
-'    hvacdistStartCol = NexantEnrollments.HVAC_DIST_1_flex_duct_condition
-'    hvacdistNum = NexantEnrollments.HVAC_DIST_1_type - NexantEnrollments.HVAC_DIST_1_flex_duct_condition + 1
-'    hvacdistLimit = 6
-'    lightingStartCol = NexantEnrollments.LIGHTING_1_not_applicable
-'    lightingNum = NexantEnrollments.LIGHTING_1_weekly_hrs - NexantEnrollments.LIGHTING_1_not_applicable + 1
-'    lightingLimit = 4
-'    refrigStartCol = NexantEnrollments.REFRIGERATOR_1_age
-'    refrigNum = NexantEnrollments.REFRIGERATOR_1_type - NexantEnrollments.REFRIGERATOR_1_age + 1
-'    refrigLimit = 3
-'    thermostatStartCol = NexantEnrollments.THERMOSTAT_1_ac_load_control
-'    thermostatNum = NexantEnrollments.THERMOSTAT_1_type - NexantEnrollments.THERMOSTAT_1_ac_load_control + 1
-'    thermostatLimit = 3
-'    wallStartCol = NexantEnrollments.WALL_1_height
-'    wallNum = NexantEnrollments.WALL_1_type - NexantEnrollments.WALL_1_height + 1
-'    wallLimit = 4
-'    waterheaterStartCol = NexantEnrollments.WATER_HEATER_1_age
-'    waterheaterNum = NexantEnrollments.WATER_HEATER_1_type - NexantEnrollments.WATER_HEATER_1_age + 1
-'    waterheaterLimit = 3
+    applianceStartCol = NexantEnrollments.APPLIANCE_AQUARIUM_quantity
+    applianceNum = NexantEnrollments.ATTIC_1_access_type - NexantEnrollments.APPLIANCE_AQUARIUM_quantity
+    applianceLimit = 1
+    atticStartCol = NexantEnrollments.ATTIC_1_access_type
+    atticNum = NexantEnrollments.ATTIC_1_vent - NexantEnrollments.ATTIC_1_access_type + 1
+    atticLimit = 4
+    basementStartCol = NexantEnrollments.BASEMENT_1_air_conditioned
+    basementNum = NexantEnrollments.BASEMENT_1_type - NexantEnrollments.BASEMENT_1_air_conditioned + 1
+    basementLimit = 3
+    basementwallStartCol = NexantEnrollments.BASEMENT_WALL_1_insulation
+    basementwallNum = NexantEnrollments.BASEMENT_WALL_1_type - NexantEnrollments.BASEMENT_WALL_1_insulation + 1
+    basementwallLimit = 3
+    coolingStartCol = NexantEnrollments.COOLING_1_age
+    coolingNum = NexantEnrollments.COOLING_1_usage_frequency - NexantEnrollments.COOLING_1_age + 1
+    coolingLimit = 6
+    doorStartCol = NexantEnrollments.DOOR_1_condition
+    doorNum = NexantEnrollments.DOOR_1_type - NexantEnrollments.DOOR_1_condition + 1
+    doorLimit = 5
+    freezerStartCol = NexantEnrollments.FREEZER_1_age
+    freezerNum = NexantEnrollments.FREEZER_1_type - NexantEnrollments.FREEZER_1_age + 1
+    freezerLimit = 3
+    heatingStartCol = NexantEnrollments.HEATING_1_age
+    heatingNum = NexantEnrollments.HEATING_1_type - NexantEnrollments.HEATING_1_age + 1
+    heatingLimit = 6
+    hvacdistStartCol = NexantEnrollments.HVAC_DIST_1_flex_duct_condition
+    hvacdistNum = NexantEnrollments.HVAC_DIST_1_type - NexantEnrollments.HVAC_DIST_1_flex_duct_condition + 1
+    hvacdistLimit = 6
+    lightingStartCol = NexantEnrollments.LIGHTING_1_not_applicable
+    lightingNum = NexantEnrollments.LIGHTING_1_weekly_hrs - NexantEnrollments.LIGHTING_1_not_applicable + 1
+    lightingLimit = 4
+    refrigStartCol = NexantEnrollments.REFRIGERATOR_1_age
+    refrigNum = NexantEnrollments.REFRIGERATOR_1_type - NexantEnrollments.REFRIGERATOR_1_age + 1
+    refrigLimit = 3
+    thermostatStartCol = NexantEnrollments.THERMOSTAT_1_ac_load_control
+    thermostatNum = NexantEnrollments.THERMOSTAT_1_type - NexantEnrollments.THERMOSTAT_1_ac_load_control + 1
+    thermostatLimit = 3
+    wallStartCol = NexantEnrollments.WALL_1_height
+    wallNum = NexantEnrollments.WALL_1_type - NexantEnrollments.WALL_1_height + 1
+    wallLimit = 4
+    waterheaterStartCol = NexantEnrollments.WATER_HEATER_1_age
+    waterheaterNum = NexantEnrollments.WATER_HEATER_1_type - NexantEnrollments.WATER_HEATER_1_age + 1
+    waterheaterLimit = 3
 '
 '    sysnum = Array(applianceNum, atticNum, basementNum, basementwallNum, coolingNum, doorNum, freezerNum, heatingNum, hvacdistNum, lightingNum, refrigNum, thermostatNum, wallNum, waterheaterNum)
 '    syslimit = Array(applianceLimit, atticLimit, basementLimit, basementwallLimit, coolingLimit, doorLimit, freezerLimit, heatingLimit, hvacdistLimit, lightingLimit, refrigLimit, thermostatLimit, wallLimit, waterheaterLimit)
@@ -2267,9 +2627,6 @@ End Sub
 Private Sub updatelistbox()
     auditlastrow = Worksheets(AuditSheetName).Range("E" & Rows.Count).End(xlUp).Row
     auditcurrentrow = auditlastrow + 1
-'    If lstSelectedSystems.ListIndex <> -1 Then
-'        auditcurrentrow = lstSelectedSystems.ListIndex + 2
-'    End If
     
     iHeating = 0
     iCooling = 0
@@ -2325,6 +2682,11 @@ Private Sub updatelistbox()
                     iAppliance = iAppliance + 1
             End Select
         Next i
+    End If
+    
+    cmdRemove.Enabled = False
+    If cboSystem.Text = "" Then
+        cmdOK.Enabled = False
     End If
 End Sub
 
