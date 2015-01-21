@@ -338,8 +338,7 @@ Private Sub showwhoptions()
     Call addlabel(lblSystemType, "dc_lblSystemType1", "Water Heater Type*", toTop, toLeft - 15, lblWidth, lblHeight)
     Call addcomboBox(SystemType, "dc_SystemType1", toTop, toLeft1, cboWidth * 3, cboHeight)
     frmSystem.Controls("dc_SystemType1").AddItem ("CONVENTIONAL STORAGE")
-    frmSystem.Controls("dc_SystemType1").AddItem ("DEMAND")
-    frmSystem.Controls("dc_SystemType1").AddItem ("TANKLESS\INSTANTANEOUS")
+    frmSystem.Controls("dc_SystemType1").AddItem ("DEMAND-TANKLESS\INSTANTANEOUS")
     frmSystem.Controls("dc_SystemType1").AddItem ("SOLAR/TANK")
     frmSystem.Controls("dc_SystemType1").AddItem ("GEOTHERMAL DESUPERHEATER/TANK")
     
@@ -909,7 +908,6 @@ Private Sub showbwoptions()
     Call addcomboBox(InsType, "dc_InsType1", toTop2, toLeft1, cboWidth * 2, cboHeight)
     frmSystem.Controls("dc_InsType1").AddItem ("CELLULOSE")
     frmSystem.Controls("dc_InsType1").AddItem ("FIBERGLASS BATTS")
-    frmSystem.Controls("dc_InsType1").AddItem ("FIBERGLASS BLOWN")
     frmSystem.Controls("dc_InsType1").AddItem ("LOOSE FIBERGLASS")
     frmSystem.Controls("dc_InsType1").AddItem ("MINERAL/ROCK WOOL")
     frmSystem.Controls("dc_InsType1").AddItem ("UREA FORMALDAHYDE")
@@ -941,7 +939,7 @@ Private Sub showrefrigeratoroptions()
     'SYSTEM SIZE UNIT
     Call addlabel(lblSizeUnit, "dc_lblSizeUnit1", "System Size Unit*", toTop1, toLeft2, lblWidth, lblHeight)
     Call addcomboBox(SizeUnit, "dc_SizeUnit1", toTop1, toLeft3, cboWidth, cboHeight)
-    frmSystem.Controls("dc_SizeUnit1").AddItem ("GALLONS")
+    frmSystem.Controls("dc_SizeUnit1").AddItem ("Cubic Feet")
     
     'SYSTEM Age
     Call addlabel(lblSystemAge, "dc_lblSystemAge1", "System Age*", toTop2, toLeft, lblWidth, lblHeight)
@@ -959,9 +957,9 @@ Private Sub showrefrigeratoroptions()
     Call addtextbox(SystemMake, "dc_SystemMake1", toTop3, toLeft1, txtWidth, txtHeight)
 
 
-    'SYSTEM Age
-    Call addlabel(lblSystemMeteredUsage, "dc_lblSystemMeteredUsage1", "Metered Usage*", toTop3, toLeft, lblWidth, lblHeight)
-    Call addtextbox(SystemMeteredUsage, "dc_SystemMeteredUsage1", toTop3, toLeft1, txtWidth, txtHeight)
+    'METERED USAGE
+    Call addlabel(lblSystemMeteredUsage, "dc_lblSystemMeteredUsage1", "Metered Usage*", toTop3, toLeft2, lblWidth, lblHeight)
+    Call addtextbox(SystemMeteredUsage, "dc_SystemMeteredUsage1", toTop3, toLeft3, txtWidth, txtHeight)
 
 End Sub
 Private Sub showfreezeroptions()
@@ -985,7 +983,7 @@ Private Sub showfreezeroptions()
     'SYSTEM SIZE UNIT
     Call addlabel(lblSizeUnit, "dc_lblSizeUnit1", "System Size Unit*", toTop1, toLeft2, lblWidth, lblHeight)
     Call addcomboBox(SizeUnit, "dc_SizeUnit1", toTop1, toLeft3, cboWidth, cboHeight)
-    frmSystem.Controls("dc_SizeUnit1").AddItem ("GALLONS")
+    frmSystem.Controls("dc_SizeUnit1").AddItem ("Cubic Feet")
     
     'SYSTEM Age
     Call addlabel(lblSystemAge, "dc_lblSystemAge1", "System Age*", toTop2, toLeft, lblWidth, lblHeight)
@@ -1348,7 +1346,7 @@ Private Function coolingvalidation() As Boolean
         
         qty = frmSystem.Controls("dc_Quantity1").Value
         If IsNumeric(qty) Then
-            If Abs(Int(qty) - CDbl(qty)) < 0.000000001 And Int(tuu) > 0 Then
+            If Abs(Int(qty) - CDbl(qty)) < 0.000000001 And Int(qty) > 0 Then
             Else
                 errorstring ("Quantity format")
             End If
@@ -1443,7 +1441,7 @@ Private Function whvalidation() As Boolean
     End If
     
     stv = frmSystem.Controls("dc_SystemType1").Value
-    If stv = "CONVENTIONAL STORAGE" Or stv = "DEMAND" Or stv = "TANKLESS\INSTANTANEOUS" _
+    If stv = "CONVENTIONAL STORAGE" Or stv = "DEMAND-TANKLESS\INSTANTANEOUS" _
         Or stv = "SOLAR/TANK" Or stv = "GEOTHERMAL DESUPERHEATER/TANK" Then
     Else
         errorstring ("System Type")
@@ -1451,7 +1449,7 @@ Private Function whvalidation() As Boolean
     
     fs = frmSystem.Controls("dc_FuelSource1").Value
     If fs = "ELECTRIC" Or fs = "GAS" Or fs = "PROPANE" Or fs = "SOLAR" Or fs = "WOOD" Or fs = "OIL" _
-        Or "OTHER" Then
+        Or fs = "OTHER" Then
     Else
         errorstring ("Fuel Source")
     End If
@@ -1503,7 +1501,7 @@ Private Function whvalidation() As Boolean
         errorstring ("Current temperature setting")
     Else
         te = CDbl(frmSystem.Controls("dc_TemperatureSetting1").Value)
-        If te <= 0 Or te > 99.9 Then
+        If te <= 0 Or te > 300 Then
             errorstring ("Current temperature setting number range")
         End If
     End If
@@ -1625,34 +1623,539 @@ Private Function thermovalidation() As Boolean
     End If
 End Function
 Private Function windowvalidation() As Boolean
-    windowvalidation = True
+
+    Dim iReply As Integer
+    prompt = ""
+    
+    sna = frmSystem.Controls("dc_SystemApplicable1").Value
+    If sna = "N/A" Or sna = "X" Or sna = "BLANK" Then
+    Else
+        errorstring ("System not applicable value")
+    End If
+    
+    stv = frmSystem.Controls("dc_SystemType1").Value
+    If stv = "SINGLE PANE" Or stv = "SINGLE PANE W/STORM WINDOW" Or stv = "DOUBLE PANE" _
+        Or stv = "TRIPLE PANE" Or stv = "DH" Or stv = "CASEMENT" Or stv = "FIXED" Then
+    Else
+        errorstring ("Window Type")
+    End If
+    
+    qty = frmSystem.Controls("dc_Quantity1").Value
+    If IsNumeric(qty) Then
+        If Abs(Int(qty) - CDbl(qty)) < 0.000000001 And Int(qty) > 0 Then
+        Else
+            errorstring ("Quantity format")
+        End If
+    Else
+        errorstring ("Quantity")
+    End If
+    
+    sl = frmSystem.Controls("dc_WindowDoorCondition1").Value
+    If sl = "NO APPARENT DAMAGE" Or sl = "SEALS BROKEN" Or sl = "AIR DRAFTS" Then
+    Else
+        errorstring ("Condition of door")
+    End If
+    
+    If Not IsNumeric(frmSystem.Controls("dc_SurfaceArea1").Value) Then
+        errorstring ("Total window surface area")
+    End If
+    
+    wuv = frmSystem.Controls("dc_WindowUVCoated1").Value
+    If wuv = "" Or wuv = "Y" Or wuv = "N" Then
+    Else
+        errorstring ("Window UV coated")
+    End If
+
+    If wuv = "Y" Then
+        it = frmSystem.Controls("dc_NumberOfGlazing1").Value
+        If it = "1" Or it = "2" Or it = "3" Then
+        Else
+            errorstring ("Number of glazing")
+        End If
+    End If
+
+    If prompt <> "" Then
+        iReply = MsgBox(prompt + " not filled out correctly", vbOKOnly, "Input error!")
+        prompt = ""
+        windowvalidation = False
+    Else
+        windowvalidation = True
+    End If
 End Function
 Private Function doorvalidation() As Boolean
-    doorvalidation = True
+    Dim iReply As Integer
+    prompt = ""
+    
+    sna = frmSystem.Controls("dc_SystemApplicable1").Value
+    If sna = "N/A" Or sna = "X" Or sna = "BLANK" Then
+    Else
+        errorstring ("System not applicable value")
+    End If
+    
+    stv = frmSystem.Controls("dc_SystemType1").Value
+    If stv = "METAL/INSULATED" Or stv = "FIBERGLASS/INSULATED" Or stv = "WOOD" _
+        Or stv = "SLIDER" Or stv = "ATRIUM" Then
+    Else
+        errorstring ("Door Type")
+    End If
+    
+    qty = frmSystem.Controls("dc_Quantity1").Value
+    If IsNumeric(qty) Then
+        If Abs(Int(qty) - CDbl(qty)) < 0.000000001 And Int(qty) > 0 Then
+        Else
+            errorstring ("Quantity format")
+        End If
+    Else
+        errorstring ("Quantity")
+    End If
+    
+    sl = frmSystem.Controls("dc_WindowDoorCondition1").Value
+    If sl = "NO APPARENT DAMAGE" Or sl = "SEALS BROKEN" Or sl = "AIR DRAFTS" Then
+    Else
+        errorstring ("Condition of door")
+    End If
+
+    If prompt <> "" Then
+        iReply = MsgBox(prompt + " not filled out correctly", vbOKOnly, "Input error!")
+        prompt = ""
+        doorvalidation = False
+    Else
+        doorvalidation = True
+    End If
 End Function
 Private Function lightingvalidation() As Boolean
-    lightingvalidation = True
+    Dim iReply As Integer
+    prompt = ""
+    
+    sna = frmSystem.Controls("dc_SystemApplicable1").Value
+    If sna = "N/A" Or sna = "X" Or sna = "BLANK" Then
+    Else
+        errorstring ("System not applicable value")
+    End If
+
+    qty = frmSystem.Controls("dc_Quantity1").Value
+    If IsNumeric(qty) Then
+        If Abs(Int(qty) - CDbl(qty)) < 0.000000001 And Int(qty) > 0 Then
+        Else
+            errorstring ("Quantity format")
+        End If
+    Else
+        errorstring ("Quantity")
+    End If
+
+    sl = frmSystem.Controls("dc_SystemLocation1").Value
+    If sl = "BASEMENT" Or sl = "BEDROOM" Or sl = "DINING ROOM" Or sl = "EXTERIOR" Or sl = "FAMILY/SITTING ROOM" _
+         Or sl = "HALLWAY" Or sl = "KITCHEN" Or sl = "LIVING ROOM" Or sl = "BATHROOM TOILET" Then
+    Else
+        errorstring ("System Location")
+    End If
+
+    twh = frmSystem.Controls("dc_TotalWeeklyHours1").Value
+    If Not (twh = "" Or IsNumeric(twh)) Then
+        errorstring ("Total weekly operating hour")
+    End If
+    
+    bw = frmSystem.Controls("dc_BulbWattage1").Value
+    If Not (bw = "" Or IsNumeric(bw)) Then
+        errorstring ("Existing Bulb wattage")
+    End If
+
+    If prompt <> "" Then
+        iReply = MsgBox(prompt + " not filled out correctly", vbOKOnly, "Input error!")
+        prompt = ""
+        lightingvalidation = False
+    Else
+        lightingvalidation = True
+    End If
 End Function
 Private Function wallvalidation() As Boolean
-    wallvalidation = True
+    Dim iReply As Integer
+    prompt = ""
+    
+    sna = frmSystem.Controls("dc_SystemApplicable1").Value
+    If sna = "N/A" Or sna = "X" Or sna = "BLANK" Then
+    Else
+        errorstring ("System not applicable value")
+    End If
+    
+    stv = frmSystem.Controls("dc_SystemType1").Value
+    If stv = "ALUMINUM" Or stv = "BRICK" Or stv = "MASONITE" _
+        Or stv = "OTHER" Or stv = "STUCCO" Or stv = "VINYL" Or stv = "WOOD" Then
+    Else
+        errorstring ("Wall Type")
+    End If
+    
+    iei = frmSystem.Controls("dc_InsIndicator1").Value
+    If iei = "Y" Or iei = "N" Or iei = "NOT NEEDED" Then
+    Else
+        errorstring ("Insulation exist indicator")
+    End If
+    
+    If iei = "Y" Then
+        it = frmSystem.Controls("dc_InsType1").Value
+        If it = "CELLULOSE" Or it = "FIBERGLASS BATTS" Or it = "LOOSE FIBERGLASS" Or it = "MINERAL/ROCK WOOL" _
+            Or it = "UREA FORMALDAHYDE" Or it = ".5 LB FORM" Or it = "2 LB FOAM" Or it = "NONE" Or it = "OTHER" Then
+        Else
+            errorstring ("Insulation type")
+        End If
+    End If
+    
+    tv1 = frmSystem.Controls("dc_TankRValue1").Value
+    If Not (tv1 = "" Or IsNumeric(tv1)) Then
+        errorstring ("R-Value")
+    End If
+    
+    sl = frmSystem.Controls("dc_SystemLength1").Value
+    If Not (sl = "" Or IsNumeric(sl)) Then
+        errorstring ("Length")
+    End If
+    
+    sh = frmSystem.Controls("dc_SystemHeight1").Value
+    If Not (sh = "" Or IsNumeric(sh)) Then
+        errorstring ("Height")
+    End If
+
+
+    If prompt <> "" Then
+        iReply = MsgBox(prompt + " not filled out correctly", vbOKOnly, "Input error!")
+        prompt = ""
+        wallvalidation = False
+    Else
+        wallvalidation = True
+    End If
 End Function
 Private Function atticvalidation() As Boolean
-    atticvalidation = True
+    Dim iReply As Integer
+    prompt = ""
+    
+    sna = frmSystem.Controls("dc_SystemApplicable1").Value
+    If sna = "N/A" Or sna = "X" Or sna = "BLANK" Then
+    Else
+        errorstring ("System not applicable value")
+    End If
+    
+    stv = frmSystem.Controls("dc_SystemType1").Value
+    If stv = "FLOORED" Or stv = "UNFLOORED" Or stv = "KNEE WALL" _
+        Or stv = "KW FLAT FLOORED" Or stv = "KW FLAT UNFLOORED" Or stv = "FLAT ROOF" Or stv = "SLOPED" Then
+    Else
+        errorstring ("Attic Type")
+    End If
+    
+    If Not IsNumeric(frmSystem.Controls("dc_SurfaceArea1").Value) Then
+        errorstring ("Square footage")
+    End If
+    
+    iei = frmSystem.Controls("dc_InsIndicator1").Value
+    If iei = "Y" Or iei = "N" Or iei = "NOT NEEDED" Then
+    Else
+        errorstring ("Insulation exist indicator")
+    End If
+    
+    If iei = "Y" Then
+        it = frmSystem.Controls("dc_InsType1").Value
+        If it = "CELLULOSE" Or it = "FIBERGLASS BATTS" Or it = "LOOSE FIBERGLASS" Or it = "MINERAL/ROCK WOOL" _
+            Or it = "UREA FORMALDAHYDE" Or it = ".5 LB FORM" Or it = "2 LB FOAM" Or it = "NONE" Or it = "OTHER" Then
+        Else
+            errorstring ("Insulation type")
+        End If
+    End If
+    
+    tv1 = frmSystem.Controls("dc_TankRValue1").Value
+    If Not (tv1 = "" Or IsNumeric(tv1)) Then
+        errorstring ("R-Value")
+    End If
+    
+    sl = frmSystem.Controls("dc_SystemLength1").Value
+    If Not (sl = "" Or IsNumeric(sl)) Then
+        errorstring ("Length")
+    End If
+    
+    sh = frmSystem.Controls("dc_SystemHeight1").Value
+    If Not (sh = "" Or IsNumeric(sh)) Then
+        errorstring ("Height")
+    End If
+    
+    vr = frmSystem.Controls("dc_VentIndicator1").Value
+    If vr = "Y" Or vr = "N" Then
+    Else
+        errorstring ("Vent required")
+    End If
+
+    at = frmSystem.Controls("dc_AccessType1").Value
+    If at = "CEILING" Or at = "EXTERIOR" Or at = "KNEE WALL" _
+        Or at = "NO ACCESS AVAILABLE" Or at = "PULL DOWN STAIRS" Or at = "TEMPORARY" Or at = "WALK UP STAIRWAY" Then
+    Else
+        errorstring ("Access Type")
+    End If
+
+    td1 = frmSystem.Controls("dc_SystemDepth1").Value
+    If Not (td1 = "" Or IsNumeric(td1)) Then
+        errorstring ("Depth")
+    End If
+    
+    If prompt <> "" Then
+        iReply = MsgBox(prompt + " not filled out correctly", vbOKOnly, "Input error!")
+        prompt = ""
+        atticvalidation = False
+    Else
+        atticvalidation = True
+    End If
 End Function
 Private Function basementvalidation() As Boolean
-    basementvalidation = True
+    Dim iReply As Integer
+    prompt = ""
+    
+    sna = frmSystem.Controls("dc_SystemApplicable1").Value
+    If sna = "N/A" Or sna = "X" Or sna = "BLANK" Then
+    Else
+        errorstring ("System not applicable value")
+    End If
+    
+    stv = frmSystem.Controls("dc_SystemType1").Value
+    If stv = "CRAWL-OPEN" Or stv = "CRAWL-CLOSED" Or stv = "FULL" _
+        Or stv = "GARAGE" Or stv = "SLAB" Then
+    Else
+        errorstring ("Basement Type")
+    End If
+    
+    If Not IsNumeric(frmSystem.Controls("dc_SurfaceArea1").Value) Then
+        errorstring ("Square footage")
+    End If
+    
+    pf1 = frmSystem.Controls("dc_PerimeterFootage1").Value
+    If Not (pf1 = "" Or IsNumeric(pf1)) Then
+        errorstring ("Perimeter Footage")
+    End If
+    
+    iei = frmSystem.Controls("dc_InsIndicator1").Value
+    If iei = "Y" Or iei = "N" Or iei = "NOT NEEDED" Then
+    Else
+        errorstring ("Insulation exist indicator")
+    End If
+    
+    If iei = "Y" Then
+        it = frmSystem.Controls("dc_InsType1").Value
+        If it = "CELLULOSE" Or it = "FIBERGLASS BATTS" Or it = "LOOSE FIBERGLASS" Or it = "MINERAL/ROCK WOOL" _
+            Or it = "UREA FORMALDAHYDE" Or it = ".5 LB FORM" Or it = "2 LB FOAM" Or it = "NONE" Or it = "OTHER" Then
+        Else
+            errorstring ("Insulation type")
+        End If
+    End If
+    
+    tv1 = frmSystem.Controls("dc_TankRValue1").Value
+    If Not (tv1 = "" Or IsNumeric(tv1)) Then
+        errorstring ("R-Value")
+    End If
+    
+    bac = frmSystem.Controls("dc_BasementAC1").Value
+    If bac = "Y" Or bac = "N" Then
+    Else
+        errorstring ("Basement Air Conditioned")
+    End If
+
+    
+    rji = frmSystem.Controls("dc_RJInsRecommended1").Value
+    If rji = "Y" Or rji = "N" Or rji = "NOT NEEDED" Then
+    Else
+        errorstring ("Rim Joist Insulation recommendation")
+    End If
+
+
+    If prompt <> "" Then
+        iReply = MsgBox(prompt + " not filled out correctly", vbOKOnly, "Input error!")
+        prompt = ""
+        basementvalidation = False
+    Else
+        basementvalidation = True
+    End If
 End Function
 Private Function basementwallvalidation() As Boolean
-    basementwallvalidation = True
+    Dim iReply As Integer
+    prompt = ""
+    
+    sna = frmSystem.Controls("dc_SystemApplicable1").Value
+    If sna = "N/A" Or sna = "X" Or sna = "BLANK" Then
+    Else
+        errorstring ("System not applicable value")
+    End If
+    
+    stv = frmSystem.Controls("dc_SystemType1").Value
+    If stv = "CINDER BLOCK" Or stv = "CONCRETE POUR/FORMED" Or stv = "FRAMED 2x4" _
+        Or stv = "FRAMED 2x6" Then
+    Else
+        errorstring ("Basement Wall Type")
+    End If
+    
+    tv1 = frmSystem.Controls("dc_TankRValue1").Value
+    If Not (tv1 = "" Or IsNumeric(tv1)) Then
+        errorstring ("R-Value")
+    End If
+    
+    iei = frmSystem.Controls("dc_InsIndicator1").Value
+    If iei = "Y" Or iei = "N" Or iei = "NOT NEEDED" Then
+    Else
+        errorstring ("Insulation exist indicator")
+    End If
+    
+    If iei = "Y" Then
+        it = frmSystem.Controls("dc_InsType1").Value
+        If it = "CELLULOSE" Or it = "FIBERGLASS BATTS" Or it = "LOOSE FIBERGLASS" Or it = "MINERAL/ROCK WOOL" _
+            Or it = "UREA FORMALDAHYDE" Or it = ".5 LB FORM" Or it = "2 LB FOAM" Or it = "NONE" Or it = "OTHER" Then
+        Else
+            errorstring ("Insulation type")
+        End If
+    End If
+
+    If prompt <> "" Then
+        iReply = MsgBox(prompt + " not filled out correctly", vbOKOnly, "Input error!")
+        prompt = ""
+        basementwallvalidation = False
+    Else
+        basementwallvalidation = True
+    End If
 End Function
 Private Function refrigeratorvalidation() As Boolean
-    refrigeratorvalidation = True
+    Dim iReply As Integer
+    prompt = ""
+    
+    sna = frmSystem.Controls("dc_SystemApplicable1").Value
+    If sna = "N/A" Or sna = "X" Or sna = "BLANK" Then
+    Else
+        errorstring ("System not applicable value")
+    End If
+    
+    stv = frmSystem.Controls("dc_SystemType1").Value
+    If stv = "SIDE BY SIDE" Or stv = "FREEZER TOP" Or stv = "FREEZER BOTTOM" _
+        Or stv = "SINGLE DOOR" Then
+    Else
+        errorstring ("Refrigerator Type")
+    End If
+    
+    If Not IsNumeric(frmSystem.Controls("dc_SystemSize1").Value) Then
+        errorstring ("System Size")
+    End If
+
+    su = frmSystem.Controls("dc_SizeUnit1").Value
+    If su = "Cubic Feet" Then
+    Else
+        errorstring ("Size Unit")
+    End If
+    
+    If IsNumeric(frmSystem.Controls("dc_SystemAge1").Value) Then
+    Else
+        errorstring ("System Age")
+    End If
+    
+    dt = frmSystem.Controls("dc_DefrostType1").Value
+    If dt = "AUTOMATIC" Or dt = "MANUAL" Then
+    Else
+        errorstring ("Defrost Type")
+    End If
+    
+    mk = frmSystem.Controls("dc_SystemMake1").Value
+    If mk = "" Then
+        errorstring ("Make (Manufacturer)")
+    End If
+    
+    mu = frmSystem.Controls("dc_SystemMeteredUsage1").Value
+    If mk = "" Then
+        errorstring ("Metered Usage")
+    End If
+
+
+
+    If prompt <> "" Then
+        iReply = MsgBox(prompt + " not filled out correctly", vbOKOnly, "Input error!")
+        prompt = ""
+        refrigeratorvalidation = False
+    Else
+        refrigeratorvalidation = True
+    End If
 End Function
 Private Function freezervalidation() As Boolean
-    freezervalidation = True
+    Dim iReply As Integer
+    prompt = ""
+    
+    sna = frmSystem.Controls("dc_SystemApplicable1").Value
+    If sna = "N/A" Or sna = "X" Or sna = "BLANK" Then
+    Else
+        errorstring ("System not applicable value")
+    End If
+    
+    stv = frmSystem.Controls("dc_SystemType1").Value
+    If stv = "UPRIGHT" Or stv = "CHEST" Then
+    Else
+        errorstring ("Freezer Type")
+    End If
+    
+    If Not IsNumeric(frmSystem.Controls("dc_SystemSize1").Value) Then
+        errorstring ("System Size")
+    End If
+
+    su = frmSystem.Controls("dc_SizeUnit1").Value
+    If su = "Cubic Feet" Then
+    Else
+        errorstring ("Size Unit")
+    End If
+    
+    If IsNumeric(frmSystem.Controls("dc_SystemAge1").Value) Then
+    Else
+        errorstring ("System Age")
+    End If
+    
+    dt = frmSystem.Controls("dc_DefrostType1").Value
+    If dt = "AUTOMATIC" Or dt = "MANUAL" Then
+    Else
+        errorstring ("Defrost Type")
+    End If
+
+    If prompt <> "" Then
+        iReply = MsgBox(prompt + " not filled out correctly", vbOKOnly, "Input error!")
+        prompt = ""
+        freezervalidation = False
+    Else
+        freezervalidation = True
+    End If
 End Function
 Private Function appliancevalidation() As Boolean
-    appliancevalidation = True
+    Dim iReply As Integer
+    prompt = ""
+    
+    sna = frmSystem.Controls("dc_SystemApplicable1").Value
+    If sna = "N/A" Or sna = "X" Or sna = "BLANK" Then
+    Else
+        errorstring ("System not applicable value")
+    End If
+    
+    stv = frmSystem.Controls("dc_SystemType1").Value
+    If stv = "AQUARIUM" Or stv = "ATTIC FAN" Or stv = "BLACK & WHITE TV" _
+        Or stv = "CEILING FAN" Or stv = "CLOTHES WASHER" Or stv = "COLOR TV" Or stv = "COMPUTER" _
+        Or stv = "DEHUMIDIFIER" Or stv = "DISHWASHER" Or stv = "ELECTIC SPACE HEATER" Or stv = "ELEC CLOTHES DRYER" _
+        Or stv = "ELECTRIC BLANKET" Or stv = "ELECTRIC COOKING" Or stv = "FAX MACHINE" Or stv = "GAS CLOTHES DRYER" _
+        Or stv = "GAS COOKING" Or stv = "HOT TUB" Or stv = "HUMIDIFIER" Or stv = "LASER PRINTER" Or stv = "MICROWAVE" _
+        Or stv = "MISCELLANEOUS" Or stv = "POOL PUMP" Or stv = "PRINTER" Or stv = "STEREO" Or stv = "SUMP PUMP" Or stv = "WATERBED" _
+        Or stv = "WELL PUMP" Then
+    Else
+        errorstring ("Appliance Type")
+    End If
+    
+    qty = frmSystem.Controls("dc_Quantity1").Value
+    If IsNumeric(qty) Then
+        If Abs(Int(qty) - CDbl(qty)) < 0.000000001 And Int(qty) > 0 Then
+        Else
+            errorstring ("Quantity format")
+        End If
+    Else
+        errorstring ("Quantity")
+    End If
+    
+    If prompt <> "" Then
+        iReply = MsgBox(prompt + " not filled out correctly", vbOKOnly, "Input error!")
+        prompt = ""
+        appliancevalidation = False
+    Else
+        appliancevalidation = True
+    End If
 End Function
             
 Private Sub cmdLoad_Click()
