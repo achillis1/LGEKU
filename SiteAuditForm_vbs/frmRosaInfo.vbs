@@ -31,8 +31,6 @@ Private Sub writerosa()
     Worksheets(SheetName).Cells(EnrollmentFirstDataLine, NexantEnrollments.Blower_door_post_test_ROSA).Value = txtPostTest.Text
     Worksheets(SheetName).Cells(EnrollmentFirstDataLine, NexantEnrollments.Number_of_Auditors_ROSA).Value = cboAuditorNumber.Text
     Worksheets(SheetName).Cells(EnrollmentFirstDataLine, NexantEnrollments.First_and_last_name_of_main_Auditor_ROSA).Value = txtAuditorName.Text
-'    Worksheets(SheetName).Cells(EnrollmentFirstDataLine, NexantEnrollments.Schedule_Date_ROSA).Value = txtScheduleDate.Text
-'    Worksheets(SheetName).Cells(EnrollmentFirstDataLine, NexantEnrollments.Schedule_Time_ROSA).Value = txtScheduleTime.Text
     Worksheets(SheetName).Cells(EnrollmentFirstDataLine, NexantEnrollments.Business_Partner_Number_ROSA).Value = txtBPN.Text
     Worksheets(SheetName).Cells(EnrollmentFirstDataLine, NexantEnrollments.Total_conditioned_square_footage_ROSA).Value = txtConditionedSQFT.Text
     Worksheets(SheetName).Cells(EnrollmentFirstDataLine, NexantEnrollments.Building_occupancy_count_ROSA).Value = cboOccupancyCount.Text
@@ -72,16 +70,18 @@ txtFilename.Text = Worksheets(SheetName).Cells(EnrollmentFirstDataLine, NexantEn
 
 End Sub
 Private Sub RosaDataValidate()
-    'to do
-    '...
 End Sub
 
 Private Sub UserForm_Activate()
     txtScheduleDate.Enabled = False
     txtScheduleTime.Enabled = False
-    txtScheduleDate.BackColor = &H80000000
-    txtScheduleTime.BackColor = &H80000000
+    txtScheduleDate.Text = Worksheets(SheetName).Cells(EnrollmentFirstDataLine, NexantEnrollments.Schedule_Date_ROSA).Value
+    txtScheduleTime.Text = Worksheets(SheetName).Cells(EnrollmentFirstDataLine, NexantEnrollments.Schedule_Time_ROSA).Value
     
+'    txtScheduleDate.BackColor = &H80000000
+'    txtScheduleTime.BackColor = &H80000000
+    
+    cboAuditorNumber.Clear
     cboAuditorNumber.AddItem ("1")
     cboAuditorNumber.AddItem ("2")
     cboAuditorNumber.AddItem ("3")
@@ -89,6 +89,7 @@ Private Sub UserForm_Activate()
     cboAuditorNumber.AddItem ("5")
     cboAuditorNumber.AddItem ("6")
     
+    cboOccupancyCount.Clear
     cboOccupancyCount.AddItem ("1")
     cboOccupancyCount.AddItem ("2")
     cboOccupancyCount.AddItem ("3")
@@ -100,24 +101,23 @@ Private Sub UserForm_Activate()
     cboOccupancyCount.AddItem ("9")
     cboOccupancyCount.AddItem ("10")
     
+    cboStoriesAboveGrade.Clear
     cboStoriesAboveGrade.AddItem ("1")
     cboStoriesAboveGrade.AddItem ("2")
     cboStoriesAboveGrade.AddItem ("3")
     
+    cboOwnership.Clear
     cboOwnership.AddItem ("OWN")
     cboOwnership.AddItem ("RENT")
     
     txtEnrollmentID.Text = currentEnrollment
-    txtWONumber.Text = ROSAWONumber
+    txtWONumber.Text = Worksheets(SheetName).Cells(EnrollmentFirstDataLine, NexantEnrollments.WO_Number_ROSA).Value
     txtEnrollmentID.Enabled = False
     txtWONumber.Enabled = False
     
     Call readrosa
 End Sub
 
-Private Sub UserForm_Initialize()
-
-End Sub
 
 Private Sub UserForm_QueryClose(Cancel As Integer, CloseMode As Integer)
     If CloseMode = 0 Then

@@ -13,6 +13,11 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+Private Sub cmdDirectAccess_Click()
+    Me.Hide
+    frmPassword.Show vbModeless
+End Sub
+
 Private Sub cmdExit_Click()
     Me.Hide
 End Sub
@@ -27,31 +32,18 @@ Private Sub cmdMeasure_Click()
     frmMeasure.Show vbModeless
 End Sub
 
-'Private Sub cmdReset_Click()
-'    lstEnrollments.Clear
-'    cmdProjectInfo.Enabled = False
-'    cmdMeasure.Enabled = False
-'    cmdSystem.Enabled = False
-'    txtEnrollmentID.Text = ""
-'    txtPremiseID.Text = ""
-'    txtAccountNumber.Text = ""
-'    Call lstpopulate
-'End Sub
-
 
 Private Sub lstpopulate()
-    lastrow = EnrollmentFirstDataLine 'getenrolllastrow()
+    lastrow = EnrollmentFirstDataLine
     For i = EnrollmentFirstDataLine To lastrow
         ROSAID = Worksheets(SheetName).Cells(i, NexantEnrollments.Enrollment_ID_ROSA).Value
         HEAPID = Worksheets(SheetName).Cells(i, NexantEnrollments.Enrollment_ID_HEAP).Value
         If ROSAID = "" And HEAPID <> "" Then
             currentEnrollment = HEAPID
-'            lstEnrollments.AddItem (HEAPID)
         End If
         
         If ROSAID <> "" And HEAPID = "" Then
             currentEnrollment = ROSAID
-'            lstEnrollments.AddItem (ROSAID)
         End If
     Next i
 
@@ -74,35 +66,16 @@ Private Sub CommandButton1_Click()
     frmSystemHEAP.Show vbModeless
 End Sub
 
-'Private Sub lstEnrollments_Click()
-'    If lstEnrollments.Text <> "" Then
-'        cmdSystem.Enabled = True
-'        cmdMeasure.Enabled = True
-'        cmdProjectInfo.Enabled = True
-'        currentEnrollment = lstEnrollments.Text
-'
-'        Dim flg As Boolean
-'        flg = False
-'        For i = EnrollmentFirstDataLine To lastrow
-'            ROSAID = Worksheets(SheetName).Cells(i, NexantEnrollments.Enrollment_ID_ROSA).Value
-'            HEAPID = Worksheets(SheetName).Cells(i, NexantEnrollments.Enrollment_ID_HEAP).Value
-'            If (ROSAID = "" And HEAPID = lstEnrollments.Text) Or (ROSAID = lstEnrollments.Text And HEAPID = "") Then
-'                currentrow = i
-'                flg = True
-'            End If
-'
-'        Next i
-'
-'        If flg Then
-'            premiseid = Worksheets(SheetName).Cells(currentrow, NexantEnrollments.Premise_ID).Value
-'            accountnumber = Worksheets(SheetName).Cells(currentrow, NexantEnrollments.Account_Number).Value
-'
-'            txtEnrollmentID.Text = currentEnrollment
-'            txtPremiseID.Text = premiseid
-'            txtAccountNumber.Text = accountnumber
-'        End If
-'    End If
-'End Sub
+Private Sub UserForm_Activate()
+    ROSAHEAP = Worksheets(SettingSN).Cells(2, 1).Value
+    If ROSAHEAP = 0 Then
+        cmdHeapInfo.Enabled = False
+        cmdRosaInfo.Enabled = True
+    Else
+        cmdRosaInfo.Enabled = False
+        cmdHeapInfo.Enabled = True
+    End If
+End Sub
 
 Private Sub UserForm_Initialize()
 '    Application.Visible = False
@@ -111,27 +84,10 @@ Private Sub UserForm_Initialize()
     SheetName = "Enrollments"
     MeasureSheetName = "SelectedMeasures"
     PMSheetName = "PM"
-    InboundLastReadCol = 5
+    SettingSN = "Setting"
     currentEnrollment = ""
     currentrow = 0
     Call lstpopulate
-'
-'    ROSAID = Worksheets(SheetName).Cells(EnrollmentFirstDataLine, NexantEnrollments.Enrollment_ID_ROSA).Value
-'    HEAPID = Worksheets(SheetName).Cells(EnrollmentFirstDataLine, NexantEnrollments.Enrollment_ID_HEAP).Value
-'
-'    If ROSAID = "" And HEAPID <> "" Then
-'        currentEnrollment = HEAPID
-'    End If
-'
-'    If HEAPID = "" And ROSAID <> "" Then
-'        currentEnrollment = ROSAID
-'    End If
-'
-'    If (HEAPID = "" And ROSAID = "") Or (HEAPID <> "" And ROSAID <> "") Then
-'        MsgBox "The enrollment ID is not valid. Please check the Enrollments sheet."
-'        Exit Sub
-'    End If
-    
 
     premiseid = Worksheets(SheetName).Cells(EnrollmentFirstDataLine, NexantEnrollments.Premise_ID).Value
     accountnumber = Worksheets(SheetName).Cells(EnrollmentFirstDataLine, NexantEnrollments.Account_Number).Value
@@ -144,9 +100,8 @@ Private Sub UserForm_Initialize()
     txtEnrollmentID.Enabled = False
     txtPremiseID.Enabled = False
     txtAccountNumber.Enabled = False
-'    cmdSystem.Enabled = False
-'    cmdMeasure.Enabled = False
-'    cmdProjectInfo.Enabled = False
+
+
     
 End Sub
 

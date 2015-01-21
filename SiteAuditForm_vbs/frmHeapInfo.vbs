@@ -21,7 +21,7 @@ End Sub
 Private Sub cmdSave_Click()
     Call HeapDataValidate
     Call writeheap
-    MsgBox "The ROSA info is saved."
+    MsgBox "The HEAP info is saved."
     Me.Hide
     frmMain.Show vbModeless
 End Sub
@@ -51,8 +51,6 @@ Private Sub writeheap()
 
 End Sub
 Private Sub HeapDataValidate()
-    'to do
-    '...
 End Sub
 
 Private Sub readheap()
@@ -83,7 +81,10 @@ End Sub
 Private Sub UserForm_Activate()
     txtScheduleDate.Enabled = False
     txtScheduleTime.Enabled = False
+    txtScheduleDate.Text = Worksheets(SheetName).Cells(EnrollmentFirstDataLine, NexantEnrollments.Schedule_Date_HEAP).Value
+    txtScheduleTime.Text = Worksheets(SheetName).Cells(EnrollmentFirstDataLine, NexantEnrollments.Schedule_Time_HEAP).Value
     
+    cboAuditorNumber.Clear
     cboAuditorNumber.AddItem ("1")
     cboAuditorNumber.AddItem ("2")
     cboAuditorNumber.AddItem ("3")
@@ -91,6 +92,7 @@ Private Sub UserForm_Activate()
     cboAuditorNumber.AddItem ("5")
     cboAuditorNumber.AddItem ("6")
     
+    cboOccupancyCount.Clear
     cboOccupancyCount.AddItem ("1")
     cboOccupancyCount.AddItem ("2")
     cboOccupancyCount.AddItem ("3")
@@ -102,10 +104,12 @@ Private Sub UserForm_Activate()
     cboOccupancyCount.AddItem ("9")
     cboOccupancyCount.AddItem ("10")
     
+    cboStoriesAboveGrade.Clear
     cboStoriesAboveGrade.AddItem ("1")
     cboStoriesAboveGrade.AddItem ("2")
     cboStoriesAboveGrade.AddItem ("3")
     
+    cboOwnership.Clear
     cboOwnership.AddItem ("OWN")
     cboOwnership.AddItem ("RENT")
     

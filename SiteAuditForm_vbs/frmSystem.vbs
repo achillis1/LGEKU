@@ -2130,7 +2130,7 @@ Private Function appliancevalidation() As Boolean
     stv = frmSystem.Controls("dc_SystemType1").Value
     If stv = "AQUARIUM" Or stv = "ATTIC FAN" Or stv = "BLACK & WHITE TV" _
         Or stv = "CEILING FAN" Or stv = "CLOTHES WASHER" Or stv = "COLOR TV" Or stv = "COMPUTER" _
-        Or stv = "DEHUMIDIFIER" Or stv = "DISHWASHER" Or stv = "ELECTIC SPACE HEATER" Or stv = "ELEC CLOTHES DRYER" _
+        Or stv = "DEHUMIDIFIER" Or stv = "DISHWASHER" Or stv = "ELECTRIC SPACE HEATER" Or stv = "ELEC CLOTHES DRYER" _
         Or stv = "ELECTRIC BLANKET" Or stv = "ELECTRIC COOKING" Or stv = "FAX MACHINE" Or stv = "GAS CLOTHES DRYER" _
         Or stv = "GAS COOKING" Or stv = "HOT TUB" Or stv = "HUMIDIFIER" Or stv = "LASER PRINTER" Or stv = "MICROWAVE" _
         Or stv = "MISCELLANEOUS" Or stv = "POOL PUMP" Or stv = "PRINTER" Or stv = "STEREO" Or stv = "SUMP PUMP" Or stv = "WATERBED" _

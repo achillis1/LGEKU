@@ -4,7 +4,7 @@ Public SheetName As String 'Enrollments
 Public AuditSheetName As String 'Audit
 Public MeasureSheetName As String 'Measure
 Public PMSheetName As String 'PM
-Public InboundLastReadCol As Integer
+Public SettingSN As String
 Public currentEnrollment As String
 Public premiseid As String
 Public accountnumber As String
@@ -25,9 +25,6 @@ Sub Main()
     frmMain.Show vbModeless
 End Sub
 
-'todo list
-'validation
-'other systems
 Sub showworkbook()
 Attribute showworkbook.VB_ProcData.VB_Invoke_Func = "g\n14"
     Application.Visible = True
